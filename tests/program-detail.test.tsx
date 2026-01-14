@@ -55,6 +55,21 @@ describe('ProgramDetailPage', () => {
     expect(screen.getByText('Add Day')).toBeDefined()
   })
 
+  it('shows reorder buttons for workouts', async () => {
+    await act(async () => {
+      render(<ProgramDetailPage params={params} />)
+    })
+    await waitFor(() => expect(screen.queryByText('Loading...')).toBeNull())
+    
+    // We expect to find Up/Down arrow buttons (Chevrons)
+    const buttons = screen.getAllByRole('button')
+    const hasUp = buttons.some(b => b.innerHTML.includes('lucide-chevron-up'))
+    const hasDown = buttons.some(b => b.innerHTML.includes('lucide-chevron-down'))
+    
+    expect(hasUp).toBe(true)
+    expect(hasDown).toBe(true)
+  })
+
   it('shows add workout button for each day', async () => {
     await act(async () => {
       render(<ProgramDetailPage params={params} />)
