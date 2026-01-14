@@ -1,12 +1,12 @@
 # Plan: Command Center (Dashboard)
 
 ## Phase 1: Navigation & Layout
-- [~] Task: Implement Sidebar/Navigation Shell
-    - [ ] Write Failing Tests (Red Phase)
-    - [ ] Implement to Pass Tests (Green Phase)
-    - [ ] Verify Coverage & Quality Gates
-    - [ ] Commit & Record Task (Git Notes, SHA)
-- [ ] Task: Set up Dashboard Page Route
+- [x] Task: Implement Sidebar/Navigation Shell [c4ad311]
+    - [x] Write Failing Tests (Red Phase)
+    - [x] Implement to Pass Tests (Green Phase)
+    - [x] Verify Coverage & Quality Gates
+    - [x] Commit & Record Task (Git Notes, SHA)
+- [~] Task: Set up Dashboard Page Route
     - [ ] Write Failing Tests (Red Phase)
     - [ ] Implement to Pass Tests (Green Phase)
     - [ ] Verify Coverage & Quality Gates
