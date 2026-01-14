@@ -25,12 +25,12 @@
     - [x] Commit & Record Task (Git Notes, SHA)
 
 ## Phase 3: Activity & Actions
-- [~] Task: Implement Recent Activity Feed
-    - [ ] Write Failing Tests (Red Phase)
-    - [ ] Implement to Pass Tests (Green Phase)
-    - [ ] Verify Coverage & Quality Gates
-    - [ ] Commit & Record Task (Git Notes, SHA)
-- [ ] Task: Implement Quick Action Buttons
+- [x] Task: Implement Recent Activity Feed [ea3b0de]
+    - [x] Write Failing Tests (Red Phase)
+    - [x] Implement to Pass Tests (Green Phase)
+    - [x] Verify Coverage & Quality Gates
+    - [x] Commit & Record Task (Git Notes, SHA)
+- [~] Task: Implement Quick Action Buttons
     - [ ] Write Failing Tests (Red Phase)
     - [ ] Implement to Pass Tests (Green Phase)
     - [ ] Verify Coverage & Quality Gates
