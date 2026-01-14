@@ -33,4 +33,6 @@ test('Dashboard page renders Command Center and stats', async () => {
     const values = screen.getAllByText('10')
     expect(values.length).toBeGreaterThan(0)
   })
+
+  expect(screen.getByText(/Live Connection: Active/i)).toBeDefined()
 })

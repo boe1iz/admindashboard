@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { db } from '@/lib/firebase'
 import { collection, onSnapshot } from 'firebase/firestore'
+import { cn } from '@/lib/utils'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Users, BookOpen, Package, ShieldCheck, Activity, PlusCircle, UserPlus } from 'lucide-react'
 import { Button } from '@/components/ui/button'
@@ -15,13 +16,18 @@ export default function Dashboard() {
     equipment: { active: 0, archived: 0 },
   })
   const [loading, setLoading] = useState(true)
+  const [isConnected, setIsConnected] = useState(false)
 
   useEffect(() => {
     const unsubPrograms = onSnapshot(collection(db, 'programs'), (snap) => {
       const active = snap.docs.filter(d => !d.data().isArchived).length
       const archived = snap.docs.filter(d => d.data().isArchived).length
       setStatsData(prev => ({ ...prev, programs: { active, archived } }))
+      setIsConnected(true)
       setLoading(false)
+    }, (err) => {
+      console.error(err)
+      setIsConnected(false)
     })
 
     const unsubClients = onSnapshot(collection(db, 'clients'), (snap) => {
@@ -78,9 +84,12 @@ export default function Dashboard() {
             Command Center
           </h1>
           <div className="flex items-center gap-2 mt-2">
-            <div className="size-2 rounded-full bg-green-500 animate-pulse" />
+            <div className={cn(
+              "size-2 rounded-full animate-pulse",
+              isConnected ? "bg-green-500" : "bg-red-500"
+            )} />
             <span className="text-[10px] uppercase tracking-widest font-bold text-zinc-500">
-              Live Connection: Active
+              Live Connection: {isConnected ? 'Active' : 'Offline'}
             </span>
           </div>
         </div>
