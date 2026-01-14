@@ -19,12 +19,12 @@
     - [x] Implement to Pass Tests (Green Phase)
     - [x] Verify Coverage & Quality Gates
     - [x] Commit & Record Task (Git Notes, SHA)
-- [~] Task: Create Program Form (Name, Description, Pricing Logic)
-    - [ ] Write Failing Tests (Red Phase)
-    - [ ] Implement to Pass Tests (Green Phase)
-    - [ ] Verify Coverage & Quality Gates
-    - [ ] Commit & Record Task (Git Notes, SHA)
-- [ ] Task: Implement Archive/Restore Functionality
+- [x] Task: Create Program Form (Name, Description, Pricing Logic) [063041a]
+    - [x] Write Failing Tests (Red Phase)
+    - [x] Implement to Pass Tests (Green Phase)
+    - [x] Verify Coverage & Quality Gates
+    - [x] Commit & Record Task (Git Notes, SHA)
+- [~] Task: Implement Archive/Restore Functionality
     - [ ] Write Failing Tests (Red Phase)
     - [ ] Implement to Pass Tests (Green Phase)
     - [ ] Verify Coverage & Quality Gates
