@@ -1,0 +1,63 @@
+# Plan: Core Program Management & Training Sequence Builder
+
+## Phase 1: Foundation & Firebase Setup
+- [ ] Task: Initialize Next.js Project & Tailwind Config
+    - [ ] Write Failing Tests (Red Phase)
+    - [ ] Implement to Pass Tests (Green Phase)
+    - [ ] Verify Coverage & Quality Gates
+    - [ ] Commit & Record Task (Git Notes, SHA)
+- [ ] Task: Setup Firebase Configuration & Auth Setup
+    - [ ] Write Failing Tests (Red Phase)
+    - [ ] Implement to Pass Tests (Green Phase)
+    - [ ] Verify Coverage & Quality Gates
+    - [ ] Commit & Record Task (Git Notes, SHA)
+- [ ] Task: Conductor - User Manual Verification 'Phase 1: Foundation' (Protocol in workflow.md)
+
+## Phase 2: Program Management (CRUD & Archiving)
+- [ ] Task: Implement Program List View (Active/Archived Tabs)
+    - [ ] Write Failing Tests (Red Phase)
+    - [ ] Implement to Pass Tests (Green Phase)
+    - [ ] Verify Coverage & Quality Gates
+    - [ ] Commit & Record Task (Git Notes, SHA)
+- [ ] Task: Create Program Form (Name, Description, Pricing Logic)
+    - [ ] Write Failing Tests (Red Phase)
+    - [ ] Implement to Pass Tests (Green Phase)
+    - [ ] Verify Coverage & Quality Gates
+    - [ ] Commit & Record Task (Git Notes, SHA)
+- [ ] Task: Implement Archive/Restore Functionality
+    - [ ] Write Failing Tests (Red Phase)
+    - [ ] Implement to Pass Tests (Green Phase)
+    - [ ] Verify Coverage & Quality Gates
+    - [ ] Commit & Record Task (Git Notes, SHA)
+- [ ] Task: Conductor - User Manual Verification 'Phase 2: Program Management' (Protocol in workflow.md)
+
+## Phase 3: Training Sequence Builder (Days & Workouts)
+- [ ] Task: Implement Day Management (Add/Delete with Guard Logic)
+    - [ ] Write Failing Tests (Red Phase)
+    - [ ] Implement to Pass Tests (Green Phase)
+    - [ ] Verify Coverage & Quality Gates
+    - [ ] Commit & Record Task (Git Notes, SHA)
+- [ ] Task: Implement Workout Management (CRUD within Days)
+    - [ ] Write Failing Tests (Red Phase)
+    - [ ] Implement to Pass Tests (Green Phase)
+    - [ ] Verify Coverage & Quality Gates
+    - [ ] Commit & Record Task (Git Notes, SHA)
+- [ ] Task: Conductor - User Manual Verification 'Phase 3: Sequence Builder' (Protocol in workflow.md)
+
+## Phase 4: Advanced Logic & UI Polish
+- [ ] Task: Implement Workout Reordering (Drag-and-Drop/Index Swap)
+    - [ ] Write Failing Tests (Red Phase)
+    - [ ] Implement to Pass Tests (Green Phase)
+    - [ ] Verify Coverage & Quality Gates
+    - [ ] Commit & Record Task (Git Notes, SHA)
+- [ ] Task: Implement Deep Copy (Program Duplication)
+    - [ ] Write Failing Tests (Red Phase)
+    - [ ] Implement to Pass Tests (Green Phase)
+    - [ ] Verify Coverage & Quality Gates
+    - [ ] Commit & Record Task (Git Notes, SHA)
+- [ ] Task: Implement Video Player Modal & Embed Transformation
+    - [ ] Write Failing Tests (Red Phase)
+    - [ ] Implement to Pass Tests (Green Phase)
+    - [ ] Verify Coverage & Quality Gates
+    - [ ] Commit & Record Task (Git Notes, SHA)
+- [ ] Task: Conductor - User Manual Verification 'Phase 4: Advanced Logic & Polish' (Protocol in workflow.md)
