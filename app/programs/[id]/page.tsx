@@ -137,12 +137,17 @@ export default function ProgramDetailPage({ params }: { params: Promise<{ id: st
     fetchProgram()
 
     const q = query(collection(db, 'programs', id, 'days'), orderBy('orderIndex'))
+    console.log("Listening for days in path:", `programs/${id}/days`)
     const unsubscribe = onSnapshot(q, (snapshot) => {
+      console.log(`Found ${snapshot.docs.length} days for program ${id}`)
       const daysData = snapshot.docs.map(doc => ({
         id: doc.id,
         ...doc.data()
       })) as Day[]
       setDays(daysData)
+      setLoading(false)
+    }, (error) => {
+      console.error("Error listening to days:", error)
       setLoading(false)
     })
 

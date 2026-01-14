@@ -47,6 +47,7 @@ export function CreateWorkoutDialog({ programId, dayId, nextOrderIndex }: Create
       setFormData({ name: '', description: '', videoUrl: '' })
     } catch (error) {
       console.error('Error adding workout: ', error)
+      alert("Failed to add workout. Please check your Firestore rules.")
     } finally {
       setLoading(false)
     }

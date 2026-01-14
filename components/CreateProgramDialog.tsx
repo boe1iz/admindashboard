@@ -30,22 +30,19 @@ export function CreateProgramDialog() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
-    console.log("Attempting to create program:", formData)
     try {
-      const docRef = await addDoc(collection(db, 'programs'), {
+      await addDoc(collection(db, 'programs'), {
         ...formData,
         price: parseFloat(formData.price),
         isArchived: false,
         createdAt: serverTimestamp(),
         updatedAt: serverTimestamp()
       })
-      console.log("Program successfully created with ID:", docRef.id)
       setOpen(false)
       setFormData({ name: '', description: '', price: '0' })
     } catch (error) {
       console.error('Error adding program: ', error)
-      // If we're using dummy keys, we might get a permission error or hang
-      alert("Failed to create program. See console for details.")
+      alert("Failed to create program. Please check your Firestore rules.")
     } finally {
       setLoading(false)
     }
