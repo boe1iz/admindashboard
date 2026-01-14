@@ -44,7 +44,7 @@
     - [x] Commit & Record Task (Git Notes, SHA)
 - [x] Task: Conductor - User Manual Verification 'Phase 3: Sequence Builder' (Protocol in workflow.md)
 
-## Phase 4: Advanced Logic & UI Polish
+## Phase 4: Advanced Logic & UI Polish [checkpoint: 16271f6]
 - [x] Task: Implement Workout Reordering (Drag-and-Drop/Index Swap) [bf3e8cc]
     - [x] Write Failing Tests (Red Phase)
     - [x] Implement to Pass Tests (Green Phase)
@@ -60,4 +60,4 @@
     - [x] Implement to Pass Tests (Green Phase)
     - [x] Verify Coverage & Quality Gates
     - [x] Commit & Record Task (Git Notes, SHA)
-- [~] Task: Conductor - User Manual Verification 'Phase 4: Advanced Logic & Polish' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 4: Advanced Logic & Polish' (Protocol in workflow.md)
