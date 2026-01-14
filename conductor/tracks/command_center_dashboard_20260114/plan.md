@@ -1,4 +1,4 @@
-# Plan: Command Center (Dashboard)
+# Plan: Command Center (Dashboard) [checkpoint: 92e7caa]
 
 ## Phase 1: Navigation & Layout
 - [x] Task: Implement Sidebar/Navigation Shell [c4ad311]
@@ -37,4 +37,4 @@
     - [x] Commit & Record Task (Git Notes, SHA)
 
 ## Phase 4: Final Verification
-- [~] Task: Conductor - User Manual Verification 'Command Center' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Command Center' (Protocol in workflow.md)
