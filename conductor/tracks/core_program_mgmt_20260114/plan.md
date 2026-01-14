@@ -32,12 +32,12 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 2: Program Management' (Protocol in workflow.md)
 
 ## Phase 3: Training Sequence Builder (Days & Workouts)
-- [~] Task: Implement Day Management (Add/Delete with Guard Logic)
-    - [ ] Write Failing Tests (Red Phase)
-    - [ ] Implement to Pass Tests (Green Phase)
-    - [ ] Verify Coverage & Quality Gates
-    - [ ] Commit & Record Task (Git Notes, SHA)
-- [ ] Task: Implement Workout Management (CRUD within Days)
+- [x] Task: Implement Day Management (Add/Delete with Guard Logic) [f242785]
+    - [x] Write Failing Tests (Red Phase)
+    - [x] Implement to Pass Tests (Green Phase)
+    - [x] Verify Coverage & Quality Gates
+    - [x] Commit & Record Task (Git Notes, SHA)
+- [~] Task: Implement Workout Management (CRUD within Days)
     - [ ] Write Failing Tests (Red Phase)
     - [ ] Implement to Pass Tests (Green Phase)
     - [ ] Verify Coverage & Quality Gates
