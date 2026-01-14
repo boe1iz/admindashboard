@@ -2,16 +2,69 @@
 
 import { useState, useEffect } from 'react'
 import { db } from '@/lib/firebase'
-import { collection, query, onSnapshot } from 'firebase/firestore'
+import { collection, query, onSnapshot, doc, updateDoc } from 'firebase/firestore'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { CreateProgramDialog } from '@/components/CreateProgramDialog'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
+import { Button } from '@/components/ui/button'
+import { MoreVertical, Archive, ArchiveRestore } from 'lucide-react'
 
 interface Program {
   id: string
   name: string
   description: string
   isArchived: boolean
+}
+
+function ProgramCard({ program }: { program: Program }) {
+  const toggleArchive = async () => {
+    try {
+      await updateDoc(doc(db, 'programs', program.id), {
+        isArchived: !program.isArchived
+      })
+    } catch (error) {
+      console.error('Error updating program: ', error)
+    }
+  }
+
+  return (
+    <Card className="relative">
+      <div className="absolute top-4 right-4">
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" size="icon">
+              <MoreVertical className="size-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuItem onClick={toggleArchive}>
+              {program.isArchived ? (
+                <>
+                  <ArchiveRestore className="mr-2 size-4" />
+                  Restore
+                </>
+              ) : (
+                <>
+                  <Archive className="mr-2 size-4" />
+                  Archive
+                </>
+              )}
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
+      <CardHeader>
+        <CardTitle>{program.name}</CardTitle>
+        <CardDescription>{program.description}</CardDescription>
+      </CardHeader>
+    </Card>
+  )
 }
 
 export default function ProgramsPage() {
@@ -53,12 +106,7 @@ export default function ProgramsPage() {
         <TabsContent value="operational" className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {activePrograms.map(program => (
-              <Card key={program.id}>
-                <CardHeader>
-                  <CardTitle>{program.name}</CardTitle>
-                  <CardDescription>{program.description}</CardDescription>
-                </CardHeader>
-              </Card>
+              <ProgramCard key={program.id} program={program} />
             ))}
           </div>
         </TabsContent>
@@ -66,12 +114,7 @@ export default function ProgramsPage() {
         <TabsContent value="vault" className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {archivedPrograms.map(program => (
-              <Card key={program.id}>
-                <CardHeader>
-                  <CardTitle>{program.name}</CardTitle>
-                  <CardDescription>{program.description}</CardDescription>
-                </CardHeader>
-              </Card>
+              <ProgramCard key={program.id} program={program} />
             ))}
           </div>
         </TabsContent>
@@ -79,3 +122,4 @@ export default function ProgramsPage() {
     </div>
   )
 }
+
