@@ -55,9 +55,9 @@
     - [x] Implement to Pass Tests (Green Phase)
     - [x] Verify Coverage & Quality Gates
     - [x] Commit & Record Task (Git Notes, SHA)
-- [~] Task: Implement Video Player Modal & Embed Transformation
-    - [ ] Write Failing Tests (Red Phase)
-    - [ ] Implement to Pass Tests (Green Phase)
-    - [ ] Verify Coverage & Quality Gates
-    - [ ] Commit & Record Task (Git Notes, SHA)
-- [ ] Task: Conductor - User Manual Verification 'Phase 4: Advanced Logic & Polish' (Protocol in workflow.md)
+- [x] Task: Implement Video Player Modal & Embed Transformation [532d6c4]
+    - [x] Write Failing Tests (Red Phase)
+    - [x] Implement to Pass Tests (Green Phase)
+    - [x] Verify Coverage & Quality Gates
+    - [x] Commit & Record Task (Git Notes, SHA)
+- [~] Task: Conductor - User Manual Verification 'Phase 4: Advanced Logic & Polish' (Protocol in workflow.md)
