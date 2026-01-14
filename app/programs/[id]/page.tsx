@@ -19,23 +19,13 @@ import { Plus, Trash2, ArrowLeft, Video, ChevronUp, ChevronDown } from 'lucide-r
 import Link from 'next/link'
 import { use } from 'react'
 import { CreateWorkoutDialog } from '@/components/CreateWorkoutDialog'
+import { VideoModal } from '@/components/VideoModal'
 
 interface Workout {
-  id: string
-  name: string
-  description: string
-  videoUrl?: string
-  orderIndex: number
+// ... existing interface ...
 }
 
-interface Day {
-  id: string
-  name: string
-  orderIndex: number
-  workouts?: Workout[]
-}
-
-// ... existing interfaces ...
+// ... existing Day interface ...
 
 function WorkoutCard({ 
   workout, 
@@ -81,7 +71,13 @@ function WorkoutCard({
             <ChevronDown className="size-3" />
           </Button>
         </div>
-        {workout.videoUrl && <Video className="size-4 text-primary" />}
+        {workout.videoUrl ? (
+          <VideoModal videoUrl={workout.videoUrl} title={workout.name} />
+        ) : (
+          <div className="size-8 flex items-center justify-center text-muted-foreground/30">
+            <Video className="size-4" />
+          </div>
+        )}
         <div>
           <h4 className="font-medium text-sm">{workout.name}</h4>
           <p className="text-xs text-muted-foreground line-clamp-1">{workout.description}</p>
