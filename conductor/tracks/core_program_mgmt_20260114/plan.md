@@ -14,12 +14,12 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 1: Foundation' (Protocol in workflow.md)
 
 ## Phase 2: Program Management (CRUD & Archiving)
-- [~] Task: Implement Program List View (Active/Archived Tabs)
-    - [ ] Write Failing Tests (Red Phase)
-    - [ ] Implement to Pass Tests (Green Phase)
-    - [ ] Verify Coverage & Quality Gates
-    - [ ] Commit & Record Task (Git Notes, SHA)
-- [ ] Task: Create Program Form (Name, Description, Pricing Logic)
+- [x] Task: Implement Program List View (Active/Archived Tabs) [c37d4d2]
+    - [x] Write Failing Tests (Red Phase)
+    - [x] Implement to Pass Tests (Green Phase)
+    - [x] Verify Coverage & Quality Gates
+    - [x] Commit & Record Task (Git Notes, SHA)
+- [~] Task: Create Program Form (Name, Description, Pricing Logic)
     - [ ] Write Failing Tests (Red Phase)
     - [ ] Implement to Pass Tests (Green Phase)
     - [ ] Verify Coverage & Quality Gates
