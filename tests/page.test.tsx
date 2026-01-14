@@ -11,10 +11,19 @@ vi.mock('@/lib/firebase', () => ({
 vi.mock('firebase/firestore', () => ({
   collection: vi.fn(),
   query: vi.fn(),
+  orderBy: vi.fn(),
+  limit: vi.fn(),
   onSnapshot: vi.fn((q, cb) => {
-    // Return 10 docs, all active
+    // If it's the assignments query (we check by observing mock setup if needed)
+    // For now, return different data based on common query patterns
+    
     const docs = Array(10).fill({
-      data: () => ({ isArchived: false })
+      data: () => ({ 
+        isArchived: false,
+        client_name: 'Test Athlete',
+        program_name: 'Test Program',
+        assigned_at: { seconds: Date.now() / 1000 }
+      })
     })
     cb({
       size: 10,
@@ -24,14 +33,14 @@ vi.mock('firebase/firestore', () => ({
   }),
 }))
 
-test('Dashboard page renders Command Center and stats', async () => {
+test('Dashboard page renders Command Center, stats and activity', async () => {
   render(<Page />)
   expect(screen.getByText('Command Center')).toBeDefined()
   
   // Wait for mock data to "load"
   await waitFor(() => {
-    const values = screen.getAllByText('10')
-    expect(values.length).toBeGreaterThan(0)
+    expect(screen.getAllByText('10').length).toBeGreaterThan(0)
+    expect(screen.getAllByText(/Test Athlete/i).length).toBeGreaterThan(0)
   })
 
   expect(screen.getByText(/Live Connection: Active/i)).toBeDefined()

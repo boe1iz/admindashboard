@@ -54,6 +54,16 @@ export default function DebugPage() {
           }
           report.push(dayResults)
         }
+
+        // 2. Check assignments
+        const assSnap = await getDocs(query(collection(db, 'assignments'), limit(5)))
+        const assResults: any = { 
+          name: 'Recent Assignments',
+          count: assSnap.size,
+          samples: assSnap.docs.map(d => d.data())
+        }
+        report.push(assResults)
+
         setResults(report)
       } catch (e: any) {
         console.error(e)
@@ -71,22 +81,26 @@ export default function DebugPage() {
       <h1 className="text-xl font-bold mb-4">Database Diagnosis</h1>
       {results.map((res, i) => (
         <div key={i} className="mb-8 border p-4 rounded bg-zinc-900 text-green-400">
-          <p className="font-bold text-white">Program: {res.name} ({res.programId})</p>
-          {res.subCollections.length === 0 ? (
-            <p className="text-red-400 mt-2">No sub-collections found.</p>
+          <p className="font-bold text-white">{res.name} ({res.programId || 'Collection'})</p>
+          {res.samples ? (
+             <pre className="mt-2 text-zinc-400">{JSON.stringify(res.samples, null, 2)}</pre>
           ) : (
-            res.subCollections.map((sub: any, j: number) => (
-              <div key={j} className="mt-4 ml-4">
-                <p className="text-yellow-400 underline">Sub-collection: {sub.name} ({sub.count} docs)</p>
-                <pre className="mt-2 text-zinc-400">{JSON.stringify(sub.sample, null, 2)}</pre>
-                {sub.nested.map((nes: any, k: number) => (
-                  <div key={k} className="mt-4 ml-8 border-l border-zinc-700 pl-4">
-                    <p className="text-blue-400 underline">Nested Sub-collection: {nes.name} ({nes.count} docs)</p>
-                    <pre className="mt-2 text-zinc-500">{JSON.stringify(nes.sample, null, 2)}</pre>
-                  </div>
-                ))}
-              </div>
-            ))
+            res.subCollections.length === 0 ? (
+              <p className="text-red-400 mt-2">No sub-collections found.</p>
+            ) : (
+              res.subCollections.map((sub: any, j: number) => (
+                <div key={j} className="mt-4 ml-4">
+                  <p className="text-yellow-400 underline">Sub-collection: {sub.name} ({sub.count} docs)</p>
+                  <pre className="mt-2 text-zinc-400">{JSON.stringify(sub.sample, null, 2)}</pre>
+                  {sub.nested.map((nes: any, k: number) => (
+                    <div key={k} className="mt-4 ml-8 border-l border-zinc-700 pl-4">
+                      <p className="text-blue-400 underline">Nested Sub-collection: {nes.name} ({nes.count} docs)</p>
+                      <pre className="mt-2 text-zinc-500">{JSON.stringify(nes.sample, null, 2)}</pre>
+                    </div>
+                  ))}
+                </div>
+              ))
+            )
           )}
         </div>
       ))}

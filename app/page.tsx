@@ -2,12 +2,19 @@
 
 import { useState, useEffect } from 'react'
 import { db } from '@/lib/firebase'
-import { collection, onSnapshot } from 'firebase/firestore'
+import { collection, onSnapshot, query, orderBy, limit } from 'firebase/firestore'
 import { cn } from '@/lib/utils'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Users, BookOpen, Package, ShieldCheck, Activity, PlusCircle, UserPlus } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
+
+interface Assignment {
+  id: string
+  client_name: string
+  program_name: string
+  assigned_at: { seconds: number; nanoseconds: number }
+}
 
 export default function Dashboard() {
   const [statsData, setStatsData] = useState({
@@ -15,20 +22,18 @@ export default function Dashboard() {
     clients: { active: 0, archived: 0 },
     equipment: { active: 0, archived: 0 },
   })
+  const [recentActivity, setRecentActivity] = useState<Assignment[]>([])
   const [loading, setLoading] = useState(true)
   const [isConnected, setIsConnected] = useState(false)
 
   useEffect(() => {
+    // 1. Stats Listeners
     const unsubPrograms = onSnapshot(collection(db, 'programs'), (snap) => {
       const active = snap.docs.filter(d => !d.data().isArchived).length
       const archived = snap.docs.filter(d => d.data().isArchived).length
       setStatsData(prev => ({ ...prev, programs: { active, archived } }))
       setIsConnected(true)
-      setLoading(false)
-    }, (err) => {
-      console.error(err)
-      setIsConnected(false)
-    })
+    }, () => setIsConnected(false))
 
     const unsubClients = onSnapshot(collection(db, 'clients'), (snap) => {
       const active = snap.docs.filter(d => !d.data().isArchived).length
@@ -42,10 +47,26 @@ export default function Dashboard() {
       setStatsData(prev => ({ ...prev, equipment: { active, archived } }))
     })
 
+    // 2. Recent Activity Listener
+    const q = query(
+      collection(db, 'assignments'),
+      orderBy('assigned_at', 'desc'),
+      limit(5)
+    )
+    const unsubActivity = onSnapshot(q, (snap) => {
+      const activity = snap.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      })) as Assignment[]
+      setRecentActivity(activity)
+      setLoading(false)
+    })
+
     return () => {
       unsubPrograms()
       unsubClients()
       unsubGear()
+      unsubActivity()
     }
   }, [])
 
@@ -122,9 +143,32 @@ export default function Dashboard() {
             </div>
           </CardHeader>
           <CardContent>
-            <div className="flex flex-col items-center justify-center py-12 text-zinc-500">
-              <p className="text-sm font-medium">No recent assignments found.</p>
-            </div>
+            {recentActivity.length === 0 ? (
+              <div className="flex flex-col items-center justify-center py-12 text-zinc-500">
+                <p className="text-sm font-medium">No recent assignments found.</p>
+              </div>
+            ) : (
+              <div className="space-y-4 py-2">
+                {recentActivity.map((item) => (
+                  <div key={item.id} className="flex items-center justify-between border-b border-zinc-100 dark:border-zinc-800 pb-4 last:border-0 last:pb-0">
+                    <div className="flex items-center gap-3">
+                      <div className="size-8 rounded-full bg-blue-500/10 flex items-center justify-center">
+                        <UserPlus className="size-4 text-blue-500" />
+                      </div>
+                      <div>
+                        <p className="text-sm font-bold text-foreground">{item.client_name}</p>
+                        <p className="text-[10px] uppercase tracking-widest font-bold text-zinc-500">
+                          Joined {item.program_name}
+                        </p>
+                      </div>
+                    </div>
+                    <span className="text-[10px] font-bold text-zinc-400">
+                      {new Date(item.assigned_at.seconds * 1000).toLocaleDateString()}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            )}
           </CardContent>
         </Card>
 
