@@ -5,6 +5,7 @@ import { db } from '@/lib/firebase'
 import { collection, query, onSnapshot } from 'firebase/firestore'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { CreateProgramDialog } from '@/components/CreateProgramDialog'
 
 interface Program {
   id: string
@@ -38,7 +39,10 @@ export default function ProgramsPage() {
 
   return (
     <div className="container mx-auto py-10">
-      <h1 className="text-4xl font-bold mb-8 text-foreground">Programs</h1>
+      <div className="flex justify-between items-center mb-8">
+        <h1 className="text-4xl font-bold text-foreground">Programs</h1>
+        <CreateProgramDialog />
+      </div>
       
       <Tabs defaultValue="operational" className="w-full">
         <TabsList className="grid w-full grid-cols-2 max-w-md mb-8">

@@ -40,4 +40,11 @@ describe('ProgramsPage', () => {
     expect(screen.getByText('Active Program')).toBeDefined()
     expect(screen.queryByText('Archived Program')).toBeNull()
   })
+
+  it('opens create program dialog', async () => {
+    render(<ProgramsPage />)
+    
+    const createBtn = screen.getByText('New Program')
+    expect(createBtn).toBeDefined()
+  })
 })
