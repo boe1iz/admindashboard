@@ -45,12 +45,12 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 3: Sequence Builder' (Protocol in workflow.md)
 
 ## Phase 4: Advanced Logic & UI Polish
-- [~] Task: Implement Workout Reordering (Drag-and-Drop/Index Swap)
-    - [ ] Write Failing Tests (Red Phase)
-    - [ ] Implement to Pass Tests (Green Phase)
-    - [ ] Verify Coverage & Quality Gates
-    - [ ] Commit & Record Task (Git Notes, SHA)
-- [ ] Task: Implement Deep Copy (Program Duplication)
+- [x] Task: Implement Workout Reordering (Drag-and-Drop/Index Swap) [bf3e8cc]
+    - [x] Write Failing Tests (Red Phase)
+    - [x] Implement to Pass Tests (Green Phase)
+    - [x] Verify Coverage & Quality Gates
+    - [x] Commit & Record Task (Git Notes, SHA)
+- [~] Task: Implement Deep Copy (Program Duplication)
     - [ ] Write Failing Tests (Red Phase)
     - [ ] Implement to Pass Tests (Green Phase)
     - [ ] Verify Coverage & Quality Gates
