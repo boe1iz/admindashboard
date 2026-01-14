@@ -13,7 +13,7 @@
     - [x] Commit & Record Task (Git Notes, SHA)
 - [x] Task: Conductor - User Manual Verification 'Phase 1: Foundation' (Protocol in workflow.md)
 
-## Phase 2: Program Management (CRUD & Archiving)
+## Phase 2: Program Management (CRUD & Archiving) [checkpoint: 57244d2]
 - [x] Task: Implement Program List View (Active/Archived Tabs) [c37d4d2]
     - [x] Write Failing Tests (Red Phase)
     - [x] Implement to Pass Tests (Green Phase)
@@ -29,10 +29,10 @@
     - [x] Implement to Pass Tests (Green Phase)
     - [x] Verify Coverage & Quality Gates
     - [x] Commit & Record Task (Git Notes, SHA)
-- [~] Task: Conductor - User Manual Verification 'Phase 2: Program Management' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 2: Program Management' (Protocol in workflow.md)
 
 ## Phase 3: Training Sequence Builder (Days & Workouts)
-- [ ] Task: Implement Day Management (Add/Delete with Guard Logic)
+- [~] Task: Implement Day Management (Add/Delete with Guard Logic)
     - [ ] Write Failing Tests (Red Phase)
     - [ ] Implement to Pass Tests (Green Phase)
     - [ ] Verify Coverage & Quality Gates
