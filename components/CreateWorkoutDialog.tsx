@@ -38,8 +38,10 @@ export function CreateWorkoutDialog({ programId, dayId, nextOrderIndex }: Create
     setLoading(true)
     try {
       await addDoc(collection(db, 'programs', programId, 'days', dayId, 'workouts'), {
-        ...formData,
-        orderIndex: nextOrderIndex,
+        title: formData.name,
+        instructions: formData.description,
+        video_url: formData.videoUrl,
+        order_index: nextOrderIndex,
         createdAt: serverTimestamp(),
         updatedAt: serverTimestamp()
       })

@@ -11,7 +11,7 @@ import {
   addDoc, 
   deleteDoc, 
   orderBy,
-  getDocs
+  updateDoc
 } from 'firebase/firestore'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -22,10 +22,23 @@ import { CreateWorkoutDialog } from '@/components/CreateWorkoutDialog'
 import { VideoModal } from '@/components/VideoModal'
 
 interface Workout {
-// ... existing interface ...
+  id: string
+  title: string
+  instructions: string
+  video_url?: string
+  order_index: number
 }
 
-// ... existing Day interface ...
+interface Day {
+  id: string
+  title: string
+  day_number: number
+}
+
+interface Program {
+  id: string
+  name: string
+}
 
 function WorkoutCard({ 
   workout, 
@@ -49,7 +62,7 @@ function WorkoutCard({
   }
 
   return (
-    <div className="flex items-center justify-between p-3 rounded-lg border bg-zinc-50/50 dark:bg-zinc-900/50 group/workout">
+    <div className="flex items-center justify-between p-3 rounded-lg border bg-zinc-50/50 dark:bg-zinc-900/50 group/workout hover:border-primary/30 transition-all">
       <div className="flex items-center gap-3">
         <div className="flex flex-col gap-0.5 opacity-0 group-hover/workout:opacity-100 transition-opacity">
           <Button 
@@ -71,16 +84,16 @@ function WorkoutCard({
             <ChevronDown className="size-3" />
           </Button>
         </div>
-        {workout.videoUrl ? (
-          <VideoModal videoUrl={workout.videoUrl} title={workout.name} />
+        {workout.video_url ? (
+          <VideoModal videoUrl={workout.video_url} title={workout.title} />
         ) : (
           <div className="size-8 flex items-center justify-center text-muted-foreground/30">
             <Video className="size-4" />
           </div>
         )}
         <div>
-          <h4 className="font-medium text-sm">{workout.name}</h4>
-          <p className="text-xs text-muted-foreground line-clamp-1">{workout.description}</p>
+          <h4 className="font-medium text-sm text-foreground">{workout.title}</h4>
+          <p className="text-xs text-muted-foreground line-clamp-1">{workout.instructions}</p>
         </div>
       </div>
       <Button 
@@ -99,7 +112,7 @@ function DaySection({ day, programId }: { day: Day, programId: string }) {
   const [workouts, setWorkouts] = useState<Workout[]>([])
 
   useEffect(() => {
-    const q = query(collection(db, 'programs', programId, 'days', day.id, 'workouts'), orderBy('orderIndex'))
+    const q = query(collection(db, 'programs', programId, 'days', day.id, 'workouts'), orderBy('order_index'))
     const unsubscribe = onSnapshot(q, (snapshot) => {
       const workoutsData = snapshot.docs.map(doc => ({
         id: doc.id,
@@ -118,12 +131,11 @@ function DaySection({ day, programId }: { day: Day, programId: string }) {
     const otherWorkout = workouts[targetIndex]
 
     try {
-      // Swap orderIndex values
       await updateDoc(doc(db, 'programs', programId, 'days', day.id, 'workouts', currentWorkout.id), {
-        orderIndex: otherWorkout.orderIndex
+        order_index: otherWorkout.order_index
       })
       await updateDoc(doc(db, 'programs', programId, 'days', day.id, 'workouts', otherWorkout.id), {
-        orderIndex: currentWorkout.orderIndex
+        order_index: currentWorkout.order_index
       })
     } catch (error) {
       console.error("Error reordering workouts:", error)
@@ -142,9 +154,9 @@ function DaySection({ day, programId }: { day: Day, programId: string }) {
   }
 
   return (
-    <Card className="group overflow-hidden">
+    <Card className="group overflow-hidden border-zinc-200 dark:border-zinc-800 shadow-sm">
       <CardHeader className="flex flex-row items-center justify-between py-4 bg-zinc-50/50 dark:bg-zinc-900/50 border-b">
-        <CardTitle className="text-xl font-semibold">{day.name}</CardTitle>
+        <CardTitle className="text-xl font-semibold text-foreground">{day.title}</CardTitle>
         <div className="flex items-center gap-2">
           <CreateWorkoutDialog programId={programId} dayId={day.id} nextOrderIndex={workouts.length} />
           <Button 
@@ -154,11 +166,11 @@ function DaySection({ day, programId }: { day: Day, programId: string }) {
             onClick={deleteDay}
           >
             <Trash2 className="size-4" />
-            <span className="sr-only">Delete {day.name}</span>
+            <span className="sr-only">Delete {day.title}</span>
           </Button>
         </div>
       </CardHeader>
-      <CardContent className="p-4 space-y-3">
+      <CardContent className="p-4 space-y-3 bg-white dark:bg-black">
         {workouts.length === 0 ? (
           <p className="text-sm text-center text-muted-foreground py-4">No workouts added yet.</p>
         ) : (
@@ -179,7 +191,6 @@ function DaySection({ day, programId }: { day: Day, programId: string }) {
   )
 }
 
-
 export default function ProgramDetailPage({ params }: { params: Promise<{ id: string }> | { id: string } }) {
   const { id } = use(params as any) as { id: string }
   const [program, setProgram] = useState<Program | null>(null)
@@ -195,10 +206,8 @@ export default function ProgramDetailPage({ params }: { params: Promise<{ id: st
     }
     fetchProgram()
 
-    const q = query(collection(db, 'programs', id, 'days'), orderBy('orderIndex'))
-    console.log("Listening for days in path:", `programs/${id}/days`)
+    const q = query(collection(db, 'programs', id, 'days'), orderBy('day_number'))
     const unsubscribe = onSnapshot(q, (snapshot) => {
-      console.log(`Found ${snapshot.docs.length} days for program ${id}`)
       const daysData = snapshot.docs.map(doc => ({
         id: doc.id,
         ...doc.data()
@@ -214,20 +223,20 @@ export default function ProgramDetailPage({ params }: { params: Promise<{ id: st
   }, [id])
 
   const addDay = async () => {
-    const nextIndex = days.length
+    const nextNumber = days.length + 1
     await addDoc(collection(db, 'programs', id, 'days'), {
-      name: `Day ${nextIndex + 1}`,
-      orderIndex: nextIndex
+      title: `Day ${nextNumber}`,
+      day_number: nextNumber
     })
   }
 
-  if (loading) return <div className="p-8">Loading...</div>
-  if (!program) return <div className="p-8">Program not found.</div>
+  if (loading) return <div className="p-8 text-foreground">Loading Program Details...</div>
+  if (!program) return <div className="p-8 text-foreground">Program not found.</div>
 
   return (
-    <div className="container mx-auto py-10 px-4">
+    <div className="container mx-auto py-10 px-4 min-h-screen">
       <div className="mb-8">
-        <Link href="/programs" className="flex items-center text-muted-foreground hover:text-foreground mb-4">
+        <Link href="/programs" className="flex items-center text-muted-foreground hover:text-foreground mb-4 transition-colors">
           <ArrowLeft className="mr-2 size-4" />
           Back to Programs
         </Link>

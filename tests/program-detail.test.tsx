@@ -15,14 +15,9 @@ vi.mock('firebase/firestore', () => ({
   where: vi.fn(),
   orderBy: vi.fn(),
   onSnapshot: vi.fn((q, cb) => {
-    // If query includes 'workouts', return workout
-    // If query includes 'days', return day
-    // q.path is not available in mock, so we check mock calls or return both
-    // Actually, onSnapshot is called for days first, then workouts.
-    
     cb({
       docs: [
-        { id: 'item1', data: () => ({ name: 'Day One', orderIndex: 0, videoUrl: 'https://youtube.com/watch?v=123' }) }
+        { id: 'item1', data: () => ({ title: 'Day One', day_number: 1, instructions: 'Test Instructions', video_url: 'https://youtube.com/watch?v=123', order_index: 0 }) }
       ]
     })
     return () => {}
@@ -36,6 +31,7 @@ vi.mock('firebase/firestore', () => ({
   addDoc: vi.fn(),
   deleteDoc: vi.fn(),
   getDocs: vi.fn(() => Promise.resolve({ size: 0 })),
+  updateDoc: vi.fn()
 }))
 
 describe('ProgramDetailPage', () => {

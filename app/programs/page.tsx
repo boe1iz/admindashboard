@@ -56,8 +56,8 @@ function ProgramCard({ program }: { program: Program }) {
       for (const dayDoc of daysSnap.docs) {
         const dayData = dayDoc.data()
         const newDayRef = await addDoc(collection(db, 'programs', newProgramRef.id, 'days'), {
-          name: dayData.name,
-          orderIndex: dayData.orderIndex
+          title: dayData.title,
+          day_number: dayData.day_number
         })
 
         // 3. Copy Workouts for each day
@@ -65,7 +65,10 @@ function ProgramCard({ program }: { program: Program }) {
         for (const workoutDoc of workoutsSnap.docs) {
           const workoutData = workoutDoc.data()
           await addDoc(collection(db, 'programs', newProgramRef.id, 'days', newDayRef.id, 'workouts'), {
-            ...workoutData,
+            title: workoutData.title,
+            instructions: workoutData.instructions,
+            video_url: workoutData.video_url || '',
+            order_index: workoutData.order_index,
             createdAt: serverTimestamp(),
             updatedAt: serverTimestamp()
           })
