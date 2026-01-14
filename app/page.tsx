@@ -1,18 +1,75 @@
 'use client'
 
+import { useState, useEffect } from 'react'
+import { db } from '@/lib/firebase'
+import { collection, onSnapshot } from 'firebase/firestore'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Users, BookOpen, Package, ShieldCheck, Activity, PlusCircle, UserPlus } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 
-const stats = [
-  { name: 'Active Athletes', value: '0', icon: Users, color: 'text-blue-500' },
-  { name: 'Concepts', value: '0', icon: BookOpen, color: 'text-[#0057FF]' },
-  { name: 'Operational Gear', value: '0', icon: Package, color: 'text-zinc-400' },
-  { name: 'Safe Vault', value: '0', icon: ShieldCheck, color: 'text-zinc-500' },
-]
-
 export default function Dashboard() {
+  const [statsData, setStatsData] = useState({
+    programs: { active: 0, archived: 0 },
+    clients: { active: 0, archived: 0 },
+    equipment: { active: 0, archived: 0 },
+  })
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    const unsubPrograms = onSnapshot(collection(db, 'programs'), (snap) => {
+      const active = snap.docs.filter(d => !d.data().isArchived).length
+      const archived = snap.docs.filter(d => d.data().isArchived).length
+      setStatsData(prev => ({ ...prev, programs: { active, archived } }))
+      setLoading(false)
+    })
+
+    const unsubClients = onSnapshot(collection(db, 'clients'), (snap) => {
+      const active = snap.docs.filter(d => !d.data().isArchived).length
+      const archived = snap.docs.filter(d => d.data().isArchived).length
+      setStatsData(prev => ({ ...prev, clients: { active, archived } }))
+    })
+
+    const unsubGear = onSnapshot(collection(db, 'equipment'), (snap) => {
+      const active = snap.docs.filter(d => !d.data().isArchived).length
+      const archived = snap.docs.filter(d => d.data().isArchived).length
+      setStatsData(prev => ({ ...prev, equipment: { active, archived } }))
+    })
+
+    return () => {
+      unsubPrograms()
+      unsubClients()
+      unsubGear()
+    }
+  }, [])
+
+  const stats = [
+    { 
+      name: 'Active Athletes', 
+      value: statsData.clients.active.toString(), 
+      icon: Users, 
+      color: 'text-blue-500' 
+    },
+    { 
+      name: 'Concepts', 
+      value: statsData.programs.active.toString(), 
+      icon: BookOpen, 
+      color: 'text-[#0057FF]' 
+    },
+    { 
+      name: 'Operational Gear', 
+      value: statsData.equipment.active.toString(), 
+      icon: Package, 
+      color: 'text-zinc-400' 
+    },
+    { 
+      name: 'Safe Vault', 
+      value: (statsData.programs.archived + statsData.clients.archived + statsData.equipment.archived).toString(), 
+      icon: ShieldCheck, 
+      color: 'text-zinc-500' 
+    },
+  ]
+
   return (
     <div className="p-8 space-y-8">
       <div className="flex justify-between items-center">

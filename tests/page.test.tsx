@@ -1,12 +1,36 @@
-import { expect, test } from 'vitest'
-import { render, screen } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
+import { describe, it, expect, vi } from 'vitest'
 import Page from '../app/page'
 
-test('Dashboard page renders Command Center', () => {
+// Mock firebase
+vi.mock('@/lib/firebase', () => ({
+  db: {},
+}))
+
+// Mock firestore
+vi.mock('firebase/firestore', () => ({
+  collection: vi.fn(),
+  query: vi.fn(),
+  onSnapshot: vi.fn((q, cb) => {
+    // Return 10 docs, all active
+    const docs = Array(10).fill({
+      data: () => ({ isArchived: false })
+    })
+    cb({
+      size: 10,
+      docs: docs
+    })
+    return () => {}
+  }),
+}))
+
+test('Dashboard page renders Command Center and stats', async () => {
   render(<Page />)
   expect(screen.getByText('Command Center')).toBeDefined()
-  expect(screen.getByText('Active Athletes')).toBeDefined()
-  expect(screen.getByText('Concepts')).toBeDefined()
-  expect(screen.getByText('Operational Gear')).toBeDefined()
-  expect(screen.getByText('Safe Vault')).toBeDefined()
+  
+  // Wait for mock data to "load"
+  await waitFor(() => {
+    const values = screen.getAllByText('10')
+    expect(values.length).toBeGreaterThan(0)
+  })
 })
