@@ -1,7 +1,7 @@
 # Plan: Command Center (Dashboard)
 
 ## Phase 1: Navigation & Layout
-- [ ] Task: Implement Sidebar/Navigation Shell
+- [~] Task: Implement Sidebar/Navigation Shell
     - [ ] Write Failing Tests (Red Phase)
     - [ ] Implement to Pass Tests (Green Phase)
     - [ ] Verify Coverage & Quality Gates
