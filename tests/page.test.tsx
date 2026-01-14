@@ -45,3 +45,9 @@ test('Dashboard page renders Command Center, stats and activity', async () => {
 
   expect(screen.getByText(/Live Connection: Active/i)).toBeDefined()
 })
+
+test('Quick Actions navigate correctly', () => {
+  render(<Page />)
+  const buildBtn = screen.getByRole('link', { name: /Build Concept/i })
+  expect(buildBtn.getAttribute('href')).toBe('/programs')
+})
