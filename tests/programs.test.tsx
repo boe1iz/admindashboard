@@ -70,4 +70,12 @@ describe('ProgramsPage', () => {
     // We'll rely on manual verification for the portal-based dropdown content.
     expect(trigger).toBeDefined()
   })
+
+  it('shows duplicate action for programs', async () => {
+    render(<ProgramsPage />)
+    await waitFor(() => expect(screen.queryByText('Loading...')).toBeNull())
+    
+    // This should fail until the "Duplicate" menu item is added
+    expect(screen.getByText('Duplicate')).toBeDefined()
+  })
 })

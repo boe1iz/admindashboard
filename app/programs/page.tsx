@@ -13,17 +13,21 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { Button } from '@/components/ui/button'
-import { MoreVertical, Archive, ArchiveRestore } from 'lucide-react'
+import { MoreVertical, Archive, ArchiveRestore, Copy } from 'lucide-react'
 import Link from 'next/link'
+import { getDocs } from 'firebase/firestore'
 
 interface Program {
   id: string
   name: string
   description: string
   isArchived: boolean
+  price?: number
 }
 
 function ProgramCard({ program }: { program: Program }) {
+  const [duplicating, setDuplicating] = useState(false)
+
   const toggleArchive = async () => {
     try {
       await updateDoc(doc(db, 'programs', program.id), {
@@ -34,8 +38,50 @@ function ProgramCard({ program }: { program: Program }) {
     }
   }
 
+  const duplicateProgram = async () => {
+    setDuplicating(true)
+    try {
+      // 1. Copy Program Doc
+      const newProgramRef = await addDoc(collection(db, 'programs'), {
+        name: `${program.name} (Copy)`,
+        description: program.description,
+        price: program.price || 0,
+        isArchived: false,
+        createdAt: serverTimestamp(),
+        updatedAt: serverTimestamp()
+      })
+
+      // 2. Copy Days
+      const daysSnap = await getDocs(collection(db, 'programs', program.id, 'days'))
+      for (const dayDoc of daysSnap.docs) {
+        const dayData = dayDoc.data()
+        const newDayRef = await addDoc(collection(db, 'programs', newProgramRef.id, 'days'), {
+          name: dayData.name,
+          orderIndex: dayData.orderIndex
+        })
+
+        // 3. Copy Workouts for each day
+        const workoutsSnap = await getDocs(collection(db, 'programs', program.id, 'days', dayDoc.id, 'workouts'))
+        for (const workoutDoc of workoutsSnap.docs) {
+          const workoutData = workoutDoc.data()
+          await addDoc(collection(db, 'programs', newProgramRef.id, 'days', newDayRef.id, 'workouts'), {
+            ...workoutData,
+            createdAt: serverTimestamp(),
+            updatedAt: serverTimestamp()
+          })
+        }
+      }
+      console.log("Deep Copy complete.")
+    } catch (error) {
+      console.error("Error duplicating program:", error)
+      alert("Failed to duplicate program.")
+    } finally {
+      setDuplicating(false)
+    }
+  }
+
   return (
-    <Card className="relative group cursor-pointer hover:border-primary/50 transition-colors">
+    <Card className={`relative group cursor-pointer hover:border-primary/50 transition-colors ${duplicating ? 'opacity-50 pointer-events-none' : ''}`}>
       <div className="absolute top-4 right-4 z-10">
         <DropdownMenu>
           <DropdownMenuTrigger asChild onClick={(e) => e.stopPropagation()}>
@@ -44,6 +90,10 @@ function ProgramCard({ program }: { program: Program }) {
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
+            <DropdownMenuItem onClick={(e) => { e.stopPropagation(); duplicateProgram(); }}>
+              <Copy className="mr-2 size-4" />
+              Duplicate
+            </DropdownMenuItem>
             <DropdownMenuItem onClick={(e) => { e.stopPropagation(); toggleArchive(); }}>
               {program.isArchived ? (
                 <>
