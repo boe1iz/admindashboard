@@ -73,14 +73,20 @@ export default function ProgramsPage() {
 
   useEffect(() => {
     const q = query(collection(db, 'programs'))
-    const unsubscribe = onSnapshot(q, (snapshot) => {
-      const programsData = snapshot.docs.map(doc => ({
-        id: doc.id,
-        ...doc.data()
-      })) as Program[]
-      setPrograms(programsData)
-      setLoading(false)
-    })
+    const unsubscribe = onSnapshot(q, 
+      (snapshot) => {
+        const programsData = snapshot.docs.map(doc => ({
+          id: doc.id,
+          ...doc.data()
+        })) as Program[]
+        setPrograms(programsData)
+        setLoading(false)
+      },
+      (error) => {
+        console.error("Firestore onSnapshot error:", error)
+        setLoading(false)
+      }
+    )
 
     return () => unsubscribe()
   }, [])
