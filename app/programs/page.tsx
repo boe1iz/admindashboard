@@ -14,6 +14,7 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { Button } from '@/components/ui/button'
 import { MoreVertical, Archive, ArchiveRestore } from 'lucide-react'
+import Link from 'next/link'
 
 interface Program {
   id: string
@@ -34,16 +35,16 @@ function ProgramCard({ program }: { program: Program }) {
   }
 
   return (
-    <Card className="relative">
-      <div className="absolute top-4 right-4">
+    <Card className="relative group cursor-pointer hover:border-primary/50 transition-colors">
+      <div className="absolute top-4 right-4 z-10">
         <DropdownMenu>
-          <DropdownMenuTrigger asChild>
+          <DropdownMenuTrigger asChild onClick={(e) => e.stopPropagation()}>
             <Button variant="ghost" size="icon">
               <MoreVertical className="size-4" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuItem onClick={toggleArchive}>
+            <DropdownMenuItem onClick={(e) => { e.stopPropagation(); toggleArchive(); }}>
               {program.isArchived ? (
                 <>
                   <ArchiveRestore className="mr-2 size-4" />
@@ -59,10 +60,12 @@ function ProgramCard({ program }: { program: Program }) {
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
-      <CardHeader>
-        <CardTitle>{program.name}</CardTitle>
-        <CardDescription>{program.description}</CardDescription>
-      </CardHeader>
+      <Link href={`/programs/${program.id}`}>
+        <CardHeader>
+          <CardTitle>{program.name}</CardTitle>
+          <CardDescription className="line-clamp-2">{program.description}</CardDescription>
+        </CardHeader>
+      </Link>
     </Card>
   )
 }
