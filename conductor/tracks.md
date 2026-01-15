@@ -12,5 +12,5 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 ---
 
-- [~] **Track: Athlete Roster & Program Assignment**
+- [x] **Track: Athlete Roster & Program Assignment**
   *Link: [./conductor/tracks/athlete_roster_20260115/](./conductor/tracks/athlete_roster_20260115/)*
