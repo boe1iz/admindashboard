@@ -2,14 +2,10 @@
 
 This plan outlines the implementation of the Equipment Inventory page, following the TDD workflow and the "Archive, Don't Delete" philosophy.
 
-## Phase 1: Foundation & Data Layer
+## Phase 1: Foundation & Data Layer [checkpoint: 3cb2eb4]
 - [x] Task: Initialize Inventory Page and Navigation (4fbe261)
-    - [ ] Write failing tests for /inventory route and sidebar link
-    - [ ] Implement /inventory page shell and update Sidebar component
 - [x] Task: Equipment Data Service (6ce83eb)
-    - [ ] Write failing tests for equipment fetching and mapping (Firestore)
-    - [ ] Implement Firestore hooks for the `equipment` collection
-- [ ] Task: Conductor - User Manual Verification 'Foundation & Data Layer' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Foundation & Data Layer' (Protocol in workflow.md) (3cb2eb4)
 
 ## Phase 2: Inventory UI & Listing
 - [ ] Task: Tabbed Layout & Search State
