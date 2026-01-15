@@ -12,11 +12,11 @@ This plan outlines the implementation of the Equipment Inventory page, following
 - [x] Task: Equipment List Rendering (d04c84d)
 - [x] Task: Conductor - User Manual Verification 'Inventory UI & Listing' (Protocol in workflow.md) (8ef520c)
 
-## Phase 3: CRUD Operations [checkpoint: 30e5171]
+## Phase 3: CRUD Operations [checkpoint: 12d2b4b]
 - [x] Task: Create Equipment (beac8d2)
 - [x] Task: Edit & Status Toggling (5322a74)
-- [x] Task: Refactor: Remove Permanent Delete & Rename Tabs (User Request) (1bc8de5)
-- [x] Task: Conductor - User Manual Verification 'CRUD Operations' (Protocol in workflow.md) (30e5171)
+- [x] Task: Refactor: Remove Permanent Delete & Rename Tabs (User Request) (dbc423e)
+- [x] Task: Conductor - User Manual Verification 'CRUD Operations' (Protocol in workflow.md) (12d2b4b)
 
 ## Phase 4: Seeding & Finalization
 - [ ] Task: Default Seeding Feature
