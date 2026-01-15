@@ -15,10 +15,9 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Card } from '@/components/ui/card'
 import { db } from '@/lib/firebase'
-import { collection, query, onSnapshot, orderBy, doc, updateDoc, deleteDoc } from 'firebase/firestore'
+import { collection, query, onSnapshot, orderBy, doc, updateDoc } from 'firebase/firestore'
 import { CreateEquipmentDialog } from '@/components/CreateEquipmentDialog'
 import { EditEquipmentDialog } from '@/components/EditEquipmentDialog'
-import { ConfirmDeleteDialog } from '@/components/ConfirmDeleteDialog'
 import { toast } from 'sonner'
 
 interface Equipment {
@@ -60,16 +59,6 @@ export default function InventoryPage() {
     }
   }
 
-  const deleteItem = async (item: Equipment) => {
-    try {
-      await deleteDoc(doc(db, 'equipment', item.id))
-      toast.success("Equipment deleted permanently")
-    } catch (error) {
-      console.error('Error deleting equipment: ', error)
-      toast.error("Failed to delete equipment")
-    }
-  }
-
   const filteredItems = equipment.filter(item => 
     item.name.toLowerCase().includes(searchQuery.toLowerCase())
   )
@@ -101,13 +90,13 @@ export default function InventoryPage() {
               value="operational" 
               className="rounded-full px-6 data-[state=active]:bg-[#0057FF] data-[state=active]:text-white"
             >
-              Operational ({activeItems.length})
+              Operational
             </TabsTrigger>
             <TabsTrigger 
               value="vault" 
               className="rounded-full px-6 data-[state=active]:bg-[#0057FF] data-[state=active]:text-white"
             >
-              Vault ({archivedItems.length})
+              Archived Vault
             </TabsTrigger>
           </TabsList>
 
@@ -171,21 +160,6 @@ export default function InventoryPage() {
                     >
                       <Archive className="size-4" />
                     </Button>
-                    <ConfirmDeleteDialog
-                      title="Delete Equipment"
-                      description={`Are you sure you want to permanently delete ${item.name}? This action cannot be undone.`}
-                      onConfirm={() => deleteItem(item)}
-                      trigger={
-                        <Button 
-                          variant="ghost" 
-                          size="icon" 
-                          className="text-zinc-400 hover:text-red-500 hover:bg-red-500/5"
-                          aria-label="Delete equipment"
-                        >
-                          <Trash2 className="size-4" />
-                        </Button>
-                      }
-                    />
                   </div>
                 </Card>
               ))}
@@ -233,21 +207,6 @@ export default function InventoryPage() {
                     >
                       <Database className="size-4" />
                     </Button>
-                    <ConfirmDeleteDialog
-                      title="Delete Equipment"
-                      description={`Are you sure you want to permanently delete ${item.name}? This action cannot be undone.`}
-                      onConfirm={() => deleteItem(item)}
-                      trigger={
-                        <Button 
-                          variant="ghost" 
-                          size="icon" 
-                          className="text-zinc-400 hover:text-red-500 hover:bg-red-500/5"
-                          aria-label="Delete equipment"
-                        >
-                          <Trash2 className="size-4" />
-                        </Button>
-                      }
-                    />
                   </div>
                 </Card>
               ))}
