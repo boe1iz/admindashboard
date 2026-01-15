@@ -12,7 +12,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { Button } from '@/components/ui/button'
-import { MoreVertical, Archive, ArchiveRestore, Settings2, Pencil } from 'lucide-react'
+import { MoreVertical, Archive, ArchiveRestore, Pencil } from 'lucide-react'
 import { toast } from 'sonner'
 import { CreateClientDialog } from '@/components/CreateClientDialog'
 import { ManageClientProgramsDialog } from '@/components/ManageClientProgramsDialog'
@@ -33,7 +33,6 @@ interface Program {
 interface Assignment {
   id: string
   clientId?: string
-  client_id?: string
   client_id?: string
   programId?: string
   program_id?: string
@@ -61,7 +60,6 @@ export function ClientCard({ client, programs, assignments }: { client: Client, 
 
   const clientAssignments = assignments.filter(a => 
     (a.clientId === client.id) || 
-    (a.client_id === client.id) || 
     (a.client_id === client.id)
   )
 
@@ -82,10 +80,6 @@ export function ClientCard({ client, programs, assignments }: { client: Client, 
               <DropdownMenuItem onClick={(e) => { e.stopPropagation(); setIsEditDialogOpen(true); }}>
                 <Pencil className="mr-2 size-4" />
                 Edit Details
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={(e) => { e.stopPropagation(); setIsManageDialogOpen(true); }}>
-                <Settings2 className="mr-2 size-4" />
-                Manage Programs
               </DropdownMenuItem>
               <DropdownMenuItem onClick={(e) => { e.stopPropagation(); toggleActive(); }}>
                 {client.is_active ? (
