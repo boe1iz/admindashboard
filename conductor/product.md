@@ -42,9 +42,9 @@ To recreate the 13Concept Admin Dashboard as a high-performance Next.js 14 appli
 - **Recent Activity**: Feed of the last 5 athlete assignments.
 
 ### 3. Athlete Roster & Assignment
-- **Lifecycle Management**: Table-style roster with Operational/Archived filtering.
-- **Program Tags**: Inline assignment viewing with quick "unassign" capabilities.
-- **Assignment Guard**: Logic preventing a program from being assigned to the same athlete twice.
+- Lifecycle Management: Card-based grid roster with Operational/Archived tabs.
+- Program Tags: Inline assignment viewing with quick "unassign" capabilities.
+- Assignment Guard: Logic preventing a program from being assigned to the same athlete twice.
 
 ### 4. Equipment Inventory
 - **Multi-Select Tagging**: Ability to link multiple gear items to a single workout.
