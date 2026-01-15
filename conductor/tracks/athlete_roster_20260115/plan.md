@@ -6,7 +6,7 @@
     - [ ] Implement to Pass Tests (Green Phase)
     - [ ] Verify Coverage & Quality Gates
     - [ ] Commit & Record Task (Git Notes, SHA)
-- [~] Task: Implement Create Athlete Dialog & Logic
+- [x] Task: Implement Create Athlete Dialog & Logic [1948d95]
     - [ ] Write Failing Tests (Red Phase)
     - [ ] Implement to Pass Tests (Green Phase)
     - [ ] Verify Coverage & Quality Gates
