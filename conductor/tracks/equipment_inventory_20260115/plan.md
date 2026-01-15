@@ -6,7 +6,7 @@ This plan outlines the implementation of the Equipment Inventory page, following
 - [x] Task: Initialize Inventory Page and Navigation (4fbe261)
     - [ ] Write failing tests for /inventory route and sidebar link
     - [ ] Implement /inventory page shell and update Sidebar component
-- [ ] Task: Equipment Data Service
+- [x] Task: Equipment Data Service (6ce83eb)
     - [ ] Write failing tests for equipment fetching and mapping (Firestore)
     - [ ] Implement Firestore hooks for the `equipment` collection
 - [ ] Task: Conductor - User Manual Verification 'Foundation & Data Layer' (Protocol in workflow.md)
