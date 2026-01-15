@@ -15,7 +15,7 @@ import {
 } from 'firebase/firestore'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Plus, Trash2, ArrowLeft, Video, ChevronUp, ChevronDown, Pencil } from 'lucide-react'
+import { Plus, Trash2, ArrowLeft, Video, ChevronUp, ChevronDown, Pencil, BookOpen } from 'lucide-react'
 import Link from 'next/link'
 import { use } from 'react'
 import { CreateWorkoutDialog } from '@/components/CreateWorkoutDialog'
