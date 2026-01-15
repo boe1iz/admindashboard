@@ -43,17 +43,6 @@ describe('Inventory Page', () => {
     expect(screen.queryByText('Archived Gear')).toBeNull()
   })
 
-  it('filters items based on search query', async () => {
-    const { fireEvent } = await import('@testing-library/react')
-    render(<InventoryPage />)
-    
-    const searchInput = screen.getByPlaceholderText('Search gear...')
-    fireEvent.change(searchInput, { target: { value: 'Dumbbell' } })
-    
-    expect(screen.getByText('Dumbbell')).toBeDefined()
-    expect(screen.queryByText('Bands')).toBeNull()
-  })
-
   it('calls updateDoc when archive button is clicked', async () => {
     const { fireEvent } = await import('@testing-library/react')
     render(<InventoryPage />)

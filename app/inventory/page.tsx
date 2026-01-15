@@ -30,7 +30,6 @@ interface Equipment {
 export default function InventoryPage() {
   const [equipment, setEquipment] = useState<Equipment[]>([])
   const [loading, setLoading] = useState(true)
-  const [searchQuery, setSearchQuery] = useState('')
   const [editingItem, setEditingItem] = useState<Equipment | null>(null)
 
   useEffect(() => {
@@ -59,12 +58,8 @@ export default function InventoryPage() {
     }
   }
 
-  const filteredItems = equipment.filter(item => 
-    item.name.toLowerCase().includes(searchQuery.toLowerCase())
-  )
-
-  const activeItems = filteredItems.filter(item => item.is_active)
-  const archivedItems = filteredItems.filter(item => !item.is_active)
+  const activeItems = equipment.filter(item => item.is_active)
+  const archivedItems = equipment.filter(item => !item.is_active)
 
   return (
     <div className="flex-1 space-y-8 p-4 md:p-8 pt-6">
@@ -99,16 +94,6 @@ export default function InventoryPage() {
               Archived Vault
             </TabsTrigger>
           </TabsList>
-
-          <div className="relative w-full md:w-64">
-            <Search className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-zinc-500" />
-            <Input
-              placeholder="Search gear..."
-              className="pl-9 bg-zinc-900/50 border-white/5 rounded-full text-zinc-300 placeholder:text-zinc-600 focus-visible:ring-[#0057FF] h-9 md:h-10"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
-          </div>
         </div>
 
         <TabsContent value="operational" className="space-y-4">
