@@ -20,7 +20,7 @@ vi.mock('firebase/firestore', () => ({
     // Immediate execution of callback with dummy data
     cb({
       docs: [
-        { id: '1', data: () => ({ name: 'Active Athlete', email: 'active@test.com', isArchived: false, assignedPrograms: [] }) }
+        { id: '1', data: () => ({ name: 'Active Athlete', email: 'active@test.com', is_active: true }) }
       ]
     })
     return () => {} // Unsubscribe
@@ -44,9 +44,11 @@ vi.mock('@/components/ui/dropdown-menu', () => ({
 
 describe('AthleteCard', () => {
   it('renders athlete info and toggles archive', async () => {
-    const athlete = { id: '1', name: 'Test Athlete', email: 'test@test.com', isArchived: false, assignedPrograms: ['prog1'] }
+    const athlete = { id: '1', name: 'Test Athlete', email: 'test@test.com', is_active: true }
     const programs = [{ id: 'prog1', name: 'Program Name' }]
-    render(<AthleteCard athlete={athlete} programs={programs} />)
+    const assignments = [{ id: 'a1', athleteId: '1', programId: 'prog1' }]
+    
+    render(<AthleteCard athlete={athlete} programs={programs} assignments={assignments} />)
     
     expect(screen.getByText('Test Athlete')).toBeDefined()
     expect(screen.getByText('test@test.com')).toBeDefined()
@@ -55,18 +57,18 @@ describe('AthleteCard', () => {
     const archiveBtn = screen.getByText('Archive')
     fireEvent.click(archiveBtn)
     
-    expect(updateDoc).toHaveBeenCalledWith(expect.anything(), { isArchived: true })
-    expect(doc).toHaveBeenCalledWith(expect.anything(), 'athletes', '1')
+    expect(updateDoc).toHaveBeenCalledWith(expect.anything(), { is_active: false })
+    expect(doc).toHaveBeenCalledWith(expect.anything(), 'clients', '1')
   })
 
   it('toggles restore when already archived', async () => {
-    const athlete = { id: '2', name: 'Archived Athlete', email: 'archived@test.com', isArchived: true, assignedPrograms: [] }
-    render(<AthleteCard athlete={athlete} programs={[]} />)
+    const athlete = { id: '2', name: 'Archived Athlete', email: 'archived@test.com', is_active: false }
+    render(<AthleteCard athlete={athlete} programs={[]} assignments={[]} />)
     
     const restoreBtn = screen.getByText('Restore')
     fireEvent.click(restoreBtn)
     
-    expect(updateDoc).toHaveBeenCalledWith(expect.anything(), { isArchived: false })
+    expect(updateDoc).toHaveBeenCalledWith(expect.anything(), { is_active: true })
   })
 })
 

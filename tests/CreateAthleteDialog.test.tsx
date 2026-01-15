@@ -33,7 +33,7 @@ describe('CreateAthleteDialog', () => {
     
     await waitFor(() => {
       expect(addDoc).toHaveBeenCalled()
-      expect(collection).toHaveBeenCalledWith(expect.anything(), 'athletes')
+      expect(collection).toHaveBeenCalledWith(expect.anything(), 'clients')
     })
   })
 })

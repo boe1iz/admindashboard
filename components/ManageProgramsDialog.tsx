@@ -1,8 +1,8 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { db } from '@/lib/firebase'
-import { collection, query, onSnapshot, doc, updateDoc, arrayRemove, arrayUnion } from 'firebase/firestore'
+import { collection, doc, deleteDoc, addDoc, serverTimestamp } from 'firebase/firestore'
 import {
   Dialog,
   DialogContent,
@@ -15,10 +15,10 @@ import { toast } from 'sonner'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 
-interface Athlete {
+interface Client {
   id: string
   name: string
-  assignedPrograms?: string[]
+  is_active: boolean
 }
 
 interface Program {
@@ -27,37 +27,35 @@ interface Program {
   isArchived: boolean
 }
 
+interface Assignment {
+  id: string
+  athleteId: string
+  programId: string
+}
+
 interface ManageProgramsDialogProps {
-  athlete: Athlete
+  athlete: Client
+  programs: Program[]
+  assignments: Assignment[]
   open: boolean
   onOpenChange: (open: boolean) => void
 }
 
-export function ManageProgramsDialog({ athlete, open, onOpenChange }: ManageProgramsDialogProps) {
-  const [programs, setPrograms] = useState<Program[]>([])
+export function ManageProgramsDialog({ athlete, programs, assignments, open, onOpenChange }: ManageProgramsDialogProps) {
   const [searchTerm, setSearchTerm] = useState('')
   const [isProcessing, setIsProcessing] = useState(false)
 
-  useEffect(() => {
-    if (!open) return
-
-    const q = query(collection(db, 'programs'))
-    const unsubscribe = onSnapshot(q, (snapshot) => {
-      const programsData = snapshot.docs.map(doc => ({
-        id: doc.id,
-        ...doc.data()
-      })) as Program[]
-      setPrograms(programsData.filter(p => !p.isArchived))
-    })
-
-    return () => unsubscribe()
-  }, [open])
+  const activePrograms = programs.filter(p => !p.isArchived)
+  const clientAssignments = assignments.filter(a => a.athleteId === athlete.id)
 
   const assignProgram = async (programId: string, programName: string) => {
     setIsProcessing(true)
     try {
-      await updateDoc(doc(db, 'athletes', athlete.id), {
-        assignedPrograms: arrayUnion(programId)
+      await addDoc(collection(db, 'assignments'), {
+        athleteId: athlete.id,
+        programId: programId,
+        assigned_at: serverTimestamp(),
+        current_day_number: 1
       })
       toast.success(`Assigned ${programName}`)
     } catch (error) {
@@ -68,13 +66,11 @@ export function ManageProgramsDialog({ athlete, open, onOpenChange }: ManageProg
     }
   }
 
-  const unassignProgram = async (programId: string) => {
+  const unassignProgram = async (assignmentId: string, programName: string) => {
     setIsProcessing(true)
     try {
-      await updateDoc(doc(db, 'athletes', athlete.id), {
-        assignedPrograms: arrayRemove(programId)
-      })
-      toast.success(`Unassigned ${programId}`)
+      await deleteDoc(doc(db, 'assignments', assignmentId))
+      toast.success(`Unassigned ${programName}`)
     } catch (error) {
       console.error('Error unassigning program:', error)
       toast.error('Failed to unassign program')
@@ -83,8 +79,8 @@ export function ManageProgramsDialog({ athlete, open, onOpenChange }: ManageProg
     }
   }
 
-  const availablePrograms = programs.filter(p => 
-    !athlete.assignedPrograms?.includes(p.id) &&
+  const availablePrograms = activePrograms.filter(p => 
+    !clientAssignments.some(a => a.programId === p.id) &&
     p.name.toLowerCase().includes(searchTerm.toLowerCase())
   )
 
@@ -101,14 +97,14 @@ export function ManageProgramsDialog({ athlete, open, onOpenChange }: ManageProg
           <div className="space-y-2">
             <h3 className="text-sm font-medium text-muted-foreground uppercase tracking-wider">Assigned Programs</h3>
             <div className="flex flex-wrap gap-2">
-              {athlete.assignedPrograms && athlete.assignedPrograms.length > 0 ? (
-                athlete.assignedPrograms.map(programId => {
-                  const programName = programs.find(p => p.id === programId)?.name || programId
+              {clientAssignments.length > 0 ? (
+                clientAssignments.map(assignment => {
+                  const programName = programs.find(p => p.id === assignment.programId)?.name || assignment.programId
                   return (
-                    <div key={programId} className="flex items-center gap-1 px-3 py-1 bg-secondary text-secondary-foreground rounded-full text-sm font-medium group">
+                    <div key={assignment.id} className="flex items-center gap-1 px-3 py-1 bg-secondary text-secondary-foreground rounded-full text-sm font-medium group">
                       {programName}
                       <button 
-                        onClick={() => unassignProgram(programId)}
+                        onClick={() => unassignProgram(assignment.id, programName)}
                         className="hover:text-destructive transition-colors"
                         aria-label={`Unassign ${programName}`}
                       >

@@ -30,10 +30,9 @@ export function CreateAthleteDialog() {
     e.preventDefault()
     setLoading(true)
     try {
-      await addDoc(collection(db, 'athletes'), {
+      await addDoc(collection(db, 'clients'), {
         ...formData,
-        isArchived: false,
-        assignedPrograms: [],
+        is_active: true,
         createdAt: serverTimestamp(),
         updatedAt: serverTimestamp()
       })

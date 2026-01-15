@@ -10,11 +10,12 @@ vi.mock('@/lib/firebase', () => ({
 vi.mock('firebase/firestore', () => ({
   doc: vi.fn(),
   updateDoc: vi.fn(() => new Promise(() => {})), // Never resolves to simulate pending
-  arrayRemove: vi.fn(),
-  arrayUnion: vi.fn(),
+  addDoc: vi.fn(() => new Promise(() => {})),
+  deleteDoc: vi.fn(() => new Promise(() => {})),
   collection: vi.fn(),
   query: vi.fn(),
-  onSnapshot: vi.fn(() => () => {})
+  onSnapshot: vi.fn(() => () => {}),
+  serverTimestamp: vi.fn()
 }))
 
 // Mock Radix DropdownMenu to render content inline
@@ -28,10 +29,10 @@ vi.mock('@/components/ui/dropdown-menu', () => ({
 }))
 
 describe('Optimistic UI / Pending States', () => {
-  const mockAthlete = { id: '1', name: 'Test', email: 't@t.com', isArchived: false, assignedPrograms: [] }
+  const mockAthlete = { id: '1', name: 'Test', email: 't@t.com', is_active: true }
   
   it('AthleteCard shows pending state during archive', async () => {
-    const { container } = render(<AthleteCard athlete={mockAthlete} programs={[]} />)
+    const { container } = render(<AthleteCard athlete={mockAthlete} programs={[]} assignments={[]} />)
     
     const archiveBtn = screen.getByText('Archive')
     fireEvent.click(archiveBtn)
@@ -41,9 +42,13 @@ describe('Optimistic UI / Pending States', () => {
   })
 
   it('ManageProgramsDialog disables buttons during assignment', async () => {
-    render(<ManageProgramsDialog athlete={mockAthlete} open={true} onOpenChange={() => {}} />)
+    const mockPrograms = [{ id: 'p1', name: 'Prog 1', isArchived: false }]
+    render(<ManageProgramsDialog athlete={mockAthlete} programs={mockPrograms as any} assignments={[]} open={true} onOpenChange={() => {}} />)
     
-    // This requires implementing a loading state in the dialog
-    // ...
+    const assignBtn = screen.getByLabelText('Assign Prog 1')
+    fireEvent.click(assignBtn)
+    
+    const dialogContent = document.querySelector('[data-slot="dialog-content"]')
+    expect(dialogContent?.className).toContain('opacity-50')
   })
 })
