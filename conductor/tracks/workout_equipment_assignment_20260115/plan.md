@@ -15,9 +15,9 @@ This plan outlines the integration of facility equipment selection into the work
 - [x] Task: Integrate Equipment into CreateWorkoutDialog [27a4215]
     - [x] Write failing test for saving workout document with equipment IDs
     - [x] Update form schema and UI to include the new multi-select field
-- [~] Task: Integrate Equipment into EditWorkoutDialog
-    - [ ] Write failing test for loading existing equipment data into the form
-    - [ ] Implement state initialization and update logic for assigned gear
+- [x] Task: Integrate Equipment into EditWorkoutDialog [3dca524]
+    - [x] Write failing test for loading existing equipment data into the form
+    - [x] Implement state initialization and update logic for assigned gear
 - [ ] Task: Conductor - User Manual Verification 'Creation & Update Integration' (Protocol in workflow.md)
 
 ## Phase 3: Visual Display & Consistency
