@@ -29,8 +29,10 @@ interface Program {
 
 interface Assignment {
   id: string
-  athleteId: string
-  programId: string
+  athleteId?: string
+  athlete_id?: string
+  programId?: string
+  program_id?: string
 }
 
 interface ManageProgramsDialogProps {
@@ -46,14 +48,16 @@ export function ManageProgramsDialog({ athlete, programs, assignments, open, onO
   const [isProcessing, setIsProcessing] = useState(false)
 
   const activePrograms = programs.filter(p => !p.isArchived)
-  const clientAssignments = assignments.filter(a => a.athleteId === athlete.id)
+  const clientAssignments = assignments.filter(a => (a.athleteId === athlete.id) || (a.athlete_id === athlete.id))
 
   const assignProgram = async (programId: string, programName: string) => {
     setIsProcessing(true)
     try {
+      // We use athlete_id and program_id here to match the probable existing schema if it is snake_case
+      // To be safe, we could even add both, but let's stick to one consistent with the rest of the guide
       await addDoc(collection(db, 'assignments'), {
-        athleteId: athlete.id,
-        programId: programId,
+        athlete_id: athlete.id,
+        program_id: programId,
         assigned_at: serverTimestamp(),
         current_day_number: 1
       })
@@ -80,7 +84,7 @@ export function ManageProgramsDialog({ athlete, programs, assignments, open, onO
   }
 
   const availablePrograms = activePrograms.filter(p => 
-    !clientAssignments.some(a => a.programId === p.id) &&
+    !clientAssignments.some(a => (a.programId === p.id) || (a.program_id === p.id)) &&
     p.name.toLowerCase().includes(searchTerm.toLowerCase())
   )
 
@@ -99,7 +103,8 @@ export function ManageProgramsDialog({ athlete, programs, assignments, open, onO
             <div className="flex flex-wrap gap-2">
               {clientAssignments.length > 0 ? (
                 clientAssignments.map(assignment => {
-                  const programName = programs.find(p => p.id === assignment.programId)?.name || assignment.programId
+                  const progId = assignment.programId || assignment.program_id
+                  const programName = programs.find(p => p.id === progId)?.name || progId || 'Unknown Program'
                   return (
                     <div key={assignment.id} className="flex items-center gap-1 px-3 py-1 bg-secondary text-secondary-foreground rounded-full text-sm font-medium group">
                       {programName}

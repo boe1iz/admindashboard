@@ -36,18 +36,18 @@ describe('ManageProgramsDialog', () => {
     { id: 'prog-2', name: 'Program 2', isArchived: false }
   ]
   const mockAssignments = [
-    { id: 'asgn-1', athleteId: 'athlete-1', programId: 'prog-1' }
+    { id: 'asgn-1', athlete_id: 'athlete-1', program_id: 'prog-1' }
   ]
 
   it('renders the dialog with athlete name and assigned programs', () => {
-    render(<ManageProgramsDialog athlete={mockAthlete as any} programs={mockPrograms as any} assignments={mockAssignments} open={true} onOpenChange={() => {}} />)
+    render(<ManageProgramsDialog athlete={mockAthlete as any} programs={mockPrograms as any} assignments={mockAssignments as any} open={true} onOpenChange={() => {}} />)
     
     expect(screen.getByText(/Manage Programs for John Doe/i)).toBeDefined()
     expect(screen.getByText('Program 1')).toBeDefined()
   })
 
   it('calls deleteDoc when unassign button is clicked', async () => {
-    render(<ManageProgramsDialog athlete={mockAthlete as any} programs={mockPrograms as any} assignments={mockAssignments} open={true} onOpenChange={() => {}} />)
+    render(<ManageProgramsDialog athlete={mockAthlete as any} programs={mockPrograms as any} assignments={mockAssignments as any} open={true} onOpenChange={() => {}} />)
     
     const unassignBtn = screen.getByLabelText('Unassign Program 1')
     fireEvent.click(unassignBtn)
@@ -58,7 +58,7 @@ describe('ManageProgramsDialog', () => {
   })
 
   it('calls addDoc when a program is assigned', async () => {
-    render(<ManageProgramsDialog athlete={mockAthlete as any} programs={mockPrograms as any} assignments={mockAssignments} open={true} onOpenChange={() => {}} />)
+    render(<ManageProgramsDialog athlete={mockAthlete as any} programs={mockPrograms as any} assignments={mockAssignments as any} open={true} onOpenChange={() => {}} />)
     
     // Find a program that is NOT assigned (Program 2)
     const assignBtn = await screen.findByLabelText('Assign Program 2')

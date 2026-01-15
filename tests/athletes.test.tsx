@@ -46,9 +46,9 @@ describe('AthleteCard', () => {
   it('renders athlete info and toggles archive', async () => {
     const athlete = { id: '1', name: 'Test Athlete', email: 'test@test.com', is_active: true }
     const programs = [{ id: 'prog1', name: 'Program Name' }]
-    const assignments = [{ id: 'a1', athleteId: '1', programId: 'prog1' }]
+    const assignments = [{ id: 'a1', athlete_id: '1', program_id: 'prog1' }]
     
-    render(<AthleteCard athlete={athlete} programs={programs} assignments={assignments} />)
+    render(<AthleteCard athlete={athlete} programs={programs} assignments={assignments as any} />)
     
     expect(screen.getByText('Test Athlete')).toBeDefined()
     expect(screen.getByText('test@test.com')).toBeDefined()

@@ -60,7 +60,7 @@ export default function DebugPage() {
         const assResults: any = { 
           name: 'Recent Assignments',
           count: assSnap.size,
-          samples: assSnap.docs.map(d => d.data())
+          samples: assSnap.docs.map(d => ({ _id: d.id, ...d.data(), _keys: Object.keys(d.data()) }))
         }
         report.push(assResults)
 

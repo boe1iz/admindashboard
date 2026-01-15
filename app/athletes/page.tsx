@@ -18,381 +18,195 @@ import { CreateAthleteDialog } from '@/components/CreateAthleteDialog'
 import { ManageProgramsDialog } from '@/components/ManageProgramsDialog'
 
 interface Client {
-
   id: string
-
   name: string
-
   email: string
-
   is_active: boolean
-
 }
-
-
 
 interface Program {
-
   id: string
-
   name: string
-
 }
-
-
 
 interface Assignment {
-
   id: string
-
-  athleteId: string
-
-  programId: string
-
+  athleteId?: string
+  athlete_id?: string
+  programId?: string
+  program_id?: string
 }
-
-
 
 export function AthleteCard({ athlete, programs, assignments }: { athlete: Client, programs: Program[], assignments: Assignment[] }) {
-
   const [isManageDialogOpen, setIsManageDialogOpen] = useState(false)
-
   const [isProcessing, setIsProcessing] = useState(false)
 
-
-
   const toggleActive = async () => {
-
     setIsProcessing(true)
-
     try {
-
       await updateDoc(doc(db, 'clients', athlete.id), {
-
         is_active: !athlete.is_active
-
       })
-
       toast.success(!athlete.is_active ? "Athlete restored" : "Athlete archived")
-
     } catch (error) {
-
       console.error('Error updating athlete: ', error)
-
       toast.error("Failed to update athlete")
-
     } finally {
-
       setIsProcessing(false)
-
     }
-
   }
 
-
-
-  const clientAssignments = assignments.filter(a => a.athleteId === athlete.id)
-
-
+  const clientAssignments = assignments.filter(a => (a.athleteId === athlete.id) || (a.athlete_id === athlete.id))
 
   return (
-
     <Card className={`relative group hover:border-primary/50 transition-all ${isProcessing ? 'opacity-50 pointer-events-none scale-[0.98]' : ''} ${!athlete.is_active ? 'grayscale-[0.5] opacity-80' : ''}`}>
-
       <div className="absolute top-4 right-4 z-10">
-
         <DropdownMenu>
-
           <DropdownMenuTrigger asChild>
-
             <Button variant="ghost" size="icon">
-
               <MoreVertical className="size-4" />
-
             </Button>
-
           </DropdownMenuTrigger>
-
           <DropdownMenuContent align="end">
-
             <DropdownMenuItem onClick={() => setIsManageDialogOpen(true)}>
-
               <Settings2 className="mr-2 size-4" />
-
               Manage Programs
-
             </DropdownMenuItem>
-
             <DropdownMenuItem onClick={() => toggleActive()}>
-
               {athlete.is_active ? (
-
                 <>
-
                   <Archive className="mr-2 size-4" />
-
                   Archive
-
                 </>
-
               ) : (
-
                 <>
-
                   <ArchiveRestore className="mr-2 size-4" />
-
                   Restore
-
                 </>
-
               )}
-
             </DropdownMenuItem>
-
           </DropdownMenuContent>
-
         </DropdownMenu>
-
       </div>
-
       <CardHeader>
-
         <CardTitle>{athlete.name}</CardTitle>
-
         <CardDescription>{athlete.email}</CardDescription>
-
       </CardHeader>
-
       <CardContent>
-
         <div className="flex flex-wrap gap-2">
-
           {clientAssignments.map(assignment => {
-
-             const programName = programs.find(p => p.id === assignment.programId)?.name || assignment.programId
-
+             const progId = assignment.programId || assignment.program_id
+             const programName = programs.find(p => p.id === progId)?.name || progId || 'Unknown Program'
              return (
-
                <span key={assignment.id} className="px-2 py-1 bg-secondary text-secondary-foreground text-xs rounded-full">
-
                  {programName}
-
                </span>
-
              )
-
           })}
-
         </div>
-
       </CardContent>
-
       <ManageProgramsDialog 
-
         athlete={athlete} 
-
         programs={programs}
-
         assignments={assignments}
-
         open={isManageDialogOpen} 
-
         onOpenChange={setIsManageDialogOpen} 
-
       />
-
     </Card>
-
   )
-
 }
 
-
-
 export default function AthletesPage() {
-
   const [clients, setClients] = useState<Client[]>([])
-
   const [programs, setPrograms] = useState<Program[]>([])
-
   const [assignments, setAssignments] = useState<Assignment[]>([])
-
   const [loading, setLoading] = useState(true)
 
-
-
   useEffect(() => {
-
     const qClients = query(collection(db, 'clients'))
-
     const qPrograms = query(collection(db, 'programs'))
-
     const qAssignments = query(collection(db, 'assignments'))
-
     
-
     const unsubscribeClients = onSnapshot(qClients, (snapshot) => {
-
       const clientsData = snapshot.docs.map(doc => ({
-
         id: doc.id,
-
         ...doc.data()
-
       })) as Client[]
-
       setClients(clientsData)
-
     })
-
-
 
     const unsubscribePrograms = onSnapshot(qPrograms, (snapshot) => {
-
       const programsData = snapshot.docs.map(doc => ({
-
         id: doc.id,
-
         ...doc.data()
-
       })) as Program[]
-
       setPrograms(programsData)
-
     })
-
-
 
     const unsubscribeAssignments = onSnapshot(qAssignments, (snapshot) => {
-
       const assignmentsData = snapshot.docs.map(doc => ({
-
         id: doc.id,
-
         ...doc.data()
-
       })) as Assignment[]
-
       setAssignments(assignmentsData)
-
       setLoading(false)
-
     })
 
-
-
     return () => {
-
       unsubscribeClients()
-
       unsubscribePrograms()
-
       unsubscribeAssignments()
-
     }
-
   }, [])
 
-
-
   const activeClients = clients.filter(c => c.is_active)
-
   const archivedClients = clients.filter(c => !c.is_active)
-
-
 
   if (loading) return <div className="p-10">Loading Athletes...</div>
 
-
-
   return (
-
     <div className="container mx-auto py-10 px-4">
-
       <div className="flex justify-between items-center mb-8">
-
         <h1 className="text-4xl font-bold text-foreground uppercase tracking-tight">Athlete Roster</h1>
-
         <CreateAthleteDialog />
-
       </div>
-
       
-
       <Tabs defaultValue="operational" className="w-full">
-
         <TabsList className="grid w-full grid-cols-2 max-w-md mb-8">
-
           <TabsTrigger value="operational">Operational</TabsTrigger>
-
           <TabsTrigger value="vault">Archived Vault</TabsTrigger>
-
         </TabsList>
-
         
-
         <TabsContent value="operational" className="space-y-4">
-
           {activeClients.length > 0 ? (
-
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-
               {activeClients.map(client => (
-
                 <AthleteCard key={client.id} athlete={client} programs={programs} assignments={assignments} />
-
               ))}
-
             </div>
-
           ) : (
-
             <Card className="p-12 border-dashed flex flex-col items-center justify-center text-center">
-
               <CardTitle className="text-muted-foreground mb-2">No Active Athletes</CardTitle>
-
               <CardDescription>Onboard your first athlete to get started.</CardDescription>
-
             </Card>
-
           )}
-
         </TabsContent>
-
         
-
         <TabsContent value="vault" className="space-y-4">
-
           {archivedClients.length > 0 ? (
-
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-
               {archivedClients.map(client => (
-
                 <AthleteCard key={client.id} athlete={client} programs={programs} assignments={assignments} />
-
               ))}
-
             </div>
-
           ) : (
-
             <Card className="p-12 border-dashed flex flex-col items-center justify-center text-center">
-
               <CardTitle className="text-muted-foreground mb-2">Vault is Empty</CardTitle>
-
               <CardDescription>Archived athletes will appear here.</CardDescription>
-
             </Card>
-
           )}
-
         </TabsContent>
-
       </Tabs>
-
     </div>
-
   )
-
 }
