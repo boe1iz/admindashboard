@@ -24,6 +24,7 @@ import { EditWorkoutDialog } from '@/components/EditWorkoutDialog'
 import { ConfirmDeleteDialog } from '@/components/ConfirmDeleteDialog'
 import { toast } from 'sonner'
 import { motion, AnimatePresence } from 'framer-motion'
+import { useEquipment } from '@/hooks/useEquipment'
 
 interface Workout {
   id: string
@@ -31,6 +32,7 @@ interface Workout {
   instructions: string
   video_url?: string
   order_index: number
+  equipment_ids?: string[]
 }
 
 interface Day {
@@ -44,7 +46,7 @@ interface Program {
   name: string
 }
 
-function WorkoutCard({ 
+export function WorkoutCard({ 
   workout, 
   programId, 
   dayId, 
@@ -60,6 +62,7 @@ function WorkoutCard({
   onMove: (direction: 'up' | 'down') => void
 }) {
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false)
+  const { equipment } = useEquipment()
 
   const deleteWorkout = async () => {
     try {
@@ -70,6 +73,10 @@ function WorkoutCard({
       toast.error("Failed to delete workout")
     }
   }
+
+  const assignedEquipment = workout.equipment_ids?.map(id => 
+    equipment.find(e => e.value === id)?.label
+  ).filter(Boolean) || []
 
   return (
     <>
@@ -104,7 +111,18 @@ function WorkoutCard({
           )}
           <div>
             <h4 className="font-black text-slate-900 uppercase tracking-tight text-sm">{workout.title}</h4>
-            <p className="text-xs font-medium text-slate-400 line-clamp-1">{workout.instructions}</p>
+            <div className="flex items-center gap-2 mt-1">
+              <p className="text-xs font-medium text-slate-400 line-clamp-1">{workout.instructions}</p>
+              {assignedEquipment.length > 0 && (
+                <div className="flex gap-1">
+                  {assignedEquipment.map((name, i) => (
+                    <span key={i} className="text-[8px] font-black uppercase tracking-widest bg-slate-200/50 text-slate-500 px-1.5 py-0.5 rounded-sm">
+                      {name}
+                    </span>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
         </div>
         <div className="flex items-center gap-1 opacity-0 group-hover/workout:opacity-100 transition-opacity">
