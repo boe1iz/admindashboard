@@ -80,7 +80,7 @@ export function MultiSelectCombobox({
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50 text-slate-400" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-[var(--radix-popover-trigger-width)] p-0 rounded-2xl border-slate-200 shadow-xl overflow-hidden">
+      <PopoverContent className="w-[var(--radix-popover-trigger-width)] p-0 rounded-2xl border-slate-200 shadow-xl overflow-hidden bg-white">
         <Command>
           <CommandInput placeholder="Search..." className="font-bold uppercase text-[10px] tracking-widest" />
           <CommandList>
