@@ -36,14 +36,14 @@ export default function Dashboard() {
     }, () => setIsConnected(false))
 
     const unsubClients = onSnapshot(collection(db, 'clients'), (snap) => {
-      const active = snap.docs.filter(d => !d.data().isArchived).length
-      const archived = snap.docs.filter(d => d.data().isArchived).length
+      const active = snap.docs.filter(d => d.data().is_active).length
+      const archived = snap.docs.filter(d => !d.data().is_active).length
       setStatsData(prev => ({ ...prev, clients: { active, archived } }))
     })
 
     const unsubGear = onSnapshot(collection(db, 'equipment'), (snap) => {
-      const active = snap.docs.filter(d => !d.data().isArchived).length
-      const archived = snap.docs.filter(d => d.data().isArchived).length
+      const active = snap.docs.filter(d => d.data().is_active).length
+      const archived = snap.docs.filter(d => !d.data().is_active).length
       setStatsData(prev => ({ ...prev, equipment: { active, archived } }))
     })
 
@@ -296,17 +296,31 @@ export default function Dashboard() {
 
               </Button>
 
-              <Button variant="outline" asChild className="h-24 rounded-[30px] border-zinc-200 dark:border-zinc-800 flex flex-col gap-2 items-start px-8 justify-center hover:bg-zinc-50 dark:hover:bg-white/5">
+                            <Button variant="outline" asChild className="h-24 rounded-[30px] border-zinc-200 dark:border-zinc-800 flex flex-col gap-2 items-start px-8 justify-center hover:bg-zinc-50 dark:hover:bg-white/5">
 
-                <Link href="/clients">
+                              <Link href="/clients">
 
-                  <UserPlus className="size-5 text-zinc-500" />
+                                <UserPlus className="size-5 text-zinc-500" />
 
-                  <span className="font-bold">Onboard Client</span>
+                                <span className="font-bold">Onboard Client</span>
 
-                </Link>
+                              </Link>
 
-              </Button>
+                            </Button>
+
+                            <Button variant="outline" asChild className="h-24 rounded-[30px] border-zinc-200 dark:border-zinc-800 flex flex-col gap-2 items-start px-8 justify-center hover:bg-zinc-50 dark:hover:bg-white/5">
+
+                              <Link href="/inventory">
+
+                                <Package className="size-5 text-zinc-500" />
+
+                                <span className="font-bold">Manage Gear</span>
+
+                              </Link>
+
+                            </Button>
+
+              
 
   
           </div>

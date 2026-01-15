@@ -50,4 +50,7 @@ test('Quick Actions navigate correctly', () => {
   render(<Page />)
   const buildBtn = screen.getByRole('link', { name: /Build Concept/i })
   expect(buildBtn.getAttribute('href')).toBe('/programs')
+
+  const manageGearBtn = screen.getByRole('link', { name: /Manage Gear/i })
+  expect(manageGearBtn.getAttribute('href')).toBe('/inventory')
 })
