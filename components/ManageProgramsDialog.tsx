@@ -31,6 +31,7 @@ interface Assignment {
   id: string
   athleteId?: string
   athlete_id?: string
+  client_id?: string
   programId?: string
   program_id?: string
 }
@@ -48,13 +49,15 @@ export function ManageProgramsDialog({ athlete, programs, assignments, open, onO
   const [isProcessing, setIsProcessing] = useState(false)
 
   const activePrograms = programs.filter(p => !p.isArchived)
-  const clientAssignments = assignments.filter(a => (a.athleteId === athlete.id) || (a.athlete_id === athlete.id))
+  const clientAssignments = assignments.filter(a => 
+    (a.athleteId === athlete.id) || 
+    (a.athlete_id === athlete.id) || 
+    (a.client_id === athlete.id)
+  )
 
   const assignProgram = async (programId: string, programName: string) => {
     setIsProcessing(true)
     try {
-      // We use athlete_id and program_id here to match the probable existing schema if it is snake_case
-      // To be safe, we could even add both, but let's stick to one consistent with the rest of the guide
       await addDoc(collection(db, 'assignments'), {
         athlete_id: athlete.id,
         program_id: programId,

@@ -33,6 +33,7 @@ interface Assignment {
   id: string
   athleteId?: string
   athlete_id?: string
+  client_id?: string
   programId?: string
   program_id?: string
 }
@@ -56,7 +57,11 @@ export function AthleteCard({ athlete, programs, assignments }: { athlete: Clien
     }
   }
 
-  const clientAssignments = assignments.filter(a => (a.athleteId === athlete.id) || (a.athlete_id === athlete.id))
+  const clientAssignments = assignments.filter(a => 
+    (a.athleteId === athlete.id) || 
+    (a.athlete_id === athlete.id) || 
+    (a.client_id === athlete.id)
+  )
 
   return (
     <Card className={`relative group hover:border-primary/50 transition-all ${isProcessing ? 'opacity-50 pointer-events-none scale-[0.98]' : ''} ${!athlete.is_active ? 'grayscale-[0.5] opacity-80' : ''}`}>
