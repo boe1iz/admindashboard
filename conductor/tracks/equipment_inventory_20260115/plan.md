@@ -16,7 +16,7 @@ This plan outlines the implementation of the Equipment Inventory page, following
 - [x] Task: Create Equipment (beac8d2)
     - [ ] Write failing tests for creation dialog and database submission
     - [ ] Implement CreateEquipmentDialog component
-- [ ] Task: Edit & Status Toggling
+- [x] Task: Edit & Status Toggling (5322a74)
     - [ ] Write failing tests for editing name and toggling `is_active`
     - [ ] Implement Edit dialog and Archive/Restore functionality with Optimistic UI
 - [ ] Task: Delete Functionality
