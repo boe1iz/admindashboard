@@ -3,7 +3,7 @@ import { describe, it, expect, vi } from 'vitest'
 import AthletesPage from '@/app/athletes/page'
 // @ts-ignore - Internal component test
 import { AthleteCard } from '@/app/athletes/page'
-import { updateDoc, doc } from 'firebase/firestore'
+import { updateDoc, doc, onSnapshot } from 'firebase/firestore'
 
 // Mock firebase
 vi.mock('@/lib/firebase', () => ({
@@ -79,11 +79,16 @@ describe('AthletesPage', () => {
     expect(screen.getByText('Archived Vault')).toBeDefined()
   })
 
-  it('shows active athletes by default', async () => {
+  it('shows empty state when no athletes', async () => {
+    // Mock empty snapshot
+    vi.mocked(onSnapshot).mockImplementationOnce((q, cb: any) => {
+      cb({ docs: [] })
+      return () => {}
+    })
+    
     render(<AthletesPage />)
     await waitFor(() => expect(screen.queryByText('Loading Athletes...')).toBeNull())
     
-    expect(screen.getByText('Active Athlete')).toBeDefined()
-    expect(screen.getByText('active@test.com')).toBeDefined()
+    expect(screen.getByText('No Active Athletes')).toBeDefined()
   })
 })

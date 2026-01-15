@@ -50,7 +50,7 @@ export function AthleteCard({ athlete, programs }: { athlete: Athlete, programs:
   }
 
   return (
-    <Card className={`relative group hover:border-primary/50 transition-all ${isProcessing ? 'opacity-50 pointer-events-none scale-[0.98]' : ''}`}>
+    <Card className={`relative group hover:border-primary/50 transition-all ${isProcessing ? 'opacity-50 pointer-events-none scale-[0.98]' : ''} ${athlete.isArchived ? 'grayscale-[0.5] opacity-80' : ''}`}>
       <div className="absolute top-4 right-4 z-10">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -155,19 +155,33 @@ export default function AthletesPage() {
         </TabsList>
         
         <TabsContent value="operational" className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {activeAthletes.map(athlete => (
-              <AthleteCard key={athlete.id} athlete={athlete} programs={programs} />
-            ))}
-          </div>
+          {activeAthletes.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {activeAthletes.map(athlete => (
+                <AthleteCard key={athlete.id} athlete={athlete} programs={programs} />
+              ))}
+            </div>
+          ) : (
+            <Card className="p-12 border-dashed flex flex-col items-center justify-center text-center">
+              <CardTitle className="text-muted-foreground mb-2">No Active Athletes</CardTitle>
+              <CardDescription>Onboard your first athlete to get started.</CardDescription>
+            </Card>
+          )}
         </TabsContent>
         
         <TabsContent value="vault" className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {archivedAthletes.map(athlete => (
-              <AthleteCard key={athlete.id} athlete={athlete} programs={programs} />
-            ))}
-          </div>
+          {archivedAthletes.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {archivedAthletes.map(athlete => (
+                <AthleteCard key={athlete.id} athlete={athlete} programs={programs} />
+              ))}
+            </div>
+          ) : (
+            <Card className="p-12 border-dashed flex flex-col items-center justify-center text-center">
+              <CardTitle className="text-muted-foreground mb-2">Vault is Empty</CardTitle>
+              <CardDescription>Archived athletes will appear here.</CardDescription>
+            </Card>
+          )}
         </TabsContent>
       </Tabs>
     </div>
