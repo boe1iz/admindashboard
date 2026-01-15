@@ -12,8 +12,9 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { Button } from '@/components/ui/button'
-import { MoreVertical, Archive, ArchiveRestore, UserPlus } from 'lucide-react'
+import { MoreVertical, Archive, ArchiveRestore } from 'lucide-react'
 import { toast } from 'sonner'
+import { CreateAthleteDialog } from '@/components/CreateAthleteDialog'
 
 interface Athlete {
   id: string
@@ -112,10 +113,7 @@ export default function AthletesPage() {
     <div className="container mx-auto py-10 px-4">
       <div className="flex justify-between items-center mb-8">
         <h1 className="text-4xl font-bold text-foreground uppercase tracking-tight">Athlete Roster</h1>
-        <Button>
-          <UserPlus className="mr-2 size-4" />
-          Onboard Athlete
-        </Button>
+        <CreateAthleteDialog />
       </div>
       
       <Tabs defaultValue="operational" className="w-full">
