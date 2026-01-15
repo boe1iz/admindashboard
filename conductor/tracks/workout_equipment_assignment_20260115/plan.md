@@ -6,9 +6,9 @@ This plan outlines the integration of facility equipment selection into the work
 - [x] Task: Create Multi-Select Combobox Component [0dac1c5]
     - [x] Write failing test for multi-select state management and search filtering
     - [x] Implement `MultiSelectCombobox` using shadcn/ui Popover and Command primitives
-- [~] Task: Equipment Data Fetching Logic
-    - [ ] Write failing test for fetching active equipment from Firestore
-    - [ ] Implement `useEquipment` hook or utility to provide gear options to dialogs
+- [x] Task: Equipment Data Fetching Logic [161b909]
+    - [x] Write failing test for fetching active equipment from Firestore
+    - [x] Implement `useEquipment` hook or utility to provide gear options to dialogs
 - [ ] Task: Conductor - User Manual Verification 'Selection Infrastructure' (Protocol in workflow.md)
 
 ## Phase 2: Creation & Update Integration
