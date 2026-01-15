@@ -15,3 +15,8 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 - [x] **Track: Workout Equipment Assignment**
   *Link: [./tracks/workout_equipment_assignment_20260115/](./tracks/workout_equipment_assignment_20260115/)*
+
+---
+
+- [x] **Track: Collapsible Training Days**
+  *Link: [./tracks/collapsible_training_days_20260115/](./tracks/collapsible_training_days_20260115/)*
