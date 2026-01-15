@@ -19,7 +19,7 @@ This plan outlines the implementation of the Equipment Inventory page, following
 - [x] Task: Edit & Status Toggling (5322a74)
     - [ ] Write failing tests for editing name and toggling `is_active`
     - [ ] Implement Edit dialog and Archive/Restore functionality with Optimistic UI
-- [ ] Task: Delete Functionality
+- [x] Task: Delete Functionality (9e7f10f)
     - [ ] Write failing tests for permanent deletion
     - [ ] Implement Delete confirmation dialog and Firestore delete call
 - [ ] Task: Conductor - User Manual Verification 'CRUD Operations' (Protocol in workflow.md)
