@@ -15,7 +15,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Card } from '@/components/ui/card'
 import { db } from '@/lib/firebase'
-import { collection, query, onSnapshot, orderBy, doc, updateDoc, deleteDoc, writeBatch, serverTimestamp } from 'firebase/firestore'
+import { collection, query, onSnapshot, orderBy, doc, updateDoc } from 'firebase/firestore'
 import { CreateEquipmentDialog } from '@/components/CreateEquipmentDialog'
 import { EditEquipmentDialog } from '@/components/EditEquipmentDialog'
 import { toast } from 'sonner'
@@ -59,44 +59,6 @@ export default function InventoryPage() {
     }
   }
 
-  const seedInventory = async () => {
-    const defaultGear = [
-      "Dumbbells",
-      "Resistance Bands",
-      "Olympic Barbells",
-      "Kettlebells",
-      "Pull-up Bar",
-      "Medicine Balls",
-      "Jump Rope",
-      "Foam Roller"
-    ]
-
-    setLoading(true)
-    const toastId = toast.loading("Seeding default equipment...")
-    
-    try {
-      const batch = writeBatch(db)
-      defaultGear.forEach(name => {
-        if (!equipment.some(e => e.name.toLowerCase() === name.toLowerCase())) {
-          const newDocRef = doc(collection(db, 'equipment'))
-          batch.set(newDocRef, {
-            name,
-            is_active: true,
-            createdAt: serverTimestamp(),
-            updatedAt: serverTimestamp()
-          })
-        }
-      })
-      await batch.commit()
-      toast.success("Default equipment seeded successfully", { id: toastId })
-    } catch (error) {
-      console.error('Error seeding equipment: ', error)
-      toast.error("Failed to seed equipment", { id: toastId })
-    } finally {
-      setLoading(false)
-    }
-  }
-
   const filteredItems = equipment.filter(item => 
     item.name.toLowerCase().includes(searchQuery.toLowerCase())
   )
@@ -117,15 +79,6 @@ export default function InventoryPage() {
           </p>
         </div>
         <div className="flex items-center gap-2">
-          <Button 
-            variant="outline" 
-            className="border-zinc-800 text-zinc-400 hover:text-white hover:bg-white/5 rounded-full px-4 md:px-6 h-9 md:h-10 text-xs md:text-sm"
-            onClick={seedInventory}
-            disabled={loading}
-          >
-            <Database className="mr-2 size-3 md:size-4" />
-            Seed Inventory
-          </Button>
           <CreateEquipmentDialog />
         </div>
       </div>
