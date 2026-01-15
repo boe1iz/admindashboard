@@ -2,17 +2,17 @@
 
 This plan outlines the integration of facility equipment selection into the workout creation and editing lifecycle, ensuring a clear operational manifest for training sessions.
 
-## Phase 1: Selection Infrastructure
+## Phase 1: Selection Infrastructure [checkpoint: acf36a3]
 - [x] Task: Create Multi-Select Combobox Component [0dac1c5]
     - [x] Write failing test for multi-select state management and search filtering
     - [x] Implement `MultiSelectCombobox` using shadcn/ui Popover and Command primitives
 - [x] Task: Equipment Data Fetching Logic [161b909]
     - [x] Write failing test for fetching active equipment from Firestore
     - [x] Implement `useEquipment` hook or utility to provide gear options to dialogs
-- [ ] Task: Conductor - User Manual Verification 'Selection Infrastructure' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Selection Infrastructure' (Protocol in workflow.md)
 
 ## Phase 2: Creation & Update Integration
-- [ ] Task: Integrate Equipment into CreateWorkoutDialog
+- [~] Task: Integrate Equipment into CreateWorkoutDialog
     - [ ] Write failing test for saving workout document with equipment IDs
     - [ ] Update form schema and UI to include the new multi-select field
 - [ ] Task: Integrate Equipment into EditWorkoutDialog
