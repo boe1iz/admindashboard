@@ -22,7 +22,7 @@ This plan outlines the implementation of the Equipment Inventory page, following
 - [x] Task: Default Seeding Feature (0895434)
     - [ ] Write failing tests for equipment seeding logic
     - [ ] Implement Seeding button and Firestore batch update
-- [ ] Task: Final Polish & Mobile Optimization
+- [x] Task: Final Polish & Mobile Optimization (1e11166)
     - [ ] Write failing tests for mobile responsive layout
     - [ ] Polish UI transitions and ensure full mobile responsiveness
 - [ ] Task: Conductor - User Manual Verification 'Seeding & Finalization' (Protocol in workflow.md)
