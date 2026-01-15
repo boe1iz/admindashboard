@@ -174,8 +174,8 @@ export default function ProgramsPage() {
       
       <Tabs defaultValue="operational" className="w-full">
         <TabsList className="grid w-full grid-cols-2 max-w-md mb-8">
-          <TabsTrigger value="operational">Operational</TabsTrigger>
-          <TabsTrigger value="vault">Archived Vault</TabsTrigger>
+          <TabsTrigger value="operational">Operational ({activePrograms.length})</TabsTrigger>
+          <TabsTrigger value="vault">Archived Vault ({archivedPrograms.length})</TabsTrigger>
         </TabsList>
         
         <TabsContent value="operational" className="space-y-4">

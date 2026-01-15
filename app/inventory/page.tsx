@@ -90,13 +90,13 @@ export default function InventoryPage() {
               value="operational" 
               className="rounded-full px-4 md:px-6 data-[state=active]:bg-[#0057FF] data-[state=active]:text-white text-xs md:text-sm"
             >
-              Operational
+              Operational ({activeItems.length})
             </TabsTrigger>
             <TabsTrigger 
               value="vault" 
               className="rounded-full px-4 md:px-6 data-[state=active]:bg-[#0057FF] data-[state=active]:text-white text-xs md:text-sm"
             >
-              Archived Vault
+              Archived Vault ({archivedItems.length})
             </TabsTrigger>
           </TabsList>
         </div>

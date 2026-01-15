@@ -88,8 +88,8 @@ describe('ClientsPage', () => {
     render(<ClientsPage />)
     await waitFor(() => expect(screen.queryByText('Loading Clients...')).toBeNull())
     
-    expect(screen.getByText('Operational')).toBeDefined()
-    expect(screen.getByText('Archived Vault')).toBeDefined()
+    expect(screen.getByText(/Operational \(1\)/i)).toBeDefined()
+    expect(screen.getByText(/Archived Vault \(0\)/i)).toBeDefined()
   })
 
   it('shows empty state when no clients', async () => {

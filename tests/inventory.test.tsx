@@ -41,8 +41,8 @@ describe('Inventory Page', () => {
   it('renders the inventory page header', () => {
     render(<InventoryPage />)
     expect(screen.getByText('Equipment Inventory')).toBeDefined()
-    expect(screen.getByRole('tab', { name: /Operational/i })).toBeDefined()
-    expect(screen.getByRole('tab', { name: /Archived Vault/i })).toBeDefined()
+    expect(screen.getByRole('tab', { name: /Operational \(2\)/i })).toBeDefined()
+    expect(screen.getByRole('tab', { name: /Archived Vault \(1\)/i })).toBeDefined()
   })
 
   it('renders active items in the operational tab', () => {

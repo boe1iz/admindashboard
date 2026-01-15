@@ -33,10 +33,10 @@ vi.mock('firebase/firestore', () => ({
 describe('ProgramsPage', () => {
   it('renders the programs page with tabs', async () => {
     render(<ProgramsPage />)
-    await waitFor(() => expect(screen.queryByText('Loading...')).toBeNull())
+    await waitFor(() => expect(screen.queryByText(/Loading/i)).toBeNull())
     
-    expect(screen.getByText('Operational')).toBeDefined()
-    expect(screen.getByText('Archived Vault')).toBeDefined()
+    expect(screen.getByText(/Operational \(1\)/i)).toBeDefined()
+    expect(screen.getByText(/Archived Vault \(1\)/i)).toBeDefined()
   })
 
   it('shows active programs by default', async () => {

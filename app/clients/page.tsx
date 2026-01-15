@@ -190,8 +190,8 @@ export default function ClientsPage() {
       
       <Tabs defaultValue="operational" className="w-full">
         <TabsList className="grid w-full grid-cols-2 max-w-md mb-8">
-          <TabsTrigger value="operational">Operational</TabsTrigger>
-          <TabsTrigger value="vault">Archived Vault</TabsTrigger>
+          <TabsTrigger value="operational">Operational ({activeClients.length})</TabsTrigger>
+          <TabsTrigger value="vault">Archived Vault ({archivedClients.length})</TabsTrigger>
         </TabsList>
         
         <TabsContent value="operational" className="space-y-4">
