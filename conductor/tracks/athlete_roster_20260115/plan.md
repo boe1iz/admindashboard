@@ -36,7 +36,7 @@
     - [ ] Commit & Record Task (Git Notes, SHA)
 - [ ] Task: Conductor - User Manual Verification 'Phase 2: Program Assignment' (Protocol in workflow.md)
 
-## Phase 3: Final Integration & UI Polish
+## Phase 3: Final Integration & UI Polish [checkpoint: 925154d]
 - [x] Task: Implement Optimistic UI Updates for Status & Assignments [97e714f]
     - [ ] Write Failing Tests (Red Phase)
     - [ ] Implement to Pass Tests (Green Phase)
