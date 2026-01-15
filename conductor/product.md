@@ -33,6 +33,7 @@ To recreate the ON3 Athletics Admin Dashboard as a high-performance Next.js 14 a
 - **Dual View**: "Operational" (Active) and "Archived Vault" tabs.
 - **Sequence Logic**: First-in, first-shown exercise logic with manual `order_index` swapping.
 - **Equipment Integration**: Ability to assign multiple facility gear items to specific workouts during creation or editing.
+- **Collapsible Structure**: Accordion-style training days with mass-action global toggles for efficient sequence management.
 - **Pricing Engine**: Conditional logic for "Free" vs "Paid" status.
 - **Deep Copy**: One-click duplication of entire programs including sub-collections (days/workouts).
 - **Deletion Rule**: Days can only be deleted if they contain zero workouts.
