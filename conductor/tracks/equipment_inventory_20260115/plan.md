@@ -12,17 +12,11 @@ This plan outlines the implementation of the Equipment Inventory page, following
 - [x] Task: Equipment List Rendering (d04c84d)
 - [x] Task: Conductor - User Manual Verification 'Inventory UI & Listing' (Protocol in workflow.md) (8ef520c)
 
-## Phase 3: CRUD Operations
+## Phase 3: CRUD Operations [checkpoint: 30e5171]
 - [x] Task: Create Equipment (beac8d2)
-    - [ ] Write failing tests for creation dialog and database submission
-    - [ ] Implement CreateEquipmentDialog component
 - [x] Task: Edit & Status Toggling (5322a74)
-    - [ ] Write failing tests for editing name and toggling `is_active`
-    - [ ] Implement Edit dialog and Archive/Restore functionality with Optimistic UI
-- [x] Task: Delete Functionality (9e7f10f)
-    - [ ] Write failing tests for permanent deletion
-    - [ ] Implement Delete confirmation dialog and Firestore delete call
-- [ ] Task: Conductor - User Manual Verification 'CRUD Operations' (Protocol in workflow.md)
+- [x] Task: Refactor: Remove Permanent Delete & Rename Tabs (User Request) (1bc8de5)
+- [x] Task: Conductor - User Manual Verification 'CRUD Operations' (Protocol in workflow.md) (30e5171)
 
 ## Phase 4: Seeding & Finalization
 - [ ] Task: Default Seeding Feature
