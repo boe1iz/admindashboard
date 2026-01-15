@@ -21,9 +21,9 @@ This plan outlines the integration of facility equipment selection into the work
 - [ ] Task: Conductor - User Manual Verification 'Creation & Update Integration' (Protocol in workflow.md)
 
 ## Phase 3: Visual Display & Consistency
-- [ ] Task: Render Equipment Tags on WorkoutCard
-    - [ ] Write failing test for conditional rendering of gear badges
-    - [ ] Update `WorkoutCard` component to display assigned equipment names as sleek silver tags
-- [ ] Task: Visual QA & Mobile Responsiveness
+- [x] Task: Render Equipment Tags on WorkoutCard [94ee47c]
+    - [x] Write failing test for conditional rendering of gear badges
+    - [x] Update `WorkoutCard` component to display assigned equipment names as sleek silver tags
+- [~] Task: Visual QA & Mobile Responsiveness
     - [ ] Verify that the multi-select interaction and tag layout work correctly on mobile devices
 - [ ] Task: Conductor - User Manual Verification 'Visual Display & Consistency' (Protocol in workflow.md)
