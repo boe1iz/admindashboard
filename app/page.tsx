@@ -158,7 +158,7 @@ export default function Dashboard() {
 
         
 
-            <Card key={stat.name} className="border-none bg-white dark:bg-[#0F172A] shadow-sm rounded-[40px] p-2">
+            <Card key={stat.name} className="border-none bg-card/40 glass shadow-sm rounded-[40px] p-2">
 
               <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
 
@@ -188,7 +188,7 @@ export default function Dashboard() {
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
 
-          <Card className="lg:col-span-2 border-none bg-white dark:bg-[#0F172A] shadow-sm rounded-[40px] p-2">
+          <Card className="lg:col-span-2 border-none bg-card/40 glass shadow-sm rounded-[40px] p-2">
 
             <CardHeader>
 
@@ -276,7 +276,7 @@ export default function Dashboard() {
 
                         <div className="grid grid-cols-1 gap-4">
 
-                          <Button variant="outline" asChild className="h-24 rounded-[30px] border-zinc-200 dark:border-zinc-800 flex flex-col gap-2 items-start px-8 justify-center hover:bg-zinc-50 dark:hover:bg-white/5">
+                          <Button variant="outline" asChild className="h-24 rounded-[30px] border-white/5 glass flex flex-col gap-2 items-start px-8 justify-center hover:bg-white/5">
 
                             <Link href="/programs">
 
@@ -288,7 +288,7 @@ export default function Dashboard() {
 
                           </Button>
 
-                          <Button variant="outline" asChild className="h-24 rounded-[30px] border-zinc-200 dark:border-zinc-800 flex flex-col gap-2 items-start px-8 justify-center hover:bg-zinc-50 dark:hover:bg-white/5">
+                          <Button variant="outline" asChild className="h-24 rounded-[30px] border-white/5 glass flex flex-col gap-2 items-start px-8 justify-center hover:bg-white/5">
 
             
 
@@ -302,7 +302,7 @@ export default function Dashboard() {
 
                             </Button>
 
-                            <Button variant="outline" asChild className="h-24 rounded-[30px] border-zinc-200 dark:border-zinc-800 flex flex-col gap-2 items-start px-8 justify-center hover:bg-zinc-50 dark:hover:bg-white/5">
+                            <Button variant="outline" asChild className="h-24 rounded-[30px] border-white/5 glass flex flex-col gap-2 items-start px-8 justify-center hover:bg-white/5">
 
                               <Link href="/inventory">
 
