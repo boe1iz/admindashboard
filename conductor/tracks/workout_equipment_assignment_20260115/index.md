@@ -1,4 +1,4 @@
-# Track modern_energy_ux_20260115 Context
+# Track workout_equipment_assignment_20260115 Context
 
 - [Specification](./spec.md)
 - [Implementation Plan](./plan.md)
