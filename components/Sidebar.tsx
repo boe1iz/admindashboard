@@ -23,9 +23,9 @@ export function Sidebar() {
   const pathname = usePathname()
 
   return (
-    <div className="flex h-full w-64 flex-col bg-card/40 border-r border-white/5 glass-dark z-20">
+    <div className="flex h-full w-64 flex-col bg-white border-r border-slate-200 z-20 shadow-sm">
       <div className="flex h-20 items-center px-6">
-        <span className="text-2xl font-black tracking-tighter text-primary drop-shadow-[0_0_10px_rgba(0,87,255,0.3)]">
+        <span className="text-2xl font-black tracking-tighter text-[#0057FF]">
           13CONCEPT
         </span>
       </div>
@@ -45,14 +45,14 @@ export function Sidebar() {
                 className={cn(
                   "group flex items-center justify-between rounded-xl px-3 py-2.5 text-sm font-black uppercase tracking-tight transition-all",
                   isActive 
-                    ? "bg-primary text-white shadow-xl shadow-primary/30" 
-                    : "text-zinc-500 hover:text-white hover:bg-white/5"
+                    ? "bg-[#0057FF] text-white shadow-lg shadow-[#0057FF]/20" 
+                    : "text-slate-400 hover:text-[#0057FF] hover:bg-slate-50"
                 )}
               >
                 <div className="flex items-center gap-3">
                   <item.icon className={cn(
-                    "size-5 transition-transform group-hover:scale-110",
-                    isActive ? "text-white" : "text-zinc-600 group-hover:text-primary"
+                    "size-5 transition-transform",
+                    isActive ? "text-white" : "text-slate-400 group-hover:text-[#0057FF]"
                   )} />
                   {item.name}
                 </div>
@@ -63,7 +63,7 @@ export function Sidebar() {
         })}
       </nav>
 
-      <div className="border-t border-white/5 p-4 text-[10px] text-zinc-700 uppercase tracking-widest font-black">
+      <div className="border-t border-slate-100 p-4 text-[10px] text-slate-300 uppercase tracking-widest font-black">
         Admin Dashboard v2.0
       </div>
     </div>

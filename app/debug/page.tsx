@@ -12,7 +12,6 @@ export default function DebugPage() {
     async function diagnose() {
       const report: any[] = []
       try {
-        // 1. Check top-level programs
         const progSnap = await getDocs(query(collection(db, 'programs'), limit(2)))
         for (const progDoc of progSnap.docs) {
           const progData = progDoc.data()
@@ -22,7 +21,6 @@ export default function DebugPage() {
             subCollections: [] 
           }
 
-          // Try common sub-collection names
           const possibleSubs = ['days', 'Days']
           for (const sub of possibleSubs) {
             const subSnap = await getDocs(collection(db, 'programs', progDoc.id, sub))
@@ -37,7 +35,6 @@ export default function DebugPage() {
                 nested: []
               }
 
-              // Check for workouts inside this day
               const workoutSubs = ['workouts', 'Workouts', 'exercises']
               for (const wSub of workoutSubs) {
                 const wSnap = await getDocs(collection(db, 'programs', progDoc.id, sub, dayDoc.id, wSub))
@@ -55,7 +52,6 @@ export default function DebugPage() {
           report.push(dayResults)
         }
 
-        // 2. Check assignments
         const assSnap = await getDocs(query(collection(db, 'assignments'), limit(5)))
         const assResults: any = { 
           name: 'Recent Assignments',
@@ -78,28 +74,28 @@ export default function DebugPage() {
     diagnose()
   }, [])
 
-  if (loading) return <div className="p-10">Diagnosing database structure...</div>
+  if (loading) return <div className="p-10 font-black uppercase tracking-widest text-xs animate-pulse">Diagnosing database structure...</div>
 
   return (
-    <div className="p-10 font-mono text-xs">
-      <h1 className="text-xl font-bold mb-4">Database Diagnosis</h1>
+    <div className="p-10 font-mono text-[10px]">
+      <h1 className="text-2xl font-black mb-8 uppercase tracking-tight text-slate-900">Database Diagnosis</h1>
       {results.map((res, i) => (
-        <div key={i} className="mb-8 border p-4 rounded bg-zinc-900 text-green-400">
-          <p className="font-bold text-white">{res.name} ({res.programId || 'Collection'})</p>
+        <div key={i} className="mb-8 border border-slate-200 p-6 rounded-[20px] bg-white shadow-sm">
+          <p className="font-black text-slate-900 uppercase tracking-widest mb-4 border-b border-slate-50 pb-2">{res.name} ({res.programId || 'Collection'})</p>
           {res.samples ? (
-             <pre className="mt-2 text-zinc-400">{JSON.stringify(res.samples, null, 2)}</pre>
+             <pre className="mt-2 text-slate-500 overflow-x-auto">{JSON.stringify(res.samples, null, 2)}</pre>
           ) : (
             res.subCollections.length === 0 ? (
-              <p className="text-red-400 mt-2">No sub-collections found.</p>
+              <p className="text-red-500 mt-2 font-bold">No sub-collections found.</p>
             ) : (
               res.subCollections.map((sub: any, j: number) => (
                 <div key={j} className="mt-4 ml-4">
-                  <p className="text-yellow-400 underline">Sub-collection: {sub.name} ({sub.count} docs)</p>
-                  <pre className="mt-2 text-zinc-400">{JSON.stringify(sub.sample, null, 2)}</pre>
+                  <p className="text-primary font-black uppercase underline">Sub-collection: {sub.name} ({sub.count} docs)</p>
+                  <pre className="mt-2 text-slate-500 overflow-x-auto">{JSON.stringify(sub.sample, null, 2)}</pre>
                   {sub.nested.map((nes: any, k: number) => (
-                    <div key={k} className="mt-4 ml-8 border-l border-zinc-700 pl-4">
-                      <p className="text-blue-400 underline">Nested Sub-collection: {nes.name} ({nes.count} docs)</p>
-                      <pre className="mt-2 text-zinc-500">{JSON.stringify(nes.sample, null, 2)}</pre>
+                    <div key={k} className="mt-4 ml-8 border-l-2 border-slate-100 pl-4">
+                      <p className="text-blue-400 font-black uppercase underline">Nested Sub-collection: {nes.name} ({nes.count} docs)</p>
+                      <pre className="mt-2 text-slate-400 overflow-x-auto">{JSON.stringify(nes.sample, null, 2)}</pre>
                     </div>
                   ))}
                 </div>
@@ -108,7 +104,7 @@ export default function DebugPage() {
           )}
         </div>
       ))}
-      {results.length === 0 && <p>No programs found.</p>}
+      {results.length === 0 && <p className="font-black uppercase text-slate-400">No programs found.</p>}
     </div>
   )
 }

@@ -13,13 +13,18 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { Button } from '@/components/ui/button'
-import { MoreVertical, Archive, ArchiveRestore, Copy, Pencil } from 'lucide-react'
+import { MoreVertical, Archive, ArchiveRestore, Copy, Pencil, BookOpen } from 'lucide-react'
 import Link from 'next/link'
 import { EditProgramDialog } from '@/components/EditProgramDialog'
 import { toast } from 'sonner'
+import { motion } from 'framer-motion'
 
 interface Program {
-// ... existing interface ...
+  id: string
+  name: string
+  description: string
+  price: number
+  isArchived: boolean
 }
 
 function ProgramCard({ program }: { program: Program }) {
@@ -42,7 +47,6 @@ function ProgramCard({ program }: { program: Program }) {
     setDuplicating(true)
     const toastId = toast.loading("Duplicating program...")
     try {
-      // 1. Copy Program Doc
       const newProgramRef = await addDoc(collection(db, 'programs'), {
         name: `${program.name} (Copy)`,
         description: program.description,
@@ -52,7 +56,6 @@ function ProgramCard({ program }: { program: Program }) {
         updatedAt: serverTimestamp()
       })
 
-      // 2. Copy Days
       const daysSnap = await getDocs(collection(db, 'programs', program.id, 'days'))
       for (const dayDoc of daysSnap.docs) {
         const dayData = dayDoc.data()
@@ -61,7 +64,6 @@ function ProgramCard({ program }: { program: Program }) {
           day_number: dayData.day_number
         })
 
-        // 3. Copy Workouts for each day
         const workoutsSnap = await getDocs(collection(db, 'programs', program.id, 'days', dayDoc.id, 'workouts'))
         for (const workoutDoc of workoutsSnap.docs) {
           const workoutData = workoutDoc.data()
@@ -86,46 +88,51 @@ function ProgramCard({ program }: { program: Program }) {
 
   return (
     <>
-      <Card className={`relative group cursor-pointer hover:border-primary/50 transition-colors ${duplicating ? 'opacity-50 pointer-events-none' : ''}`}>
-        <div className="absolute top-4 right-4 z-10">
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild onClick={(e) => e.stopPropagation()}>
-              <Button variant="ghost" size="icon">
-                <MoreVertical className="size-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuItem onClick={(e) => { e.stopPropagation(); setIsEditDialogOpen(true); }}>
-                <Pencil className="mr-2 size-4" />
-                Edit Details
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={(e) => { e.stopPropagation(); duplicateProgram(); }}>
-                <Copy className="mr-2 size-4" />
-                Duplicate
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={(e) => { e.stopPropagation(); toggleArchive(); }}>
-                {program.isArchived ? (
-                  <>
-                    <ArchiveRestore className="mr-2 size-4" />
-                    Restore
-                  </>
-                ) : (
-                  <>
-                    <Archive className="mr-2 size-4" />
-                    Archive
-                  </>
-                )}
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
-        <Link href={`/programs/${program.id}`}>
-          <CardHeader>
-            <CardTitle>{program.name}</CardTitle>
-            <CardDescription className="line-clamp-2">{program.description}</CardDescription>
-          </CardHeader>
-        </Link>
-      </Card>
+      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
+        <Card className={`relative group cursor-pointer border-slate-200 bg-white shadow-md hover:shadow-xl hover:border-primary/30 transition-all rounded-[40px] overflow-hidden ${duplicating ? 'opacity-50 pointer-events-none' : ''} ${program.isArchived ? 'opacity-60' : ''}`}>
+          <div className="absolute top-4 right-4 z-10">
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild onClick={(e) => e.stopPropagation()}>
+                <Button variant="ghost" size="icon" className="rounded-full hover:bg-slate-100">
+                  <MoreVertical className="size-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="rounded-2xl border-slate-200 shadow-xl">
+                <DropdownMenuItem onClick={(e) => { e.stopPropagation(); setIsEditDialogOpen(true); }} className="rounded-xl m-1">
+                  <Pencil className="mr-2 size-4" />
+                  Edit Details
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={(e) => { e.stopPropagation(); duplicateProgram(); }} className="rounded-xl m-1">
+                  <Copy className="mr-2 size-4" />
+                  Duplicate
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={(e) => { e.stopPropagation(); toggleArchive(); }} className="rounded-xl m-1">
+                  {program.isArchived ? (
+                    <>
+                      <ArchiveRestore className="mr-2 size-4 text-primary" />
+                      <span className="text-primary font-bold">Restore</span>
+                    </>
+                  ) : (
+                    <>
+                      <Archive className="mr-2 size-4" />
+                      Archive
+                    </>
+                  )}
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
+          <Link href={`/programs/${program.id}`}>
+            <CardHeader className="p-6">
+              <div className="size-12 rounded-2xl bg-primary/10 flex items-center justify-center mb-4">
+                <BookOpen className="size-6 text-primary" />
+              </div>
+              <CardTitle className="font-black text-slate-900 uppercase tracking-tight">{program.name}</CardTitle>
+              <CardDescription className="line-clamp-2 text-xs font-bold text-slate-400">{program.description}</CardDescription>
+            </CardHeader>
+          </Link>
+        </Card>
+      </motion.div>
 
       <EditProgramDialog 
         program={program} 
@@ -163,35 +170,60 @@ export default function ProgramsPage() {
   const activePrograms = programs.filter(p => !p.isArchived)
   const archivedPrograms = programs.filter(p => p.isArchived)
 
-  if (loading) return <div className="p-10">Loading Programs...</div>
+  if (loading) return <div className="p-8 text-slate-500 font-black uppercase tracking-widest text-xs animate-pulse">Synchronizing Concepts...</div>
 
   return (
-    <div className="container mx-auto py-10 px-4">
+    <div className="container mx-auto py-10 px-4 min-h-screen">
       <div className="flex justify-between items-center mb-8">
-        <h1 className="text-4xl font-bold text-foreground uppercase tracking-tight">Programs</h1>
+        <div>
+          <h1 className="text-4xl font-black text-slate-900 uppercase tracking-tight">Programs</h1>
+          <p className="text-xs md:text-sm font-black text-slate-400 uppercase tracking-widest mt-1">
+            Build and manage high-performance training sequences.
+          </p>
+        </div>
         <CreateProgramDialog />
       </div>
       
       <Tabs defaultValue="operational" className="w-full">
-        <TabsList className="grid w-full grid-cols-2 max-w-md mb-8">
-          <TabsTrigger value="operational">Operational ({activePrograms.length})</TabsTrigger>
-          <TabsTrigger value="vault">Archived Vault ({archivedPrograms.length})</TabsTrigger>
+        <TabsList className="bg-white border border-slate-200 p-1 rounded-full w-fit shadow-sm mb-8">
+          <TabsTrigger value="operational" className="rounded-full px-4 md:px-6 data-[state=active]:bg-[#0057FF] data-[state=active]:text-white text-xs md:text-sm font-black uppercase tracking-tight">Operational ({activePrograms.length})</TabsTrigger>
+          <TabsTrigger value="vault" className="rounded-full px-4 md:px-6 data-[state=active]:bg-[#0057FF] data-[state=active]:text-white text-xs md:text-sm font-black uppercase tracking-tight">Archived Vault ({archivedPrograms.length})</TabsTrigger>
         </TabsList>
         
-        <TabsContent value="operational" className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {activePrograms.map(program => (
-              <ProgramCard key={program.id} program={program} />
-            ))}
-          </div>
+        <TabsContent value="operational" className="space-y-4 outline-none">
+          {activePrograms.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {activePrograms.map(program => (
+                <ProgramCard key={program.id} program={program} />
+              ))}
+            </div>
+          ) : (
+            <Card className="p-12 border-slate-200 bg-white flex flex-col items-center justify-center text-center rounded-[40px] shadow-md">
+              <div className="size-20 bg-slate-50 rounded-full flex items-center justify-center mb-4">
+                <BookOpen className="size-10 text-slate-200" />
+              </div>
+              <CardTitle className="text-slate-900 font-black uppercase tracking-tight mb-2">No Programs Found</CardTitle>
+              <CardDescription className="font-medium text-slate-500">Create your first concept to begin building.</CardDescription>
+            </Card>
+          )}
         </TabsContent>
         
-        <TabsContent value="vault" className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {archivedPrograms.map(program => (
-              <ProgramCard key={program.id} program={program} />
-            ))}
-          </div>
+        <TabsContent value="vault" className="space-y-4 outline-none">
+          {archivedPrograms.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {archivedPrograms.map(program => (
+                <ProgramCard key={program.id} program={program} />
+              ))}
+            </div>
+          ) : (
+            <Card className="p-12 border-slate-200 bg-white flex flex-col items-center justify-center text-center rounded-[40px] shadow-md">
+              <div className="size-20 bg-slate-50 rounded-full flex items-center justify-center mb-4">
+                <Archive className="size-10 text-slate-200" />
+              </div>
+              <CardTitle className="text-slate-900 font-black uppercase tracking-tight mb-2">Vault is Empty</CardTitle>
+              <CardDescription className="font-medium text-slate-500">Archived programs will appear here.</CardDescription>
+            </Card>
+          )}
         </TabsContent>
       </Tabs>
     </div>

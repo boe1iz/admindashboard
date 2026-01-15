@@ -23,6 +23,7 @@ import { VideoModal } from '@/components/VideoModal'
 import { EditWorkoutDialog } from '@/components/EditWorkoutDialog'
 import { ConfirmDeleteDialog } from '@/components/ConfirmDeleteDialog'
 import { toast } from 'sonner'
+import { motion, AnimatePresence } from 'framer-motion'
 
 interface Workout {
   id: string
@@ -72,48 +73,48 @@ function WorkoutCard({
 
   return (
     <>
-      <div className="flex items-center justify-between p-3 rounded-lg border bg-zinc-50/50 dark:bg-zinc-900/50 group/workout hover:border-primary/30 transition-all">
-        <div className="flex items-center gap-3">
+      <div className="flex items-center justify-between p-4 rounded-2xl border border-slate-100 bg-slate-50/50 group/workout hover:border-primary/30 hover:bg-white hover:shadow-md transition-all">
+        <div className="flex items-center gap-4">
           <div className="flex flex-col gap-0.5 opacity-0 group-hover/workout:opacity-100 transition-opacity">
             <Button 
               variant="ghost" 
               size="icon" 
-              className="size-6 p-0 disabled:opacity-30" 
+              className="size-6 p-0 disabled:opacity-30 hover:text-primary" 
               onClick={() => onMove('up')}
               disabled={isFirst}
             >
-              <ChevronUp className="size-3" />
+              <ChevronUp className="size-4" />
             </Button>
             <Button 
               variant="ghost" 
               size="icon" 
-              className="size-6 p-0 disabled:opacity-30" 
+              className="size-6 p-0 disabled:opacity-30 hover:text-primary" 
               onClick={() => onMove('down')}
               disabled={isLast}
             >
-              <ChevronDown className="size-3" />
+              <ChevronDown className="size-4" />
             </Button>
           </div>
           {workout.video_url ? (
             <VideoModal videoUrl={workout.video_url} title={workout.title} />
           ) : (
-            <div className="size-8 flex items-center justify-center text-muted-foreground/30">
-              <Video className="size-4" />
+            <div className="size-10 rounded-xl bg-slate-100 flex items-center justify-center text-slate-300">
+              <Video className="size-5" />
             </div>
           )}
           <div>
-            <h4 className="font-medium text-sm text-foreground">{workout.title}</h4>
-            <p className="text-xs text-muted-foreground line-clamp-1">{workout.instructions}</p>
+            <h4 className="font-black text-slate-900 uppercase tracking-tight text-sm">{workout.title}</h4>
+            <p className="text-xs font-medium text-slate-400 line-clamp-1">{workout.instructions}</p>
           </div>
         </div>
         <div className="flex items-center gap-1 opacity-0 group-hover/workout:opacity-100 transition-opacity">
           <Button 
             variant="ghost" 
             size="icon" 
-            className="size-8 text-muted-foreground hover:text-primary"
+            className="size-9 rounded-full text-slate-400 hover:text-primary hover:bg-primary/5"
             onClick={() => setIsEditDialogOpen(true)}
           >
-            <Pencil className="size-3" />
+            <Pencil className="size-4" />
           </Button>
           
           <ConfirmDeleteDialog
@@ -124,9 +125,9 @@ function WorkoutCard({
               <Button 
                 variant="ghost" 
                 size="icon" 
-                className="size-8 text-muted-foreground hover:text-destructive"
+                className="size-9 rounded-full text-slate-400 hover:text-destructive hover:bg-destructive/5"
               >
-                <Trash2 className="size-3" />
+                <Trash2 className="size-4" />
               </Button>
             }
           />
@@ -195,47 +196,56 @@ function DaySection({ day, programId }: { day: Day, programId: string }) {
   }
 
   return (
-    <Card className="group overflow-hidden border-zinc-200 dark:border-zinc-800 shadow-sm">
-      <CardHeader className="flex flex-row items-center justify-between py-4 bg-zinc-50/50 dark:bg-zinc-900/50 border-b">
-        <CardTitle className="text-xl font-semibold text-foreground">{day.title}</CardTitle>
-        <div className="flex items-center gap-2">
-          <CreateWorkoutDialog programId={programId} dayId={day.id} nextOrderIndex={workouts.length} />
-          
-          <ConfirmDeleteDialog
-            title="Delete Training Day"
-            description={`Are you sure you want to delete "${day.title}"?`}
-            onConfirm={deleteDay}
-            trigger={
-              <Button 
-                variant="ghost" 
-                size="icon" 
-                className="text-muted-foreground hover:text-destructive opacity-0 group-hover:opacity-100 transition-opacity"
-              >
-                <Trash2 className="size-4" />
-                <span className="sr-only">Delete {day.title}</span>
-              </Button>
-            }
-          />
-        </div>
-      </CardHeader>
-      <CardContent className="p-4 space-y-3 bg-white dark:bg-black">
-        {workouts.length === 0 ? (
-          <p className="text-sm text-center text-muted-foreground py-4">No workouts added yet.</p>
-        ) : (
-          workouts.map((workout, index) => (
-            <WorkoutCard 
-              key={workout.id} 
-              workout={workout} 
-              programId={programId} 
-              dayId={day.id}
-              isFirst={index === 0}
-              isLast={index === workouts.length - 1}
-              onMove={(direction) => moveWorkout(index, direction)}
+    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
+      <Card className="group overflow-hidden border-slate-200 shadow-md rounded-[40px]">
+        <CardHeader className="flex flex-row items-center justify-between p-6 bg-slate-50 border-b border-slate-100">
+          <CardTitle className="text-xl font-black text-slate-900 uppercase tracking-tight">{day.title}</CardTitle>
+          <div className="flex items-center gap-2">
+            <CreateWorkoutDialog programId={programId} dayId={day.id} nextOrderIndex={workouts.length} />
+            
+            <ConfirmDeleteDialog
+              title="Delete Training Day"
+              description={`Are you sure you want to delete "${day.title}"?`}
+              onConfirm={deleteDay}
+              trigger={
+                <Button 
+                  variant="ghost" 
+                  size="icon" 
+                  className="rounded-full text-slate-400 hover:text-destructive hover:bg-destructive/5 opacity-0 group-hover:opacity-100 transition-opacity"
+                >
+                  <Trash2 className="size-4" />
+                  <span className="sr-only">Delete {day.title}</span>
+                </Button>
+              }
             />
-          ))
-        )}
-      </CardContent>
-    </Card>
+          </div>
+        </CardHeader>
+        <CardContent className="p-6 space-y-4 bg-white">
+          {workouts.length === 0 ? (
+            <div className="py-12 flex flex-col items-center justify-center text-center">
+              <div className="size-12 rounded-full bg-slate-50 flex items-center justify-center mb-3">
+                <Plus className="size-6 text-slate-200" />
+              </div>
+              <p className="text-sm font-bold text-slate-400 uppercase tracking-widest">No workouts added yet.</p>
+            </div>
+          ) : (
+            <AnimatePresence>
+              {workouts.map((workout, index) => (
+                <WorkoutCard 
+                  key={workout.id} 
+                  workout={workout} 
+                  programId={programId} 
+                  dayId={day.id}
+                  isFirst={index === 0}
+                  isLast={index === workouts.length - 1}
+                  onMove={(direction) => moveWorkout(index, direction)}
+                />
+              ))}
+            </AnimatePresence>
+          )}
+        </CardContent>
+      </Card>
+    </motion.div>
   )
 }
 
@@ -284,26 +294,32 @@ export default function ProgramDetailPage({ params }: { params: Promise<{ id: st
     }
   }
 
-  if (loading) return <div className="p-8 text-foreground font-mono text-xs uppercase tracking-widest animate-pulse">Synchronizing Data...</div>
-  if (!program) return <div className="p-8 text-foreground font-bold">Program not found.</div>
+  if (loading) return <div className="p-8 text-slate-500 font-black text-xs uppercase tracking-[0.2em] animate-pulse">Synchronizing Data...</div>
+  if (!program) return <div className="p-8 text-slate-900 font-black uppercase">Program not found.</div>
 
   return (
     <div className="container mx-auto py-10 px-4 min-h-screen">
-      <div className="mb-8">
-        <Link href="/programs" className="flex items-center text-muted-foreground hover:text-foreground mb-4 transition-colors font-bold uppercase tracking-widest text-[10px]">
+      <div className="mb-10">
+        <Link href="/programs" className="flex items-center text-slate-400 hover:text-primary mb-6 transition-colors font-black uppercase tracking-widest text-[10px]">
           <ArrowLeft className="mr-2 size-4" />
-          Back to Programs
+          Back to Concepts
         </Link>
         <div className="flex justify-between items-center">
-          <h1 className="text-4xl font-black text-foreground uppercase tracking-tight">{program.name}</h1>
-          <Button onClick={addDay} className="gap-2 rounded-full bg-[#0057FF] hover:bg-[#0057FF]/90 font-bold uppercase tracking-widest text-[10px]">
-            <Plus className="size-4" />
+          <div>
+            <h1 className="text-4xl md:text-5xl font-black text-slate-900 uppercase tracking-tight">{program.name}</h1>
+            <p className="text-[10px] font-black uppercase tracking-[0.3em] text-primary mt-2 flex items-center gap-2">
+              <span className="size-1.5 rounded-full bg-primary animate-pulse" />
+              Operational Sequence
+            </p>
+          </div>
+          <Button onClick={addDay} className="gap-2 rounded-full bg-primary hover:bg-primary/90 shadow-lg shadow-primary/20 px-8 h-12 font-black uppercase tracking-widest text-xs">
+            <Plus className="size-5" />
             Add Day
           </Button>
         </div>
       </div>
 
-      <div className="space-y-6">
+      <div className="space-y-8">
         {days.map((day) => (
           <DaySection key={day.id} day={day} programId={id} />
         ))}

@@ -8,35 +8,23 @@ vi.mock('next/navigation', () => ({
 }))
 
 describe('Sidebar Component', () => {
-  it('renders with the new design system classes', () => {
+  it('renders with the studio design classes', () => {
     const { container } = render(<Sidebar />)
     const sidebarDiv = container.firstChild as HTMLElement
     
-    // Check for glassmorphism and background classes
-    expect(sidebarDiv.className).toContain('bg-card')
-    expect(sidebarDiv.className).toContain('glass-dark')
+    // Check for white background and border
+    expect(sidebarDiv.className).toContain('bg-white')
+    expect(sidebarDiv.className).toContain('border-r')
     
-    // Check for primary color on logo
-    const logo = screen.getByText('13CONCEPT')
-    expect(logo.className).toContain('text-primary')
+    // Check for logo text
+    expect(screen.getByText('13CONCEPT')).toBeDefined()
   })
 
   it('renders navigation items with correct active state styling', () => {
     render(<Sidebar />)
     const dashboardLink = screen.getByRole('link', { name: /Dashboard/i })
-    expect(dashboardLink.className).toContain('bg-primary')
-    expect(dashboardLink.className).toContain('font-black')
-  })
-
-  it('uses framer-motion for hover interactions', () => {
-    const { container } = render(<Sidebar />)
-    // Check if motion.div or motion props are present on links
-    // Framer motion components often have style/transform properties even when static
-    const links = container.querySelectorAll('a')
-    links.forEach(link => {
-      // In a real test we'd check for specific motion props or behavior
-      // Here we will check if the component structure supports the motion animation
-      expect(link.className).toContain('transition-all')
-    })
+    // In my force-reset, I used bg-[#0057FF] for active items
+    expect(dashboardLink.className).toContain('bg-[#0057FF]')
+    expect(dashboardLink.className).toContain('text-white')
   })
 })

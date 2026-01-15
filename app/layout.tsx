@@ -25,21 +25,22 @@ export default function RootLayout({
   const pathname = usePathname();
 
   return (
-    <html lang="en" className="dark">
+    <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-background text-foreground`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        style={{ backgroundColor: '#F1F5F9', color: '#0F172A' }}
       >
         <div className="flex h-screen overflow-hidden">
           <Sidebar />
-          <main className="flex-1 overflow-y-auto bg-background/50 relative">
-            <AnimatePresence mode="wait">
+          <main className="flex-1 overflow-hidden relative" style={{ backgroundColor: '#F1F5F9' }}>
+            <AnimatePresence initial={false}>
               <motion.div
                 key={pathname}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                transition={{ duration: 0.3, ease: "easeOut" }}
-                className="min-h-full"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.2 }}
+                className="absolute inset-0 overflow-y-auto p-8"
               >
                 {children}
               </motion.div>

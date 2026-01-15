@@ -12,11 +12,12 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { Button } from '@/components/ui/button'
-import { MoreVertical, Archive, ArchiveRestore, Pencil } from 'lucide-react'
+import { MoreVertical, Archive, ArchiveRestore, Pencil, Users } from 'lucide-react'
 import { toast } from 'sonner'
 import { CreateClientDialog } from '@/components/CreateClientDialog'
 import { ManageClientProgramsDialog } from '@/components/ManageClientProgramsDialog'
 import { EditClientDialog } from '@/components/EditClientDialog'
+import { motion } from 'framer-motion'
 
 interface Client {
   id: string
@@ -65,56 +66,65 @@ export function ClientCard({ client, programs, assignments }: { client: Client, 
 
   return (
     <>
-      <Card 
-        className={`relative group cursor-pointer hover:border-primary/50 transition-all ${isProcessing ? 'opacity-50 pointer-events-none scale-[0.98]' : ''} ${!client.is_active ? 'grayscale-[0.5] opacity-80' : ''}`}
-        onClick={() => setIsManageDialogOpen(true)}
-      >
-        <div className="absolute top-4 right-4 z-10">
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild onClick={(e) => e.stopPropagation()}>
-              <Button variant="ghost" size="icon">
-                <MoreVertical className="size-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuItem onClick={(e) => { e.stopPropagation(); setIsEditDialogOpen(true); }}>
-                <Pencil className="mr-2 size-4" />
-                Edit Details
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={(e) => { e.stopPropagation(); toggleActive(); }}>
-                {client.is_active ? (
-                  <>
-                    <Archive className="mr-2 size-4" />
-                    Archive
-                  </>
-                ) : (
-                  <>
-                    <ArchiveRestore className="mr-2 size-4" />
-                    Restore
-                  </>
-                )}
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
-        <CardHeader>
-          <CardTitle>{client.name}</CardTitle>
-          <CardDescription>{client.email}</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="flex flex-wrap gap-2">
-            {clientAssignments.map(assignment => {
-               const progId = assignment.programId || assignment.program_id
-               const programName = programs.find(p => p.id === progId)?.name || progId || 'Unknown Program'
-               return (
-                 <span key={assignment.id} className="px-2 py-1 bg-secondary text-secondary-foreground text-xs rounded-full">
-                   {programName}
-                 </span>
-               )
-            })}
+      <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }}>
+        <Card 
+          className={`relative group cursor-pointer border-slate-200 bg-white shadow-md hover:shadow-xl hover:border-primary/30 transition-all rounded-[40px] overflow-hidden ${isProcessing ? 'opacity-50 pointer-events-none scale-[0.98]' : ''} ${!client.is_active ? 'opacity-60' : ''}`}
+          onClick={() => setIsManageDialogOpen(true)}
+        >
+          <div className="absolute top-4 right-4 z-10">
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild onClick={(e) => e.stopPropagation()}>
+                <Button variant="ghost" size="icon" className="rounded-full hover:bg-slate-100">
+                  <MoreVertical className="size-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="rounded-2xl border-slate-200 shadow-xl">
+                <DropdownMenuItem onClick={(e) => { e.stopPropagation(); setIsEditDialogOpen(true); }} className="rounded-xl m-1">
+                  <Pencil className="mr-2 size-4" />
+                  Edit Details
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={(e) => { e.stopPropagation(); toggleActive(); }} className="rounded-xl m-1">
+                  {client.is_active ? (
+                    <>
+                      <Archive className="mr-2 size-4" />
+                      Archive
+                    </>
+                  ) : (
+                    <>
+                      <ArchiveRestore className="mr-2 size-4 text-primary" />
+                      <span className="text-primary font-bold">Restore</span>
+                    </>
+                  )}
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
-        </CardContent>
-      </Card>
+          <CardHeader className="p-6">
+            <div className="size-12 rounded-2xl bg-primary/10 flex items-center justify-center mb-4">
+              <Users className="size-6 text-primary" />
+            </div>
+            <CardTitle className="font-black text-slate-900 uppercase tracking-tight">{client.name}</CardTitle>
+            <CardDescription className="text-xs font-bold text-slate-400">{client.email}</CardDescription>
+          </CardHeader>
+          <CardContent className="px-6 pb-6">
+            <div className="flex flex-wrap gap-2">
+              {clientAssignments.length > 0 ? (
+                clientAssignments.map(assignment => {
+                   const progId = assignment.programId || assignment.program_id
+                   const programName = programs.find(p => p.id === progId)?.name || progId || 'Unknown Program'
+                   return (
+                     <span key={assignment.id} className="px-3 py-1 bg-slate-100 text-slate-600 text-[10px] font-black uppercase tracking-widest rounded-full">
+                       {programName}
+                     </span>
+                   )
+                })
+              ) : (
+                <span className="text-[10px] font-black uppercase tracking-widest text-slate-300">No active programs</span>
+              )}
+            </div>
+          </CardContent>
+        </Card>
+      </motion.div>
 
       <ManageClientProgramsDialog 
         client={client} 
@@ -179,47 +189,58 @@ export default function ClientsPage() {
   const activeClients = clients.filter(c => c.is_active)
   const archivedClients = clients.filter(c => !c.is_active)
 
-  if (loading) return <div className="p-10">Loading Clients...</div>
+  if (loading) return <div className="p-8 text-slate-500 font-black uppercase tracking-widest text-xs animate-pulse">Synchronizing Roster...</div>
 
   return (
-    <div className="container mx-auto py-10 px-4">
+    <div className="container mx-auto py-10 px-4 min-h-screen">
       <div className="flex justify-between items-center mb-8">
-        <h1 className="text-4xl font-bold text-foreground uppercase tracking-tight">Client Roster</h1>
+        <div>
+          <h1 className="text-4xl font-black text-slate-900 uppercase tracking-tight">Client Roster</h1>
+          <p className="text-xs md:text-sm font-black text-slate-400 uppercase tracking-widest mt-1">
+            Manage your high-performance athlete network.
+          </p>
+        </div>
         <CreateClientDialog />
       </div>
       
       <Tabs defaultValue="operational" className="w-full">
-        <TabsList className="grid w-full grid-cols-2 max-w-md mb-8">
-          <TabsTrigger value="operational">Operational ({activeClients.length})</TabsTrigger>
-          <TabsTrigger value="vault">Archived Vault ({archivedClients.length})</TabsTrigger>
+        <TabsList className="bg-white border border-slate-200 p-1 rounded-full w-fit shadow-sm mb-8">
+          <TabsTrigger value="operational" className="rounded-full px-4 md:px-6 data-[state=active]:bg-[#0057FF] data-[state=active]:text-white text-xs md:text-sm font-black uppercase tracking-tight">Operational ({activeClients.length})</TabsTrigger>
+          <TabsTrigger value="vault" className="rounded-full px-4 md:px-6 data-[state=active]:bg-[#0057FF] data-[state=active]:text-white text-xs md:text-sm font-black uppercase tracking-tight">Archived Vault ({archivedClients.length})</TabsTrigger>
         </TabsList>
         
-        <TabsContent value="operational" className="space-y-4">
+        <TabsContent value="operational" className="space-y-4 outline-none">
           {activeClients.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {activeClients.map(client => (
                 <ClientCard key={client.id} client={client} programs={programs} assignments={assignments} />
               ))}
             </div>
           ) : (
-            <Card className="p-12 border-dashed flex flex-col items-center justify-center text-center">
-              <CardTitle className="text-muted-foreground mb-2">No Active Clients</CardTitle>
-              <CardDescription>Onboard your first client to get started.</CardDescription>
+            <Card className="p-12 border-slate-200 bg-white flex flex-col items-center justify-center text-center rounded-[40px] shadow-md">
+              <div className="size-20 bg-slate-50 rounded-full flex items-center justify-center mb-4">
+                <Users className="size-10 text-slate-200" />
+              </div>
+              <CardTitle className="text-slate-900 font-black uppercase tracking-tight mb-2">No Active Clients</CardTitle>
+              <CardDescription className="font-medium text-slate-500">Onboard your first client to get started.</CardDescription>
             </Card>
           )}
         </TabsContent>
         
-        <TabsContent value="vault" className="space-y-4">
+        <TabsContent value="vault" className="space-y-4 outline-none">
           {archivedClients.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {archivedClients.map(client => (
                 <ClientCard key={client.id} client={client} programs={programs} assignments={assignments} />
               ))}
             </div>
           ) : (
-            <Card className="p-12 border-dashed flex flex-col items-center justify-center text-center">
-              <CardTitle className="text-muted-foreground mb-2">Vault is Empty</CardTitle>
-              <CardDescription>Archived clients will appear here.</CardDescription>
+            <Card className="p-12 border-slate-200 bg-white flex flex-col items-center justify-center text-center rounded-[40px] shadow-md">
+              <div className="size-20 bg-slate-50 rounded-full flex items-center justify-center mb-4">
+                <Archive className="size-10 text-slate-200" />
+              </div>
+              <CardTitle className="text-slate-900 font-black uppercase tracking-tight mb-2">Vault is Empty</CardTitle>
+              <CardDescription className="font-medium text-slate-500">Archived clients will appear here.</CardDescription>
             </Card>
           )}
         </TabsContent>

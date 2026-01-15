@@ -3,20 +3,19 @@ import fs from 'fs'
 import path from 'path'
 
 describe('Design Tokens', () => {
-  it('globals.css should contain the sophisticated dark-grey palette', () => {
+  it('globals.css should contain the Sophisticated Studio palette', () => {
     const globalsCss = fs.readFileSync(path.resolve(__dirname, '../app/globals.css'), 'utf-8')
-    // Check for #121212 or its OKLCH equivalent
-    expect(globalsCss).toContain('--background: #121212')
-    expect(globalsCss).toContain('--card: #1E1E1E')
+    // Check for #F1F5F9 background
+    expect(globalsCss).toContain('background-color: #F1F5F9 !important')
   })
 
-  it('globals.css should contain Concept Blue', () => {
+  it('globals.css should contain Concept Blue primary color', () => {
     const globalsCss = fs.readFileSync(path.resolve(__dirname, '../app/globals.css'), 'utf-8')
-    expect(globalsCss).toContain('--primary: #0057FF')
+    expect(globalsCss).toContain('--color-primary: #0057FF')
   })
 
-  it('globals.css should have glassmorphism utilities', () => {
+  it('globals.css should have studio-card utilities', () => {
     const globalsCss = fs.readFileSync(path.resolve(__dirname, '../app/globals.css'), 'utf-8')
-    expect(globalsCss).toContain('.glass')
+    expect(globalsCss).toContain('.studio-card')
   })
 })

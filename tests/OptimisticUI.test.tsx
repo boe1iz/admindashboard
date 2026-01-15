@@ -37,7 +37,8 @@ describe('Optimistic UI / Pending States', () => {
     const archiveBtn = screen.getByText('Archive')
     fireEvent.click(archiveBtn)
     
-    const card = container.querySelector('.bg-card')
+    // The card is inside a motion.div
+    const card = container.querySelector('.transition-all')
     expect(card?.className).toContain('opacity-50')
   })
 
