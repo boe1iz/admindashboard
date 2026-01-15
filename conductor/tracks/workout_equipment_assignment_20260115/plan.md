@@ -11,17 +11,17 @@ This plan outlines the integration of facility equipment selection into the work
     - [x] Implement `useEquipment` hook or utility to provide gear options to dialogs
 - [x] Task: Conductor - User Manual Verification 'Selection Infrastructure' (Protocol in workflow.md)
 
-## Phase 2: Creation & Update Integration
+## Phase 2: Creation & Update Integration [checkpoint: e73445b]
 - [x] Task: Integrate Equipment into CreateWorkoutDialog [27a4215]
     - [x] Write failing test for saving workout document with equipment IDs
     - [x] Update form schema and UI to include the new multi-select field
 - [x] Task: Integrate Equipment into EditWorkoutDialog [3dca524]
     - [x] Write failing test for loading existing equipment data into the form
     - [x] Implement state initialization and update logic for assigned gear
-- [ ] Task: Conductor - User Manual Verification 'Creation & Update Integration' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Creation & Update Integration' (Protocol in workflow.md)
 
 ## Phase 3: Visual Display & Consistency
-- [x] Task: Render Equipment Tags on WorkoutCard [94ee47c]
+- [~] Task: Render Equipment Tags on WorkoutCard [94ee47c]
     - [x] Write failing test for conditional rendering of gear badges
     - [x] Update `WorkoutCard` component to display assigned equipment names as sleek silver tags
 - [x] Task: Visual QA & Mobile Responsiveness [b297c7a]
