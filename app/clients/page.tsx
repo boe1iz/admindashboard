@@ -66,7 +66,11 @@ export function ClientCard({ client, programs, assignments }: { client: Client, 
 
   return (
     <>
-      <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }}>
+      <motion.div 
+        initial={{ opacity: 0, scale: 0.95 }} 
+        animate={{ opacity: 1, scale: 1 }}
+        whileHover={{ scale: 1.02, y: -4 }}
+      >
         <Card 
           className={`relative group cursor-pointer border-slate-200 bg-white shadow-md hover:shadow-xl hover:border-primary/30 transition-all rounded-[40px] overflow-hidden ${isProcessing ? 'opacity-50 pointer-events-none scale-[0.98]' : ''} ${!client.is_active ? 'opacity-60' : ''}`}
           onClick={() => setIsManageDialogOpen(true)}

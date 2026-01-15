@@ -88,7 +88,11 @@ function ProgramCard({ program }: { program: Program }) {
 
   return (
     <>
-      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }} 
+        animate={{ opacity: 1, y: 0 }}
+        whileHover={{ scale: 1.02, y: -4 }}
+      >
         <Card className={`relative group cursor-pointer border-slate-200 bg-white shadow-md hover:shadow-xl hover:border-primary/30 transition-all rounded-[40px] overflow-hidden ${duplicating ? 'opacity-50 pointer-events-none' : ''} ${program.isArchived ? 'opacity-60' : ''}`}>
           <div className="absolute top-4 right-4 z-10">
             <DropdownMenu>

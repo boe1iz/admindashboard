@@ -125,6 +125,7 @@ export default function InventoryPage() {
                   key={item.id}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
+                  whileHover={{ scale: 1.02, y: -4 }}
                 >
                   <Card className="relative group cursor-pointer border-slate-200 bg-white shadow-md hover:shadow-xl hover:border-primary/30 transition-all rounded-[40px] overflow-hidden">
                     <div className="absolute top-4 right-4 z-10">
@@ -186,6 +187,7 @@ export default function InventoryPage() {
                   key={item.id}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
+                  whileHover={{ scale: 1.02, y: -4 }}
                 >
                   <Card className="relative group cursor-pointer border-slate-200 bg-white/50 opacity-60 hover:opacity-100 hover:bg-white shadow-sm hover:shadow-xl transition-all rounded-[40px] overflow-hidden">
                     <div className="absolute top-4 right-4 z-10">

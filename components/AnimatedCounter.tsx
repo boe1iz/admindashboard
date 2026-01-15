@@ -1,23 +1,30 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
-import { animate, useInView, useMotionValue, useTransform, motion } from 'framer-motion'
+import { useEffect, useState } from 'react'
+import { animate } from 'framer-motion'
 
-export function AnimatedCounter({ value, duration = 2 }: { value: number, duration?: number }) {
-  const count = useMotionValue(0)
-  const rounded = useTransform(count, (latest) => Math.round(latest))
-  const ref = useRef(null)
-  const inView = useInView(ref, { once: true })
+export function AnimatedCounter({ value }: { value: number }) {
+  const [displayValue, setDisplayValue] = useState(0)
 
   useEffect(() => {
-    if (inView) {
-      if (process.env.NODE_ENV === 'test' || process.env.NEXT_PUBLIC_CI === 'true') {
-        count.set(value)
-      } else {
-        animate(count, value, { duration })
-      }
+    // Immediate return for tests
+    if (process.env.NODE_ENV === 'test' || process.env.NEXT_PUBLIC_CI === 'true') {
+      setDisplayValue(value)
+      return
     }
-  }, [value, inView, count, duration])
 
-  return <motion.span ref={ref}>{rounded}</motion.span>
+    // Reset to 0 when value changes or component mounts
+    setDisplayValue(0)
+
+    const controls = animate(0, value, {
+      duration: 1.5,
+      delay: 0.2,
+      ease: [0.33, 1, 0.68, 1],
+      onUpdate: (latest) => setDisplayValue(Math.round(latest))
+    })
+
+    return () => controls.stop()
+  }, [value])
+
+  return <span>{displayValue}</span>
 }
