@@ -96,31 +96,21 @@ export default function Dashboard() {
 
       },
 
-      {
+            {
 
-        name: 'Operational Gear',
+              name: 'Operational Gear',
 
-        value: statsData.equipment.active.toString(),
+              value: statsData.equipment.active.toString(),
 
-        icon: Package,
+              icon: Package,
 
-        color: 'text-zinc-400'
+              color: 'text-zinc-400'
 
-      },
+            },
 
-      {
+          ]
 
-        name: 'Safe Vault',
-
-        value: (statsData.programs.archived + statsData.clients.archived + statsData.equipment.archived).toString(),
-
-        icon: ShieldCheck,
-
-        color: 'text-zinc-500'
-
-      },
-
-    ]
+      
 
   
 
@@ -158,13 +148,15 @@ export default function Dashboard() {
 
           </div>
 
-        </div>
+                </div>
 
-  
+          
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
 
-          {stats.map((stat) => (
+                  {stats.map((stat) => (
+
+        
 
             <Card key={stat.name} className="border-none bg-white dark:bg-[#0F172A] shadow-sm rounded-[40px] p-2">
 
