@@ -18,7 +18,7 @@
     - [ ] Commit & Record Task (Git Notes, SHA)
 - [ ] Task: Conductor - User Manual Verification 'Phase 1: Foundation & CRUD' (Protocol in workflow.md)
 
-## Phase 2: Program Assignment Logic
+## Phase 2: Program Assignment Logic [checkpoint: fa4f927]
 - [x] Task: Create Manage Programs Dialog UI [e95b396]
     - [ ] Write Failing Tests (Red Phase)
     - [ ] Implement to Pass Tests (Green Phase)
