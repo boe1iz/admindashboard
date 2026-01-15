@@ -37,7 +37,7 @@
 - [ ] Task: Conductor - User Manual Verification 'Phase 2: Program Assignment' (Protocol in workflow.md)
 
 ## Phase 3: Final Integration & UI Polish
-- [ ] Task: Implement Optimistic UI Updates for Status & Assignments
+- [~] Task: Implement Optimistic UI Updates for Status & Assignments
     - [ ] Write Failing Tests (Red Phase)
     - [ ] Implement to Pass Tests (Green Phase)
     - [ ] Verify Coverage & Quality Gates

@@ -32,8 +32,10 @@ interface Program {
 
 export function AthleteCard({ athlete, programs }: { athlete: Athlete, programs: Program[] }) {
   const [isManageDialogOpen, setIsManageDialogOpen] = useState(false)
+  const [isProcessing, setIsProcessing] = useState(false)
 
   const toggleArchive = async () => {
+    setIsProcessing(true)
     try {
       await updateDoc(doc(db, 'athletes', athlete.id), {
         isArchived: !athlete.isArchived
@@ -42,11 +44,13 @@ export function AthleteCard({ athlete, programs }: { athlete: Athlete, programs:
     } catch (error) {
       console.error('Error updating athlete: ', error)
       toast.error("Failed to update athlete")
+    } finally {
+      setIsProcessing(false)
     }
   }
 
   return (
-    <Card className="relative group hover:border-primary/50 transition-colors">
+    <Card className={`relative group hover:border-primary/50 transition-all ${isProcessing ? 'opacity-50 pointer-events-none scale-[0.98]' : ''}`}>
       <div className="absolute top-4 right-4 z-10">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>

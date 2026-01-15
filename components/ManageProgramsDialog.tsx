@@ -36,6 +36,7 @@ interface ManageProgramsDialogProps {
 export function ManageProgramsDialog({ athlete, open, onOpenChange }: ManageProgramsDialogProps) {
   const [programs, setPrograms] = useState<Program[]>([])
   const [searchTerm, setSearchTerm] = useState('')
+  const [isProcessing, setIsProcessing] = useState(false)
 
   useEffect(() => {
     if (!open) return
@@ -53,6 +54,7 @@ export function ManageProgramsDialog({ athlete, open, onOpenChange }: ManageProg
   }, [open])
 
   const assignProgram = async (programId: string, programName: string) => {
+    setIsProcessing(true)
     try {
       await updateDoc(doc(db, 'athletes', athlete.id), {
         assignedPrograms: arrayUnion(programId)
@@ -61,10 +63,13 @@ export function ManageProgramsDialog({ athlete, open, onOpenChange }: ManageProg
     } catch (error) {
       console.error('Error assigning program:', error)
       toast.error('Failed to assign program')
+    } finally {
+      setIsProcessing(false)
     }
   }
 
   const unassignProgram = async (programId: string) => {
+    setIsProcessing(true)
     try {
       await updateDoc(doc(db, 'athletes', athlete.id), {
         assignedPrograms: arrayRemove(programId)
@@ -73,6 +78,8 @@ export function ManageProgramsDialog({ athlete, open, onOpenChange }: ManageProg
     } catch (error) {
       console.error('Error unassigning program:', error)
       toast.error('Failed to unassign program')
+    } finally {
+      setIsProcessing(false)
     }
   }
 
@@ -83,7 +90,7 @@ export function ManageProgramsDialog({ athlete, open, onOpenChange }: ManageProg
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[500px]">
+      <DialogContent className={`sm:max-w-[500px] transition-all ${isProcessing ? 'opacity-50 pointer-events-none' : ''}`}>
         <DialogHeader>
           <DialogTitle>Manage Programs for {athlete.name}</DialogTitle>
           <DialogDescription>
@@ -125,6 +132,7 @@ export function ManageProgramsDialog({ athlete, open, onOpenChange }: ManageProg
                  className="pl-9"
                  value={searchTerm}
                  onChange={(e) => setSearchTerm(e.target.value)}
+                 disabled={isProcessing}
                />
              </div>
              
@@ -139,6 +147,7 @@ export function ManageProgramsDialog({ athlete, open, onOpenChange }: ManageProg
                        className="h-8 gap-1 opacity-0 group-hover:opacity-100 transition-opacity"
                        onClick={() => assignProgram(program.id, program.name)}
                        aria-label={`Assign ${program.name}`}
+                       disabled={isProcessing}
                      >
                        <Plus className="size-3" />
                        Assign
