@@ -25,9 +25,11 @@ export function Sidebar() {
   return (
     <div className="flex h-full w-64 flex-col bg-white border-r border-slate-200 z-20 shadow-sm">
       <div className="flex h-20 items-center px-6">
-        <span className="text-2xl font-black tracking-tighter text-[#0057FF]">
-          ON3 ATHLETICS
-        </span>
+        <Link href="/" className="hover:opacity-80 transition-opacity">
+          <span className="text-2xl font-black tracking-tighter text-[#0057FF]">
+            ON3 ATHLETICS
+          </span>
+        </Link>
       </div>
       
       <nav className="flex-1 space-y-1 px-3 py-4">
