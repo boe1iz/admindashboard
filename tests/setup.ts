@@ -14,3 +14,15 @@ class IntersectionObserverMock {
 }
 
 vi.stubGlobal('IntersectionObserver', IntersectionObserverMock)
+
+// Mock ResizeObserver
+class ResizeObserverMock {
+  disconnect = vi.fn()
+  observe = vi.fn()
+  unobserve = vi.fn()
+}
+
+vi.stubGlobal('ResizeObserver', ResizeObserverMock)
+
+// Mock scrollIntoView
+window.HTMLElement.prototype.scrollIntoView = vi.fn()
