@@ -1,7 +1,7 @@
 import { render, screen, within } from '@testing-library/react'
 import { describe, it, expect, vi } from 'vitest'
 import InventoryPage from '../app/inventory/page'
-import { updateDoc, doc } from 'firebase/firestore'
+import { updateDoc, doc, writeBatch } from 'firebase/firestore'
 
 // Mock firebase
 vi.mock('@/lib/firebase', () => ({
@@ -15,6 +15,11 @@ vi.mock('firebase/firestore', () => ({
   orderBy: vi.fn(),
   doc: vi.fn((db, coll, id) => ({ id })),
   updateDoc: vi.fn(() => Promise.resolve()),
+  writeBatch: vi.fn(() => ({
+    set: vi.fn(),
+    commit: vi.fn(() => Promise.resolve())
+  })),
+  serverTimestamp: vi.fn(() => 'timestamp'),
   onSnapshot: vi.fn((q, cb) => {
     cb({
       docs: [
@@ -64,5 +69,15 @@ describe('Inventory Page', () => {
     fireEvent.click(archiveBtn)
     
     expect(updateDoc).toHaveBeenCalledWith(expect.anything(), { is_active: false })
+  })
+
+  it('calls writeBatch when seed button is clicked', async () => {
+    const { fireEvent } = await import('@testing-library/react')
+    render(<InventoryPage />)
+    
+    const seedBtn = screen.getByText(/Seed Inventory/i)
+    fireEvent.click(seedBtn)
+    
+    expect(writeBatch).toHaveBeenCalled()
   })
 })
