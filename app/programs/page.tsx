@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { db } from '@/lib/firebase'
-import { collection, query, onSnapshot, doc, updateDoc } from 'firebase/firestore'
+import { collection, query, onSnapshot, doc, updateDoc, addDoc, serverTimestamp, getDocs } from 'firebase/firestore'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { CreateProgramDialog } from '@/components/CreateProgramDialog'
@@ -13,33 +13,34 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { Button } from '@/components/ui/button'
-import { MoreVertical, Archive, ArchiveRestore, Copy } from 'lucide-react'
+import { MoreVertical, Archive, ArchiveRestore, Copy, Pencil } from 'lucide-react'
 import Link from 'next/link'
-import { getDocs } from 'firebase/firestore'
+import { EditProgramDialog } from '@/components/EditProgramDialog'
+import { toast } from 'sonner'
 
 interface Program {
-  id: string
-  name: string
-  description: string
-  isArchived: boolean
-  price?: number
+// ... existing interface ...
 }
 
 function ProgramCard({ program }: { program: Program }) {
   const [duplicating, setDuplicating] = useState(false)
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false)
 
   const toggleArchive = async () => {
     try {
       await updateDoc(doc(db, 'programs', program.id), {
         isArchived: !program.isArchived
       })
+      toast.success(program.isArchived ? "Program restored" : "Program archived")
     } catch (error) {
       console.error('Error updating program: ', error)
+      toast.error("Failed to update program")
     }
   }
 
   const duplicateProgram = async () => {
     setDuplicating(true)
+    const toastId = toast.loading("Duplicating program...")
     try {
       // 1. Copy Program Doc
       const newProgramRef = await addDoc(collection(db, 'programs'), {
@@ -74,52 +75,64 @@ function ProgramCard({ program }: { program: Program }) {
           })
         }
       }
-      console.log("Deep Copy complete.")
+      toast.success("Program duplicated successfully", { id: toastId })
     } catch (error) {
       console.error("Error duplicating program:", error)
-      alert("Failed to duplicate program.")
+      toast.error("Failed to duplicate program", { id: toastId })
     } finally {
       setDuplicating(false)
     }
   }
 
   return (
-    <Card className={`relative group cursor-pointer hover:border-primary/50 transition-colors ${duplicating ? 'opacity-50 pointer-events-none' : ''}`}>
-      <div className="absolute top-4 right-4 z-10">
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild onClick={(e) => e.stopPropagation()}>
-            <Button variant="ghost" size="icon">
-              <MoreVertical className="size-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuItem onClick={(e) => { e.stopPropagation(); duplicateProgram(); }}>
-              <Copy className="mr-2 size-4" />
-              Duplicate
-            </DropdownMenuItem>
-            <DropdownMenuItem onClick={(e) => { e.stopPropagation(); toggleArchive(); }}>
-              {program.isArchived ? (
-                <>
-                  <ArchiveRestore className="mr-2 size-4" />
-                  Restore
-                </>
-              ) : (
-                <>
-                  <Archive className="mr-2 size-4" />
-                  Archive
-                </>
-              )}
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      </div>
-      <Link href={`/programs/${program.id}`}>
-        <CardHeader>
-          <CardTitle>{program.name}</CardTitle>
-          <CardDescription className="line-clamp-2">{program.description}</CardDescription>
-        </CardHeader>
-      </Link>
-    </Card>
+    <>
+      <Card className={`relative group cursor-pointer hover:border-primary/50 transition-colors ${duplicating ? 'opacity-50 pointer-events-none' : ''}`}>
+        <div className="absolute top-4 right-4 z-10">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild onClick={(e) => e.stopPropagation()}>
+              <Button variant="ghost" size="icon">
+                <MoreVertical className="size-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem onClick={(e) => { e.stopPropagation(); setIsEditDialogOpen(true); }}>
+                <Pencil className="mr-2 size-4" />
+                Edit Details
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={(e) => { e.stopPropagation(); duplicateProgram(); }}>
+                <Copy className="mr-2 size-4" />
+                Duplicate
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={(e) => { e.stopPropagation(); toggleArchive(); }}>
+                {program.isArchived ? (
+                  <>
+                    <ArchiveRestore className="mr-2 size-4" />
+                    Restore
+                  </>
+                ) : (
+                  <>
+                    <Archive className="mr-2 size-4" />
+                    Archive
+                  </>
+                )}
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
+        <Link href={`/programs/${program.id}`}>
+          <CardHeader>
+            <CardTitle>{program.name}</CardTitle>
+            <CardDescription className="line-clamp-2">{program.description}</CardDescription>
+          </CardHeader>
+        </Link>
+      </Card>
+
+      <EditProgramDialog 
+        program={program} 
+        open={isEditDialogOpen} 
+        onOpenChange={setIsEditDialogOpen} 
+      />
+    </>
   )
 }
 
@@ -150,12 +163,12 @@ export default function ProgramsPage() {
   const activePrograms = programs.filter(p => !p.isArchived)
   const archivedPrograms = programs.filter(p => p.isArchived)
 
-  if (loading) return <div>Loading...</div>
+  if (loading) return <div className="p-10">Loading Programs...</div>
 
   return (
-    <div className="container mx-auto py-10">
+    <div className="container mx-auto py-10 px-4">
       <div className="flex justify-between items-center mb-8">
-        <h1 className="text-4xl font-bold text-foreground">Programs</h1>
+        <h1 className="text-4xl font-bold text-foreground uppercase tracking-tight">Programs</h1>
         <CreateProgramDialog />
       </div>
       
@@ -184,4 +197,3 @@ export default function ProgramsPage() {
     </div>
   )
 }
-

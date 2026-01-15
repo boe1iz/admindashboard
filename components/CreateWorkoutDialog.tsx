@@ -17,6 +17,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { Plus } from 'lucide-react'
+import { toast } from 'sonner'
 
 interface CreateWorkoutDialogProps {
   programId: string
@@ -47,9 +48,10 @@ export function CreateWorkoutDialog({ programId, dayId, nextOrderIndex }: Create
       })
       setOpen(false)
       setFormData({ name: '', description: '', videoUrl: '' })
+      toast.success("Workout added")
     } catch (error) {
       console.error('Error adding workout: ', error)
-      alert("Failed to add workout. Please check your Firestore rules.")
+      toast.error("Failed to add workout")
     } finally {
       setLoading(false)
     }

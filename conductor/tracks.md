@@ -9,3 +9,8 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 - [x] **Track: Command Center (Dashboard)**
   *Link: [./conductor/tracks/command_center_dashboard_20260114/](./conductor/tracks/command_center_dashboard_20260114/)*
+
+---
+
+- [~] **Track: Athlete Roster & Program Assignment**
+  *Link: [./conductor/tracks/athlete_roster_20260115/](./conductor/tracks/athlete_roster_20260115/)*

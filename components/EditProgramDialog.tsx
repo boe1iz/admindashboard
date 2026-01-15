@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { db } from '@/lib/firebase'
-import { collection, addDoc, serverTimestamp } from 'firebase/firestore'
+import { doc, updateDoc, serverTimestamp } from 'firebase/firestore'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -11,97 +11,94 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
-import { Plus } from 'lucide-react'
 import { toast } from 'sonner'
 
-export function CreateProgramDialog() {
-  const [open, setOpen] = useState(false)
+interface EditProgramDialogProps {
+  program: {
+    id: string
+    name: string
+    description: string
+    price?: number
+  }
+  open: boolean
+  onOpenChange: (open: boolean) => void
+}
+
+export function EditProgramDialog({ program, open, onOpenChange }: EditProgramDialogProps) {
   const [loading, setLoading] = useState(false)
   const [formData, setFormData] = useState({
-    name: '',
-    description: '',
-    price: '0'
+    name: program.name,
+    description: program.description,
+    price: program.price?.toString() || '0'
   })
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
     try {
-      await addDoc(collection(db, 'programs'), {
-        ...formData,
+      await updateDoc(doc(db, 'programs', program.id), {
+        name: formData.name,
+        description: formData.description,
         price: parseFloat(formData.price),
-        isArchived: false,
-        createdAt: serverTimestamp(),
         updatedAt: serverTimestamp()
       })
-      setOpen(false)
-      setFormData({ name: '', description: '', price: '0' })
-      toast.success("Program created successfully")
+      onOpenChange(false)
+      toast.success("Program updated")
     } catch (error) {
-      console.error('Error adding program: ', error)
-      toast.error("Failed to create program")
+      console.error('Error updating program: ', error)
+      toast.error("Failed to update program")
     } finally {
       setLoading(false)
     }
   }
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <Button className="gap-2">
-          <Plus className="size-4" />
-          New Program
-        </Button>
-      </DialogTrigger>
+    <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[425px]">
         <form onSubmit={handleSubmit}>
           <DialogHeader>
-            <DialogTitle>Create Program</DialogTitle>
+            <DialogTitle>Edit Program</DialogTitle>
             <DialogDescription>
-              Add a new training program to the operational roster.
+              Update the details for this training concept.
             </DialogDescription>
           </DialogHeader>
           <div className="grid gap-4 py-4">
             <div className="grid gap-2">
-              <Label htmlFor="name">Program Name</Label>
+              <Label htmlFor="edit-name">Program Name</Label>
               <Input
-                id="name"
+                id="edit-name"
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                placeholder="e.g. Elite Strength Phase 1"
                 required
               />
             </div>
             <div className="grid gap-2">
-              <Label htmlFor="description">Description</Label>
+              <Label htmlFor="edit-description">Description</Label>
               <Textarea
-                id="description"
+                id="edit-description"
                 value={formData.description}
                 onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                placeholder="Brief overview of the program"
                 required
               />
             </div>
             <div className="grid gap-2">
-              <Label htmlFor="price">Price ($)</Label>
+              <Label htmlFor="edit-price">Price ($)</Label>
               <Input
-                id="price"
+                id="edit-price"
                 type="number"
                 value={formData.price}
                 onChange={(e) => setFormData({ ...formData, price: e.target.value })}
-                placeholder="0 for free"
                 required
               />
             </div>
           </div>
           <DialogFooter>
             <Button type="submit" disabled={loading}>
-              {loading ? 'Creating...' : 'Create Program'}
+              {loading ? 'Saving...' : 'Save Changes'}
             </Button>
           </DialogFooter>
         </form>
