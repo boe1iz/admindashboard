@@ -16,6 +16,7 @@ import { Input } from '@/components/ui/input'
 import { Card } from '@/components/ui/card'
 import { db } from '@/lib/firebase'
 import { collection, query, onSnapshot, orderBy } from 'firebase/firestore'
+import { CreateEquipmentDialog } from '@/components/CreateEquipmentDialog'
 
 interface Equipment {
   id: string
@@ -63,10 +64,7 @@ export default function InventoryPage() {
           </p>
         </div>
         <div className="flex items-center gap-2">
-          <Button className="bg-[#0057FF] hover:bg-[#0057FF]/90 text-white rounded-full px-6">
-            <Plus className="mr-2 size-4" />
-            Add Gear
-          </Button>
+          <CreateEquipmentDialog />
         </div>
       </div>
 
