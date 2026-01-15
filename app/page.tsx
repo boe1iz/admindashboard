@@ -138,11 +138,11 @@ export default function Dashboard() {
 
               )} />
 
-              <span className="text-[10px] uppercase tracking-widest font-bold text-zinc-500">
+                            <span className="text-[10px] uppercase tracking-[0.2em] font-black text-zinc-500">
 
-                Live Connection: {isConnected ? 'Active' : 'Offline'}
+                              Live Connection: {isConnected ? 'Active' : 'Offline'}
 
-              </span>
+                            </span>
 
             </div>
 
@@ -158,19 +158,19 @@ export default function Dashboard() {
 
         
 
-            <Card key={stat.name} className="border-none bg-card/40 glass shadow-sm rounded-[40px] p-2">
+            <Card key={stat.name} className="border-none bg-card/60 glass shadow-2xl rounded-[40px] p-2">
 
-              <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
+                            <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
 
-                <CardTitle className="text-xs font-bold uppercase tracking-widest text-zinc-500">
+                              <CardTitle className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-400">
 
-                  {stat.name}
+                                {stat.name}
 
-                </CardTitle>
+                              </CardTitle>
 
-                <stat.icon className={stat.color + " size-4"} />
+                              <stat.icon className={stat.color + " size-4 opacity-80"} />
 
-              </CardHeader>
+                            </CardHeader>
 
               <CardContent>
 
@@ -188,23 +188,23 @@ export default function Dashboard() {
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
 
-          <Card className="lg:col-span-2 border-none bg-card/40 glass shadow-sm rounded-[40px] p-2">
+          <Card className="lg:col-span-2 border-none bg-card/60 glass shadow-2xl rounded-[40px] p-2">
 
-            <CardHeader>
+                        <CardHeader>
 
-              <div className="flex items-center gap-2">
+                          <div className="flex items-center gap-2">
 
-                <Activity className="size-4 text-[#0057FF]" />
+                            <Activity className="size-4 text-primary" />
 
-                <CardTitle className="text-xs font-bold uppercase tracking-widest">
+                            <CardTitle className="text-xs font-black uppercase tracking-[0.2em] text-silver">
 
-                  Recent Activity
+                              Recent Activity
 
-                </CardTitle>
+                            </CardTitle>
 
-              </div>
+                          </div>
 
-            </CardHeader>
+                        </CardHeader>
 
             <CardContent>
 
@@ -232,17 +232,17 @@ export default function Dashboard() {
 
                         </div>
 
-                        <div>
+                                                <div>
 
-                          <p className="text-sm font-bold text-foreground">{item.client_name}</p>
+                                                  <p className="text-sm font-black uppercase tracking-tight text-white">{item.client_name}</p>
 
-                          <p className="text-[10px] uppercase tracking-widest font-bold text-zinc-500">
+                                                  <p className="text-[10px] uppercase tracking-[0.1em] font-black text-zinc-500">
 
-                            Joined {item.program_name}
+                                                    Joined {item.program_name}
 
-                          </p>
+                                                  </p>
 
-                        </div>
+                                                </div>
 
                       </div>
 
@@ -268,11 +268,11 @@ export default function Dashboard() {
 
           <div className="space-y-6">
 
-            <h2 className="text-xs font-bold uppercase tracking-widest text-zinc-500 px-4">
+                        <h2 className="text-xs font-black uppercase tracking-[0.2em] text-zinc-500 px-4">
 
-              Quick Actions
+                          Quick Actions
 
-            </h2>
+                        </h2>
 
                         <div className="grid grid-cols-1 gap-4">
 

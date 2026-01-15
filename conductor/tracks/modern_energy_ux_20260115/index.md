@@ -1,4 +1,4 @@
-# Track equipment_inventory_20260115 Context
+# Track modern_energy_ux_20260115 Context
 
 - [Specification](./spec.md)
 - [Implementation Plan](./plan.md)

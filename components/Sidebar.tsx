@@ -22,9 +22,9 @@ export function Sidebar() {
   const pathname = usePathname()
 
   return (
-    <div className="flex h-full w-64 flex-col bg-card border-r border-white/5 glass-dark z-20">
+    <div className="flex h-full w-64 flex-col bg-card/40 border-r border-white/5 glass-dark z-20">
       <div className="flex h-20 items-center px-6">
-        <span className="text-2xl font-black tracking-tighter text-primary">
+        <span className="text-2xl font-black tracking-tighter text-primary drop-shadow-[0_0_10px_rgba(0,87,255,0.3)]">
           13CONCEPT
         </span>
       </div>
@@ -38,14 +38,16 @@ export function Sidebar() {
               key={item.name}
               href={item.href}
               className={cn(
-                "group flex items-center justify-between rounded-xl px-3 py-2 text-sm font-bold transition-all hover:bg-white/5",
-                isActive ? "bg-primary text-white shadow-lg shadow-primary/20" : "text-zinc-500 hover:text-white"
+                "group flex items-center justify-between rounded-xl px-3 py-2.5 text-sm font-black uppercase tracking-tight transition-all",
+                isActive 
+                  ? "bg-primary text-white shadow-xl shadow-primary/30 scale-[1.02]" 
+                  : "text-zinc-500 hover:text-white hover:bg-white/5"
               )}
             >
               <div className="flex items-center gap-3">
                 <item.icon className={cn(
-                  "size-5",
-                  isActive ? "text-white" : "text-zinc-600 group-hover:text-white"
+                  "size-5 transition-transform group-hover:scale-110",
+                  isActive ? "text-white" : "text-zinc-600 group-hover:text-primary"
                 )} />
                 {item.name}
               </div>
