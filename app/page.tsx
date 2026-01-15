@@ -274,21 +274,23 @@ export default function Dashboard() {
 
             </h2>
 
-            <div className="grid grid-cols-1 gap-4">
+                        <div className="grid grid-cols-1 gap-4">
 
-              <Button asChild className="h-24 rounded-[30px] bg-[#0057FF] hover:bg-[#0057FF]/90 text-white flex flex-col gap-2 items-start px-8 justify-center shadow-lg shadow-blue-500/20">
+                          <Button variant="outline" asChild className="h-24 rounded-[30px] border-zinc-200 dark:border-zinc-800 flex flex-col gap-2 items-start px-8 justify-center hover:bg-zinc-50 dark:hover:bg-white/5">
 
-                <Link href="/programs">
+                            <Link href="/programs">
 
-                  <PlusCircle className="size-5" />
+                              <PlusCircle className="size-5 text-zinc-500" />
 
-                  <span className="font-bold">Build Concept</span>
+                              <span className="font-bold">Build Concept</span>
 
-                </Link>
+                            </Link>
 
-              </Button>
+                          </Button>
 
-                            <Button variant="outline" asChild className="h-24 rounded-[30px] border-zinc-200 dark:border-zinc-800 flex flex-col gap-2 items-start px-8 justify-center hover:bg-zinc-50 dark:hover:bg-white/5">
+                          <Button variant="outline" asChild className="h-24 rounded-[30px] border-zinc-200 dark:border-zinc-800 flex flex-col gap-2 items-start px-8 justify-center hover:bg-zinc-50 dark:hover:bg-white/5">
+
+            
 
                               <Link href="/clients">
 
