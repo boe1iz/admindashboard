@@ -54,8 +54,18 @@ describe('AthleteCard', () => {
     const archiveBtn = screen.getByText('Archive')
     fireEvent.click(archiveBtn)
     
-    expect(updateDoc).toHaveBeenCalled()
+    expect(updateDoc).toHaveBeenCalledWith(expect.anything(), { isArchived: true })
     expect(doc).toHaveBeenCalledWith(expect.anything(), 'athletes', '1')
+  })
+
+  it('toggles restore when already archived', async () => {
+    const athlete = { id: '2', name: 'Archived Athlete', email: 'archived@test.com', isArchived: true, assignedPrograms: [] }
+    render(<AthleteCard athlete={athlete} />)
+    
+    const restoreBtn = screen.getByText('Restore')
+    fireEvent.click(restoreBtn)
+    
+    expect(updateDoc).toHaveBeenCalledWith(expect.anything(), { isArchived: false })
   })
 })
 
