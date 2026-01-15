@@ -1,25 +1,30 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { 
-  Package, 
-  Search, 
-  Plus, 
-  Database,
-  Archive,
-  Trash2,
-  Edit2
-} from 'lucide-react'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Card } from '@/components/ui/card'
 import { db } from '@/lib/firebase'
 import { collection, query, onSnapshot, orderBy, doc, updateDoc } from 'firebase/firestore'
 import { CreateEquipmentDialog } from '@/components/CreateEquipmentDialog'
 import { EditEquipmentDialog } from '@/components/EditEquipmentDialog'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
 import { toast } from 'sonner'
-
+import {
+  Package,
+  Plus,
+  Database,
+  Archive,
+  Edit2,
+  MoreVertical,
+  ArchiveRestore,
+  Pencil
+} from 'lucide-react'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { Button } from '@/components/ui/button'
+import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 interface Equipment {
   id: string
   name: string
@@ -117,38 +122,35 @@ export default function InventoryPage() {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
               {activeItems.map((item) => (
                 <div key={item.id}>
-                  <Card className="bg-zinc-900/50 border-white/5 p-6 h-full flex items-center justify-between group hover:border-[#0057FF]/50 transition-colors">
-                    <div className="flex items-center gap-4">
-                      <div className="size-12 rounded-2xl bg-[#0057FF]/10 flex items-center justify-center">
+                  <Card className="relative group cursor-pointer hover:border-primary/50 transition-all">
+                    <div className="absolute top-4 right-4 z-10">
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button variant="ghost" size="icon">
+                            <MoreVertical className="size-4" />
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                          <DropdownMenuItem onClick={() => setEditingItem(item)}>
+                            <Pencil className="mr-2 size-4" />
+                            Edit Details
+                          </DropdownMenuItem>
+                          <DropdownMenuItem onClick={() => toggleActive(item)}>
+                            <Archive className="mr-2 size-4" />
+                            Archive
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </div>
+                    <CardHeader>
+                      <div className="size-12 rounded-2xl bg-[#0057FF]/10 flex items-center justify-center mb-4">
                         <Package className="size-6 text-[#0057FF]" />
                       </div>
-                      <div>
-                        <h4 className="font-bold text-white uppercase tracking-tight line-clamp-1">{item.name}</h4>
-                        <p className="text-[10px] text-zinc-500 uppercase font-bold tracking-widest mt-1">
-                          Operational
-                        </p>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                      <Button 
-                        variant="ghost" 
-                        size="icon" 
-                        className="text-zinc-400 hover:text-white hover:bg-white/5"
-                        onClick={() => setEditingItem(item)}
-                        aria-label="Edit equipment"
-                      >
-                        <Edit2 className="size-4" />
-                      </Button>
-                      <Button 
-                        variant="ghost" 
-                        size="icon" 
-                        className="text-zinc-400 hover:text-[#0057FF] hover:bg-[#0057FF]/5"
-                        onClick={() => toggleActive(item)}
-                        aria-label="Archive equipment"
-                      >
-                        <Archive className="size-4" />
-                      </Button>
-                    </div>
+                      <CardTitle className="line-clamp-1">{item.name}</CardTitle>
+                      <CardDescription className="text-[10px] uppercase font-bold tracking-widest">
+                        Operational
+                      </CardDescription>
+                    </CardHeader>
                   </Card>
                 </div>
               ))}
@@ -177,29 +179,35 @@ export default function InventoryPage() {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
               {archivedItems.map((item) => (
                 <div key={item.id}>
-                  <Card className="bg-zinc-900/50 border-white/5 p-6 h-full flex items-center justify-between group opacity-60 hover:opacity-100 transition-all">
-                    <div className="flex items-center gap-4">
-                      <div className="size-12 rounded-2xl bg-zinc-800 flex items-center justify-center">
+                  <Card className="relative group cursor-pointer opacity-60 hover:opacity-100 transition-all">
+                    <div className="absolute top-4 right-4 z-10">
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button variant="ghost" size="icon">
+                            <MoreVertical className="size-4" />
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                          <DropdownMenuItem onClick={() => setEditingItem(item)}>
+                            <Pencil className="mr-2 size-4" />
+                            Edit Details
+                          </DropdownMenuItem>
+                          <DropdownMenuItem onClick={() => toggleActive(item)}>
+                            <ArchiveRestore className="mr-2 size-4" />
+                            Restore
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </div>
+                    <CardHeader>
+                      <div className="size-12 rounded-2xl bg-zinc-800 flex items-center justify-center mb-4">
                         <Archive className="size-6 text-zinc-500" />
                       </div>
-                      <div>
-                        <h4 className="font-bold text-white uppercase tracking-tight line-clamp-1">{item.name}</h4>
-                        <p className="text-[10px] text-zinc-500 uppercase font-bold tracking-widest mt-1">
-                          In Vault
-                        </p>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                      <Button 
-                        variant="ghost" 
-                        size="icon" 
-                        className="text-zinc-400 hover:text-[#0057FF] hover:bg-[#0057FF]/5"
-                        onClick={() => toggleActive(item)}
-                        aria-label="Restore equipment"
-                      >
-                        <Database className="size-4" />
-                      </Button>
-                    </div>
+                      <CardTitle className="line-clamp-1">{item.name}</CardTitle>
+                      <CardDescription className="text-[10px] uppercase font-bold tracking-widest">
+                        In Vault
+                      </CardDescription>
+                    </CardHeader>
                   </Card>
                 </div>
               ))}

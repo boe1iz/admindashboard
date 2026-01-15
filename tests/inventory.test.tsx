@@ -1,4 +1,4 @@
-import { render, screen, within } from '@testing-library/react'
+import { render, screen, waitFor, fireEvent } from '@testing-library/react'
 import { describe, it, expect, vi } from 'vitest'
 import InventoryPage from '../app/inventory/page'
 import { updateDoc, doc } from 'firebase/firestore'
@@ -27,6 +27,16 @@ vi.mock('firebase/firestore', () => ({
   }),
 }))
 
+// Mock Radix DropdownMenu to render content inline
+vi.mock('@/components/ui/dropdown-menu', () => ({
+  DropdownMenu: ({ children }: any) => <div>{children}</div>,
+  DropdownMenuTrigger: ({ children }: any) => <div>{children}</div>,
+  DropdownMenuContent: ({ children }: any) => <div>{children}</div>,
+  DropdownMenuItem: ({ children, onClick }: any) => (
+    <button onClick={onClick}>{children}</button>
+  ),
+}))
+
 describe('Inventory Page', () => {
   it('renders the inventory page header', () => {
     render(<InventoryPage />)
@@ -43,14 +53,12 @@ describe('Inventory Page', () => {
     expect(screen.queryByText('Archived Gear')).toBeNull()
   })
 
-  it('calls updateDoc when archive button is clicked', async () => {
-    const { fireEvent } = await import('@testing-library/react')
+  it('calls updateDoc when archive item is clicked', async () => {
     render(<InventoryPage />)
     
-    const dumbbellCard = screen.getByText('Dumbbell').closest('div')?.parentElement?.parentElement
-    const archiveBtn = within(dumbbellCard!).getByLabelText(/archive equipment/i)
-    
-    fireEvent.click(archiveBtn)
+    // Find all "Archive" buttons (one per card in the mock)
+    const archiveBtns = screen.getAllByText('Archive')
+    fireEvent.click(archiveBtns[0])
     
     expect(updateDoc).toHaveBeenCalledWith(expect.anything(), { is_active: false })
   })
