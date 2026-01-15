@@ -24,6 +24,6 @@ This plan outlines the integration of facility equipment selection into the work
 - [x] Task: Render Equipment Tags on WorkoutCard [94ee47c]
     - [x] Write failing test for conditional rendering of gear badges
     - [x] Update `WorkoutCard` component to display assigned equipment names as sleek silver tags
-- [~] Task: Visual QA & Mobile Responsiveness
-    - [ ] Verify that the multi-select interaction and tag layout work correctly on mobile devices
-- [ ] Task: Conductor - User Manual Verification 'Visual Display & Consistency' (Protocol in workflow.md)
+- [x] Task: Visual QA & Mobile Responsiveness [b297c7a]
+    - [x] Verify that the multi-select interaction and tag layout work correctly on mobile devices
+- [~] Task: Conductor - User Manual Verification 'Visual Display & Consistency' (Protocol in workflow.md)
