@@ -8,7 +8,7 @@ This plan outlines the implementation of the Equipment Inventory page, following
 - [x] Task: Conductor - User Manual Verification 'Foundation & Data Layer' (Protocol in workflow.md) (3cb2eb4)
 
 ## Phase 2: Inventory UI & Listing
-- [ ] Task: Tabbed Layout & Search State
+- [x] Task: Tabbed Layout & Search State (d04c84d)
     - [ ] Write failing tests for tab switching and search filtering
     - [ ] Implement Operational/Vault tabs with search bar and item counts
 - [ ] Task: Equipment List Rendering
