@@ -38,9 +38,10 @@ describe('ManageProgramsDialog', () => {
   })
 
   it('calls updateDoc with arrayRemove when unassign button is clicked', async () => {
-    render(<ManageProgramsDialog athlete={mockAthlete as any} open={true} onOpenChange={() => {}} />)
-    
-    const unassignBtn = screen.getByLabelText('Unassign prog1')
+    const mockAthleteWithMapped = { id: 'athlete-1', name: 'John Doe', assignedPrograms: ['prog-1'] }
+    render(<ManageProgramsDialog athlete={mockAthleteWithMapped as any} open={true} onOpenChange={() => {}} />)
+
+    const unassignBtn = screen.getByLabelText('Unassign Program 1')
     fireEvent.click(unassignBtn)
     
     await waitFor(() => {
@@ -63,9 +64,10 @@ describe('ManageProgramsDialog', () => {
 
   it('handles errors when unassigning', async () => {
     vi.mocked(updateDoc).mockRejectedValueOnce(new Error('Firestore Error'))
-    render(<ManageProgramsDialog athlete={mockAthlete as any} open={true} onOpenChange={() => {}} />)
+    const mockAthleteWithMapped = { id: 'athlete-1', name: 'John Doe', assignedPrograms: ['prog-1'] }
+    render(<ManageProgramsDialog athlete={mockAthleteWithMapped as any} open={true} onOpenChange={() => {}} />)
     
-    const unassignBtn = screen.getByLabelText('Unassign prog1')
+    const unassignBtn = screen.getByLabelText('Unassign Program 1')
     fireEvent.click(unassignBtn)
     
     await waitFor(() => {

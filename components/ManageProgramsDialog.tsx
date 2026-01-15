@@ -95,18 +95,21 @@ export function ManageProgramsDialog({ athlete, open, onOpenChange }: ManageProg
             <h3 className="text-sm font-medium text-muted-foreground uppercase tracking-wider">Assigned Programs</h3>
             <div className="flex flex-wrap gap-2">
               {athlete.assignedPrograms && athlete.assignedPrograms.length > 0 ? (
-                athlete.assignedPrograms.map(programId => (
-                  <div key={programId} className="flex items-center gap-1 px-3 py-1 bg-secondary text-secondary-foreground rounded-full text-sm font-medium group">
-                    {programId}
-                    <button 
-                      onClick={() => unassignProgram(programId)}
-                      className="hover:text-destructive transition-colors"
-                      aria-label={`Unassign ${programId}`}
-                    >
-                      <X className="size-3" />
-                    </button>
-                  </div>
-                ))
+                athlete.assignedPrograms.map(programId => {
+                  const programName = programs.find(p => p.id === programId)?.name || programId
+                  return (
+                    <div key={programId} className="flex items-center gap-1 px-3 py-1 bg-secondary text-secondary-foreground rounded-full text-sm font-medium group">
+                      {programName}
+                      <button 
+                        onClick={() => unassignProgram(programId)}
+                        className="hover:text-destructive transition-colors"
+                        aria-label={`Unassign ${programName}`}
+                      >
+                        <X className="size-3" />
+                      </button>
+                    </div>
+                  )
+                })
               ) : (
                 <p className="text-sm text-muted-foreground italic">No programs assigned.</p>
               )}

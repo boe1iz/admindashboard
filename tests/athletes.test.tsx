@@ -45,11 +45,12 @@ vi.mock('@/components/ui/dropdown-menu', () => ({
 describe('AthleteCard', () => {
   it('renders athlete info and toggles archive', async () => {
     const athlete = { id: '1', name: 'Test Athlete', email: 'test@test.com', isArchived: false, assignedPrograms: ['prog1'] }
-    render(<AthleteCard athlete={athlete} />)
+    const programs = [{ id: 'prog1', name: 'Program Name' }]
+    render(<AthleteCard athlete={athlete} programs={programs} />)
     
     expect(screen.getByText('Test Athlete')).toBeDefined()
     expect(screen.getByText('test@test.com')).toBeDefined()
-    expect(screen.getByText('prog1')).toBeDefined()
+    expect(screen.getByText('Program Name')).toBeDefined()
 
     const archiveBtn = screen.getByText('Archive')
     fireEvent.click(archiveBtn)
@@ -60,7 +61,7 @@ describe('AthleteCard', () => {
 
   it('toggles restore when already archived', async () => {
     const athlete = { id: '2', name: 'Archived Athlete', email: 'archived@test.com', isArchived: true, assignedPrograms: [] }
-    render(<AthleteCard athlete={athlete} />)
+    render(<AthleteCard athlete={athlete} programs={[]} />)
     
     const restoreBtn = screen.getByText('Restore')
     fireEvent.click(restoreBtn)

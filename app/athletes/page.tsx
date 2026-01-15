@@ -25,7 +25,12 @@ interface Athlete {
   assignedPrograms?: string[]
 }
 
-export function AthleteCard({ athlete }: { athlete: Athlete }) {
+interface Program {
+  id: string
+  name: string
+}
+
+export function AthleteCard({ athlete, programs }: { athlete: Athlete, programs: Program[] }) {
   const [isManageDialogOpen, setIsManageDialogOpen] = useState(false)
 
   const toggleArchive = async () => {
@@ -76,11 +81,14 @@ export function AthleteCard({ athlete }: { athlete: Athlete }) {
       </CardHeader>
       <CardContent>
         <div className="flex flex-wrap gap-2">
-          {athlete.assignedPrograms?.map(programId => (
-             <span key={programId} className="px-2 py-1 bg-secondary text-secondary-foreground text-xs rounded-full">
-               {programId}
-             </span>
-          ))}
+          {athlete.assignedPrograms?.map(programId => {
+             const programName = programs.find(p => p.id === programId)?.name || programId
+             return (
+               <span key={programId} className="px-2 py-1 bg-secondary text-secondary-foreground text-xs rounded-full">
+                 {programName}
+               </span>
+             )
+          })}
         </div>
       </CardContent>
       <ManageProgramsDialog 
@@ -94,26 +102,34 @@ export function AthleteCard({ athlete }: { athlete: Athlete }) {
 
 export default function AthletesPage() {
   const [athletes, setAthletes] = useState<Athlete[]>([])
+  const [programs, setPrograms] = useState<Program[]>([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    const q = query(collection(db, 'athletes'))
-    const unsubscribe = onSnapshot(q, 
-      (snapshot) => {
-        const athletesData = snapshot.docs.map(doc => ({
-          id: doc.id,
-          ...doc.data()
-        })) as Athlete[]
-        setAthletes(athletesData)
-        setLoading(false)
-      },
-      (error) => {
-        console.error("Firestore onSnapshot error:", error)
-        setLoading(false)
-      }
-    )
+    const qAthletes = query(collection(db, 'athletes'))
+    const qPrograms = query(collection(db, 'programs'))
+    
+    const unsubscribeAthletes = onSnapshot(qAthletes, (snapshot) => {
+      const athletesData = snapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      })) as Athlete[]
+      setAthletes(athletesData)
+    })
 
-    return () => unsubscribe()
+    const unsubscribePrograms = onSnapshot(qPrograms, (snapshot) => {
+      const programsData = snapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      })) as Program[]
+      setPrograms(programsData)
+      setLoading(false)
+    })
+
+    return () => {
+      unsubscribeAthletes()
+      unsubscribePrograms()
+    }
   }, [])
 
   const activeAthletes = athletes.filter(a => !a.isArchived)
@@ -137,7 +153,7 @@ export default function AthletesPage() {
         <TabsContent value="operational" className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {activeAthletes.map(athlete => (
-              <AthleteCard key={athlete.id} athlete={athlete} />
+              <AthleteCard key={athlete.id} athlete={athlete} programs={programs} />
             ))}
           </div>
         </TabsContent>
@@ -145,7 +161,7 @@ export default function AthletesPage() {
         <TabsContent value="vault" className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {archivedAthletes.map(athlete => (
-              <AthleteCard key={athlete.id} athlete={athlete} />
+              <AthleteCard key={athlete.id} athlete={athlete} programs={programs} />
             ))}
           </div>
         </TabsContent>
