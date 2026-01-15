@@ -11,7 +11,7 @@
     - [ ] Implement to Pass Tests (Green Phase)
     - [ ] Verify Coverage & Quality Gates
     - [ ] Commit & Record Task (Git Notes, SHA)
-- [~] Task: Implement Archive/Restore Athlete Functionality
+- [x] Task: Implement Archive/Restore Athlete Functionality [6ffdde8]
     - [ ] Write Failing Tests (Red Phase)
     - [ ] Implement to Pass Tests (Green Phase)
     - [ ] Verify Coverage & Quality Gates
