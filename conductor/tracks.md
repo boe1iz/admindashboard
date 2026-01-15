@@ -13,5 +13,5 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 ---
 
-- [~] **Track: Workout Equipment Assignment**
+- [x] **Track: Workout Equipment Assignment**
   *Link: [./tracks/workout_equipment_assignment_20260115/](./tracks/workout_equipment_assignment_20260115/)*
