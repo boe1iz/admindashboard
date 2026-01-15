@@ -7,7 +7,7 @@
 ## Visual Identity & Design System
 - **Elite Performance Aesthetic**:
     - **Primary Palette**: Concept Blue (`#0057FF`) for active states and primary actions.
-    - **Backgrounds**: Athletic Black (`#0F172A`) for sidebars/high-contrast areas, Slate Background (`#F8FAFC`) for the main workspace.
+    - **Backgrounds**: Studio White (`#FFFFFF`) for sidebars/cards, Studio Slate (`#F1F5F9`) for the main workspace.
     - **Vault Styling**: Archived data must use grayscale and reduced opacity to visually separate it from active content.
 - **Card Design**:
     - **Border Radius**: Maintain a strict `40px` border-radius for all main cards to ensure consistency with the "Elite" brand signature.

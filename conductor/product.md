@@ -11,7 +11,7 @@ Key aspects:
     - Training Sequence Builder (Video player, reordering).
     - Athlete Roster (Assignment logic).
     - Equipment Inventory.
-- **Design**: Dark/Contrast "Athletic" vibe.
+- **Design**: "Sophisticated Studio" aesthetic (High-contrast light theme with vibrant energetic accents).
 
 # Product Guide: 13Concept Admin Dashboard
 
@@ -53,7 +53,7 @@ To recreate the 13Concept Admin Dashboard as a high-performance Next.js 14 appli
 - **Archive, Don't Delete**: Focus on deactivating gear rather than permanent removal.
 
 ## Technical Specifications & UI
-- **Visual Vibe**: "Elite Performance" (Concept Blue: `#0057FF`, Athletic Black: `#0F172A`).
+- **Visual Vibe**: "Sophisticated Studio" (Concept Blue: `#0057FF`, Studio Grey: `#F1F5F9`).
 - **UI Components**: shadcn/ui, Lucide-react icons, 40px border-radius cards.
 - **Interaction**: Framer Motion for modal/tab transitions.
 - **Optimistic UI**: Immediate local state updates for reordering/assigning.
