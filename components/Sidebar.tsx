@@ -10,6 +10,7 @@ import {
   Package, 
   ChevronRight 
 } from 'lucide-react'
+import { motion } from 'framer-motion'
 
 const navItems = [
   { name: 'Dashboard', href: '/', icon: LayoutDashboard },
@@ -34,25 +35,30 @@ export function Sidebar() {
           const isActive = pathname === item.href || (item.href !== '/' && pathname?.startsWith(item.href))
           
           return (
-            <Link
+            <motion.div
               key={item.name}
-              href={item.href}
-              className={cn(
-                "group flex items-center justify-between rounded-xl px-3 py-2.5 text-sm font-black uppercase tracking-tight transition-all",
-                isActive 
-                  ? "bg-primary text-white shadow-xl shadow-primary/30 scale-[1.02]" 
-                  : "text-zinc-500 hover:text-white hover:bg-white/5"
-              )}
+              whileHover={{ scale: 1.02, x: 4 }}
+              whileTap={{ scale: 0.98 }}
             >
-              <div className="flex items-center gap-3">
-                <item.icon className={cn(
-                  "size-5 transition-transform group-hover:scale-110",
-                  isActive ? "text-white" : "text-zinc-600 group-hover:text-primary"
-                )} />
-                {item.name}
-              </div>
-              {isActive && <ChevronRight className="size-4" />}
-            </Link>
+              <Link
+                href={item.href}
+                className={cn(
+                  "group flex items-center justify-between rounded-xl px-3 py-2.5 text-sm font-black uppercase tracking-tight transition-all",
+                  isActive 
+                    ? "bg-primary text-white shadow-xl shadow-primary/30" 
+                    : "text-zinc-500 hover:text-white hover:bg-white/5"
+                )}
+              >
+                <div className="flex items-center gap-3">
+                  <item.icon className={cn(
+                    "size-5 transition-transform group-hover:scale-110",
+                    isActive ? "text-white" : "text-zinc-600 group-hover:text-primary"
+                  )} />
+                  {item.name}
+                </div>
+                {isActive && <ChevronRight className="size-4" />}
+              </Link>
+            </motion.div>
           )
         })}
       </nav>
