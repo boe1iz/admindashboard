@@ -12,10 +12,11 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { Button } from '@/components/ui/button'
-import { MoreVertical, Archive, ArchiveRestore, Settings2 } from 'lucide-react'
+import { MoreVertical, Archive, ArchiveRestore, Settings2, Pencil } from 'lucide-react'
 import { toast } from 'sonner'
 import { CreateAthleteDialog } from '@/components/CreateAthleteDialog'
 import { ManageProgramsDialog } from '@/components/ManageProgramsDialog'
+import { EditAthleteDialog } from '@/components/EditAthleteDialog'
 
 interface Client {
   id: string
@@ -40,6 +41,7 @@ interface Assignment {
 
 export function AthleteCard({ athlete, programs, assignments }: { athlete: Client, programs: Program[], assignments: Assignment[] }) {
   const [isManageDialogOpen, setIsManageDialogOpen] = useState(false)
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false)
   const [isProcessing, setIsProcessing] = useState(false)
 
   const toggleActive = async () => {
@@ -64,52 +66,62 @@ export function AthleteCard({ athlete, programs, assignments }: { athlete: Clien
   )
 
   return (
-    <Card className={`relative group hover:border-primary/50 transition-all ${isProcessing ? 'opacity-50 pointer-events-none scale-[0.98]' : ''} ${!athlete.is_active ? 'grayscale-[0.5] opacity-80' : ''}`}>
-      <div className="absolute top-4 right-4 z-10">
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" size="icon">
-              <MoreVertical className="size-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuItem onClick={() => setIsManageDialogOpen(true)}>
-              <Settings2 className="mr-2 size-4" />
-              Manage Programs
-            </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => toggleActive()}>
-              {athlete.is_active ? (
-                <>
-                  <Archive className="mr-2 size-4" />
-                  Archive
-                </>
-              ) : (
-                <>
-                  <ArchiveRestore className="mr-2 size-4" />
-                  Restore
-                </>
-              )}
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      </div>
-      <CardHeader>
-        <CardTitle>{athlete.name}</CardTitle>
-        <CardDescription>{athlete.email}</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <div className="flex flex-wrap gap-2">
-          {clientAssignments.map(assignment => {
-             const progId = assignment.programId || assignment.program_id
-             const programName = programs.find(p => p.id === progId)?.name || progId || 'Unknown Program'
-             return (
-               <span key={assignment.id} className="px-2 py-1 bg-secondary text-secondary-foreground text-xs rounded-full">
-                 {programName}
-               </span>
-             )
-          })}
+    <>
+      <Card 
+        className={`relative group cursor-pointer hover:border-primary/50 transition-all ${isProcessing ? 'opacity-50 pointer-events-none scale-[0.98]' : ''} ${!athlete.is_active ? 'grayscale-[0.5] opacity-80' : ''}`}
+        onClick={() => setIsManageDialogOpen(true)}
+      >
+        <div className="absolute top-4 right-4 z-10">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild onClick={(e) => e.stopPropagation()}>
+              <Button variant="ghost" size="icon">
+                <MoreVertical className="size-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem onClick={(e) => { e.stopPropagation(); setIsEditDialogOpen(true); }}>
+                <Pencil className="mr-2 size-4" />
+                Edit Details
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={(e) => { e.stopPropagation(); setIsManageDialogOpen(true); }}>
+                <Settings2 className="mr-2 size-4" />
+                Manage Programs
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={(e) => { e.stopPropagation(); toggleActive(); }}>
+                {athlete.is_active ? (
+                  <>
+                    <Archive className="mr-2 size-4" />
+                    Archive
+                  </>
+                ) : (
+                  <>
+                    <ArchiveRestore className="mr-2 size-4" />
+                    Restore
+                  </>
+                )}
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
-      </CardContent>
+        <CardHeader>
+          <CardTitle>{athlete.name}</CardTitle>
+          <CardDescription>{athlete.email}</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="flex flex-wrap gap-2">
+            {clientAssignments.map(assignment => {
+               const progId = assignment.programId || assignment.program_id
+               const programName = programs.find(p => p.id === progId)?.name || progId || 'Unknown Program'
+               return (
+                 <span key={assignment.id} className="px-2 py-1 bg-secondary text-secondary-foreground text-xs rounded-full">
+                   {programName}
+                 </span>
+               )
+            })}
+          </div>
+        </CardContent>
+      </Card>
+
       <ManageProgramsDialog 
         athlete={athlete} 
         programs={programs}
@@ -117,7 +129,13 @@ export function AthleteCard({ athlete, programs, assignments }: { athlete: Clien
         open={isManageDialogOpen} 
         onOpenChange={setIsManageDialogOpen} 
       />
-    </Card>
+
+      <EditAthleteDialog
+        athlete={athlete}
+        open={isEditDialogOpen}
+        onOpenChange={setIsEditDialogOpen}
+      />
+    </>
   )
 }
 

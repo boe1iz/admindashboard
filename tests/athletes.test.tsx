@@ -70,6 +70,17 @@ describe('AthleteCard', () => {
     
     expect(updateDoc).toHaveBeenCalledWith(expect.anything(), { is_active: true })
   })
+
+  it('opens edit dialog when Edit Details is clicked', async () => {
+    const athlete = { id: '1', name: 'Test', email: 'test@test.com', is_active: true }
+    render(<AthleteCard athlete={athlete} programs={[]} assignments={[]} />)
+    
+    const editBtn = screen.getByText('Edit Details')
+    fireEvent.click(editBtn)
+    
+    // Check if dialog title is present
+    expect(screen.getByText(/Edit Athlete Details/i)).toBeDefined()
+  })
 })
 
 describe('AthletesPage', () => {
