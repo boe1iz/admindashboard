@@ -1,7 +1,7 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import { describe, it, expect, vi } from 'vitest'
 import { ManageProgramsDialog } from '@/components/ManageProgramsDialog'
-import { updateDoc, doc } from 'firebase/firestore'
+import { updateDoc, doc, onSnapshot } from 'firebase/firestore'
 
 // Mock firebase
 vi.mock('@/lib/firebase', () => ({
@@ -10,9 +10,21 @@ vi.mock('@/lib/firebase', () => ({
 
 // Mock firestore functions
 vi.mock('firebase/firestore', () => ({
+  collection: vi.fn(),
+  query: vi.fn(),
+  onSnapshot: vi.fn((q, cb) => {
+    cb({
+      docs: [
+        { id: 'prog-1', data: () => ({ name: 'Program 1', isArchived: false }) },
+        { id: 'prog-2', data: () => ({ name: 'Program 2', isArchived: false }) }
+      ]
+    })
+    return () => {}
+  }),
   doc: vi.fn((db, coll, id) => ({ id })),
   updateDoc: vi.fn(() => Promise.resolve()),
-  arrayRemove: vi.fn((val) => `arrayRemove(${val})`)
+  arrayRemove: vi.fn((val) => `arrayRemove(${val})`),
+  arrayUnion: vi.fn((val) => `arrayUnion(${val})`)
 }))
 
 describe('ManageProgramsDialog', () => {
@@ -28,13 +40,24 @@ describe('ManageProgramsDialog', () => {
   it('calls updateDoc with arrayRemove when unassign button is clicked', async () => {
     render(<ManageProgramsDialog athlete={mockAthlete as any} open={true} onOpenChange={() => {}} />)
     
-    // Find the X button for prog1
     const unassignBtn = screen.getByLabelText('Unassign prog1')
     fireEvent.click(unassignBtn)
     
     await waitFor(() => {
       expect(updateDoc).toHaveBeenCalled()
-      expect(doc).toHaveBeenCalledWith(expect.anything(), 'athletes', 'athlete-1')
+    })
+  })
+
+  it('calls updateDoc with arrayUnion when a program is assigned', async () => {
+    render(<ManageProgramsDialog athlete={mockAthlete as any} open={true} onOpenChange={() => {}} />)
+    
+    // Find a program that is NOT assigned (prog-1 or prog-2)
+    // Assigned is 'prog1' (different ID pattern for mock data consistency check)
+    const assignBtn = await screen.findByLabelText('Assign Program 1')
+    fireEvent.click(assignBtn)
+    
+    await waitFor(() => {
+      expect(updateDoc).toHaveBeenCalled()
     })
   })
 

@@ -29,7 +29,7 @@
     - [ ] Implement to Pass Tests (Green Phase)
     - [ ] Verify Coverage & Quality Gates
     - [ ] Commit & Record Task (Git Notes, SHA)
-- [ ] Task: Implement Searchable Program Dropdown & Assignment Logic
+- [~] Task: Implement Searchable Program Dropdown & Assignment Logic
     - [ ] Write Failing Tests (Red Phase)
     - [ ] Implement to Pass Tests (Green Phase)
     - [ ] Verify Coverage & Quality Gates
