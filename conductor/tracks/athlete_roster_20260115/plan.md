@@ -1,6 +1,6 @@
 # Plan: Athlete Roster & Program Assignment
 
-## Phase 1: Foundation & Athlete CRUD
+## Phase 1: Foundation & Athlete CRUD [checkpoint: 19cd662]
 - [x] Task: Create Athlete List View (Active/Archived Tabs) [9deb1cc]
     - [ ] Write Failing Tests (Red Phase)
     - [ ] Implement to Pass Tests (Green Phase)
