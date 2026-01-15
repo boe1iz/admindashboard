@@ -29,37 +29,37 @@ interface Program {
 
 interface Assignment {
   id: string
-  athleteId?: string
-  athlete_id?: string
+  clientId?: string
+  client_id?: string
   client_id?: string
   programId?: string
   program_id?: string
 }
 
-interface ManageProgramsDialogProps {
-  athlete: Client
+interface ManageClientProgramsDialogProps {
+  client: Client
   programs: Program[]
   assignments: Assignment[]
   open: boolean
   onOpenChange: (open: boolean) => void
 }
 
-export function ManageProgramsDialog({ athlete, programs, assignments, open, onOpenChange }: ManageProgramsDialogProps) {
+export function ManageClientProgramsDialog({ client, programs, assignments, open, onOpenChange }: ManageClientProgramsDialogProps) {
   const [searchTerm, setSearchTerm] = useState('')
   const [isProcessing, setIsProcessing] = useState(false)
 
   const activePrograms = programs.filter(p => !p.isArchived)
   const clientAssignments = assignments.filter(a => 
-    (a.athleteId === athlete.id) || 
-    (a.athlete_id === athlete.id) || 
-    (a.client_id === athlete.id)
+    (a.clientId === client.id) || 
+    (a.client_id === client.id) || 
+    (a.client_id === client.id)
   )
 
   const assignProgram = async (programId: string, programName: string) => {
     setIsProcessing(true)
     try {
       await addDoc(collection(db, 'assignments'), {
-        athlete_id: athlete.id,
+        client_id: client.id,
         program_id: programId,
         assigned_at: serverTimestamp(),
         current_day_number: 1
@@ -95,9 +95,9 @@ export function ManageProgramsDialog({ athlete, programs, assignments, open, onO
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className={`sm:max-w-[500px] transition-all ${isProcessing ? 'opacity-50 pointer-events-none' : ''}`}>
         <DialogHeader>
-          <DialogTitle>Manage Programs for {athlete.name}</DialogTitle>
+          <DialogTitle>Manage Programs for {client.name}</DialogTitle>
           <DialogDescription>
-            Assign or unassign training programs for this athlete.
+            Assign or unassign training programs for this client.
           </DialogDescription>
         </DialogHeader>
         <div className="py-4 space-y-6">

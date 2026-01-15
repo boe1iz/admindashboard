@@ -1,6 +1,6 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import { describe, it, expect, vi } from 'vitest'
-import { CreateAthleteDialog } from '@/components/CreateAthleteDialog'
+import { CreateClientDialog } from '@/components/CreateClientDialog'
 import { addDoc, collection } from 'firebase/firestore'
 
 // Mock firebase
@@ -15,12 +15,12 @@ vi.mock('firebase/firestore', () => ({
   serverTimestamp: vi.fn(() => 'timestamp')
 }))
 
-describe('CreateAthleteDialog', () => {
-  it('submits the form with athlete details', async () => {
-    render(<CreateAthleteDialog />)
+describe('CreateClientDialog', () => {
+  it('submits the form with client details', async () => {
+    render(<CreateClientDialog />)
     
     // Open dialog
-    const openBtn = screen.getByText('Onboard Athlete')
+    const openBtn = screen.getByText('Onboard Client')
     fireEvent.click(openBtn)
     
     // Fill form
@@ -28,7 +28,7 @@ describe('CreateAthleteDialog', () => {
     fireEvent.change(screen.getByLabelText(/Email/i), { target: { value: 'john@doe.com' } })
     
     // Submit
-    const submitBtn = screen.getByText('Onboard Athlete', { selector: 'button[type="submit"]' })
+    const submitBtn = screen.getByText('Onboard Client', { selector: 'button[type="submit"]' })
     fireEvent.click(submitBtn)
     
     await waitFor(() => {

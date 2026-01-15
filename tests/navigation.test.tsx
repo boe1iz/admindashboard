@@ -7,7 +7,7 @@ describe('Sidebar', () => {
     render(<Sidebar />)
     expect(screen.getByText('Dashboard')).toBeDefined()
     expect(screen.getByText('Programs')).toBeDefined()
-    expect(screen.getByText('Athletes')).toBeDefined()
+    expect(screen.getByText('Clients')).toBeDefined()
     expect(screen.getByText('Inventory')).toBeDefined()
   })
 })

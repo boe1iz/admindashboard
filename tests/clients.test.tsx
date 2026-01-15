@@ -1,8 +1,8 @@
 import { render, screen, waitFor, fireEvent } from '@testing-library/react'
 import { describe, it, expect, vi } from 'vitest'
-import AthletesPage from '@/app/athletes/page'
+import ClientsPage from '@/app/clients/page'
 // @ts-ignore - Internal component test
-import { AthleteCard } from '@/app/athletes/page'
+import { ClientCard } from '@/app/clients/page'
 import { updateDoc, doc, onSnapshot } from 'firebase/firestore'
 
 // Mock firebase
@@ -20,7 +20,7 @@ vi.mock('firebase/firestore', () => ({
     // Immediate execution of callback with dummy data
     cb({
       docs: [
-        { id: '1', data: () => ({ name: 'Active Athlete', email: 'active@test.com', is_active: true }) }
+        { id: '1', data: () => ({ name: 'Active Client', email: 'active@test.com', is_active: true }) }
       ]
     })
     return () => {} // Unsubscribe
@@ -42,15 +42,15 @@ vi.mock('@/components/ui/dropdown-menu', () => ({
   ),
 }))
 
-describe('AthleteCard', () => {
-  it('renders athlete info and toggles archive', async () => {
-    const athlete = { id: '1', name: 'Test Athlete', email: 'test@test.com', is_active: true }
+describe('ClientCard', () => {
+  it('renders client info and toggles archive', async () => {
+    const client = { id: '1', name: 'Test Client', email: 'test@test.com', is_active: true }
     const programs = [{ id: 'prog1', name: 'Program Name' }]
-    const assignments = [{ id: 'a1', athlete_id: '1', program_id: 'prog1' }]
+    const assignments = [{ id: 'a1', client_id: '1', program_id: 'prog1' }]
     
-    render(<AthleteCard athlete={athlete} programs={programs} assignments={assignments as any} />)
+    render(<ClientCard client={client} programs={programs} assignments={assignments as any} />)
     
-    expect(screen.getByText('Test Athlete')).toBeDefined()
+    expect(screen.getByText('Test Client')).toBeDefined()
     expect(screen.getByText('test@test.com')).toBeDefined()
     expect(screen.getByText('Program Name')).toBeDefined()
 
@@ -62,8 +62,8 @@ describe('AthleteCard', () => {
   })
 
   it('toggles restore when already archived', async () => {
-    const athlete = { id: '2', name: 'Archived Athlete', email: 'archived@test.com', is_active: false }
-    render(<AthleteCard athlete={athlete} programs={[]} assignments={[]} />)
+    const client = { id: '2', name: 'Archived Client', email: 'archived@test.com', is_active: false }
+    render(<ClientCard client={client} programs={[]} assignments={[]} />)
     
     const restoreBtn = screen.getByText('Restore')
     fireEvent.click(restoreBtn)
@@ -72,36 +72,36 @@ describe('AthleteCard', () => {
   })
 
   it('opens edit dialog when Edit Details is clicked', async () => {
-    const athlete = { id: '1', name: 'Test', email: 'test@test.com', is_active: true }
-    render(<AthleteCard athlete={athlete} programs={[]} assignments={[]} />)
+    const client = { id: '1', name: 'Test', email: 'test@test.com', is_active: true }
+    render(<ClientCard client={client} programs={[]} assignments={[]} />)
     
     const editBtn = screen.getByText('Edit Details')
     fireEvent.click(editBtn)
     
     // Check if dialog title is present
-    expect(screen.getByText(/Edit Athlete Details/i)).toBeDefined()
+    expect(screen.getByText(/Edit Client Details/i)).toBeDefined()
   })
 })
 
-describe('AthletesPage', () => {
-  it('renders the athletes page with tabs', async () => {
-    render(<AthletesPage />)
-    await waitFor(() => expect(screen.queryByText('Loading Athletes...')).toBeNull())
+describe('ClientsPage', () => {
+  it('renders the clients page with tabs', async () => {
+    render(<ClientsPage />)
+    await waitFor(() => expect(screen.queryByText('Loading Clients...')).toBeNull())
     
     expect(screen.getByText('Operational')).toBeDefined()
     expect(screen.getByText('Archived Vault')).toBeDefined()
   })
 
-  it('shows empty state when no athletes', async () => {
+  it('shows empty state when no clients', async () => {
     // Mock empty snapshot
     vi.mocked(onSnapshot).mockImplementationOnce((q, cb: any) => {
       cb({ docs: [] })
       return () => {}
     })
     
-    render(<AthletesPage />)
-    await waitFor(() => expect(screen.queryByText('Loading Athletes...')).toBeNull())
+    render(<ClientsPage />)
+    await waitFor(() => expect(screen.queryByText('Loading Clients...')).toBeNull())
     
-    expect(screen.getByText('No Active Athletes')).toBeDefined()
+    expect(screen.getByText('No Active Clients')).toBeDefined()
   })
 })

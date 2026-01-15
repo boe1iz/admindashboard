@@ -18,7 +18,7 @@ import { Label } from '@/components/ui/label'
 import { UserPlus } from 'lucide-react'
 import { toast } from 'sonner'
 
-export function CreateAthleteDialog() {
+export function CreateClientDialog() {
   const [open, setOpen] = useState(false)
   const [loading, setLoading] = useState(false)
   const [formData, setFormData] = useState({
@@ -38,10 +38,10 @@ export function CreateAthleteDialog() {
       })
       setOpen(false)
       setFormData({ name: '', email: '' })
-      toast.success("Athlete onboarded successfully")
+      toast.success("Client onboarded successfully")
     } catch (error) {
-      console.error('Error adding athlete: ', error)
-      toast.error("Failed to onboard athlete")
+      console.error('Error adding client: ', error)
+      toast.error("Failed to onboard client")
     } finally {
       setLoading(false)
     }
@@ -52,15 +52,15 @@ export function CreateAthleteDialog() {
       <DialogTrigger asChild>
         <Button className="gap-2">
           <UserPlus className="size-4" />
-          Onboard Athlete
+          Onboard Client
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <form onSubmit={handleSubmit}>
           <DialogHeader>
-            <DialogTitle>Onboard Athlete</DialogTitle>
+            <DialogTitle>Onboard Client</DialogTitle>
             <DialogDescription>
-              Create a new athlete profile and add them to the roster.
+              Create a new client profile and add them to the roster.
             </DialogDescription>
           </DialogHeader>
           <div className="grid gap-4 py-4">
@@ -88,7 +88,7 @@ export function CreateAthleteDialog() {
           </div>
           <DialogFooter>
             <Button type="submit" disabled={loading}>
-              {loading ? 'Onboarding...' : 'Onboard Athlete'}
+              {loading ? 'Onboarding...' : 'Onboard Client'}
             </Button>
           </DialogFooter>
         </form>

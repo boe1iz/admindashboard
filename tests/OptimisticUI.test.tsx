@@ -1,7 +1,7 @@
 import { render, screen, fireEvent } from '@testing-library/react'
 import { describe, it, expect, vi } from 'vitest'
-import { AthleteCard } from '@/app/athletes/page'
-import { ManageProgramsDialog } from '@/components/ManageProgramsDialog'
+import { ClientCard } from '@/app/clients/page'
+import { ManageClientProgramsDialog } from '@/components/ManageClientProgramsDialog'
 
 vi.mock('@/lib/firebase', () => ({
   db: { mock: 'db' }
@@ -29,10 +29,10 @@ vi.mock('@/components/ui/dropdown-menu', () => ({
 }))
 
 describe('Optimistic UI / Pending States', () => {
-  const mockAthlete = { id: '1', name: 'Test', email: 't@t.com', is_active: true }
+  const mockClient = { id: '1', name: 'Test', email: 't@t.com', is_active: true }
   
-  it('AthleteCard shows pending state during archive', async () => {
-    const { container } = render(<AthleteCard athlete={mockAthlete} programs={[]} assignments={[]} />)
+  it('ClientCard shows pending state during archive', async () => {
+    const { container } = render(<ClientCard client={mockClient} programs={[]} assignments={[]} />)
     
     const archiveBtn = screen.getByText('Archive')
     fireEvent.click(archiveBtn)
@@ -41,9 +41,9 @@ describe('Optimistic UI / Pending States', () => {
     expect(card?.className).toContain('opacity-50')
   })
 
-  it('ManageProgramsDialog disables buttons during assignment', async () => {
+  it('ManageClientProgramsDialog disables buttons during assignment', async () => {
     const mockPrograms = [{ id: 'p1', name: 'Prog 1', isArchived: false }]
-    render(<ManageProgramsDialog athlete={mockAthlete} programs={mockPrograms as any} assignments={[]} open={true} onOpenChange={() => {}} />)
+    render(<ManageClientProgramsDialog client={mockClient} programs={mockPrograms as any} assignments={[]} open={true} onOpenChange={() => {}} />)
     
     const assignBtn = screen.getByLabelText('Assign Prog 1')
     fireEvent.click(assignBtn)

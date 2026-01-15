@@ -1,6 +1,6 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import { describe, it, expect, vi } from 'vitest'
-import { ManageProgramsDialog } from '@/components/ManageProgramsDialog'
+import { ManageClientProgramsDialog } from '@/components/ManageClientProgramsDialog'
 import { updateDoc, doc, onSnapshot, addDoc, deleteDoc } from 'firebase/firestore'
 
 // Mock firebase
@@ -29,25 +29,25 @@ vi.mock('firebase/firestore', () => ({
   where: vi.fn()
 }))
 
-describe('ManageProgramsDialog', () => {
-  const mockAthlete = { id: 'athlete-1', name: 'John Doe', is_active: true }
+describe('ManageClientProgramsDialog', () => {
+  const mockClient = { id: 'client-1', name: 'John Doe', is_active: true }
   const mockPrograms = [
     { id: 'prog-1', name: 'Program 1', isArchived: false },
     { id: 'prog-2', name: 'Program 2', isArchived: false }
   ]
   const mockAssignments = [
-    { id: 'asgn-1', athlete_id: 'athlete-1', program_id: 'prog-1' }
+    { id: 'asgn-1', client_id: 'client-1', program_id: 'prog-1' }
   ]
 
-  it('renders the dialog with athlete name and assigned programs', () => {
-    render(<ManageProgramsDialog athlete={mockAthlete as any} programs={mockPrograms as any} assignments={mockAssignments as any} open={true} onOpenChange={() => {}} />)
+  it('renders the dialog with client name and assigned programs', () => {
+    render(<ManageClientProgramsDialog client={mockClient as any} programs={mockPrograms as any} assignments={mockAssignments as any} open={true} onOpenChange={() => {}} />)
     
     expect(screen.getByText(/Manage Programs for John Doe/i)).toBeDefined()
     expect(screen.getByText('Program 1')).toBeDefined()
   })
 
   it('calls deleteDoc when unassign button is clicked', async () => {
-    render(<ManageProgramsDialog athlete={mockAthlete as any} programs={mockPrograms as any} assignments={mockAssignments as any} open={true} onOpenChange={() => {}} />)
+    render(<ManageClientProgramsDialog client={mockClient as any} programs={mockPrograms as any} assignments={mockAssignments as any} open={true} onOpenChange={() => {}} />)
     
     const unassignBtn = screen.getByLabelText('Unassign Program 1')
     fireEvent.click(unassignBtn)
@@ -58,7 +58,7 @@ describe('ManageProgramsDialog', () => {
   })
 
   it('calls addDoc when a program is assigned', async () => {
-    render(<ManageProgramsDialog athlete={mockAthlete as any} programs={mockPrograms as any} assignments={mockAssignments as any} open={true} onOpenChange={() => {}} />)
+    render(<ManageClientProgramsDialog client={mockClient as any} programs={mockPrograms as any} assignments={mockAssignments as any} open={true} onOpenChange={() => {}} />)
     
     // Find a program that is NOT assigned (Program 2)
     const assignBtn = await screen.findByLabelText('Assign Program 2')

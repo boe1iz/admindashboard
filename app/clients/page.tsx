@@ -14,9 +14,9 @@ import {
 import { Button } from '@/components/ui/button'
 import { MoreVertical, Archive, ArchiveRestore, Settings2, Pencil } from 'lucide-react'
 import { toast } from 'sonner'
-import { CreateAthleteDialog } from '@/components/CreateAthleteDialog'
-import { ManageProgramsDialog } from '@/components/ManageProgramsDialog'
-import { EditAthleteDialog } from '@/components/EditAthleteDialog'
+import { CreateClientDialog } from '@/components/CreateClientDialog'
+import { ManageClientProgramsDialog } from '@/components/ManageClientProgramsDialog'
+import { EditClientDialog } from '@/components/EditClientDialog'
 
 interface Client {
   id: string
@@ -32,14 +32,14 @@ interface Program {
 
 interface Assignment {
   id: string
-  athleteId?: string
-  athlete_id?: string
+  clientId?: string
+  client_id?: string
   client_id?: string
   programId?: string
   program_id?: string
 }
 
-export function AthleteCard({ athlete, programs, assignments }: { athlete: Client, programs: Program[], assignments: Assignment[] }) {
+export function ClientCard({ client, programs, assignments }: { client: Client, programs: Program[], assignments: Assignment[] }) {
   const [isManageDialogOpen, setIsManageDialogOpen] = useState(false)
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false)
   const [isProcessing, setIsProcessing] = useState(false)
@@ -47,28 +47,28 @@ export function AthleteCard({ athlete, programs, assignments }: { athlete: Clien
   const toggleActive = async () => {
     setIsProcessing(true)
     try {
-      await updateDoc(doc(db, 'clients', athlete.id), {
-        is_active: !athlete.is_active
+      await updateDoc(doc(db, 'clients', client.id), {
+        is_active: !client.is_active
       })
-      toast.success(!athlete.is_active ? "Athlete restored" : "Athlete archived")
+      toast.success(!client.is_active ? "Client restored" : "Client archived")
     } catch (error) {
-      console.error('Error updating athlete: ', error)
-      toast.error("Failed to update athlete")
+      console.error('Error updating client: ', error)
+      toast.error("Failed to update client")
     } finally {
       setIsProcessing(false)
     }
   }
 
   const clientAssignments = assignments.filter(a => 
-    (a.athleteId === athlete.id) || 
-    (a.athlete_id === athlete.id) || 
-    (a.client_id === athlete.id)
+    (a.clientId === client.id) || 
+    (a.client_id === client.id) || 
+    (a.client_id === client.id)
   )
 
   return (
     <>
       <Card 
-        className={`relative group cursor-pointer hover:border-primary/50 transition-all ${isProcessing ? 'opacity-50 pointer-events-none scale-[0.98]' : ''} ${!athlete.is_active ? 'grayscale-[0.5] opacity-80' : ''}`}
+        className={`relative group cursor-pointer hover:border-primary/50 transition-all ${isProcessing ? 'opacity-50 pointer-events-none scale-[0.98]' : ''} ${!client.is_active ? 'grayscale-[0.5] opacity-80' : ''}`}
         onClick={() => setIsManageDialogOpen(true)}
       >
         <div className="absolute top-4 right-4 z-10">
@@ -88,7 +88,7 @@ export function AthleteCard({ athlete, programs, assignments }: { athlete: Clien
                 Manage Programs
               </DropdownMenuItem>
               <DropdownMenuItem onClick={(e) => { e.stopPropagation(); toggleActive(); }}>
-                {athlete.is_active ? (
+                {client.is_active ? (
                   <>
                     <Archive className="mr-2 size-4" />
                     Archive
@@ -104,8 +104,8 @@ export function AthleteCard({ athlete, programs, assignments }: { athlete: Clien
           </DropdownMenu>
         </div>
         <CardHeader>
-          <CardTitle>{athlete.name}</CardTitle>
-          <CardDescription>{athlete.email}</CardDescription>
+          <CardTitle>{client.name}</CardTitle>
+          <CardDescription>{client.email}</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="flex flex-wrap gap-2">
@@ -122,16 +122,16 @@ export function AthleteCard({ athlete, programs, assignments }: { athlete: Clien
         </CardContent>
       </Card>
 
-      <ManageProgramsDialog 
-        athlete={athlete} 
+      <ManageClientProgramsDialog 
+        client={client} 
         programs={programs}
         assignments={assignments}
         open={isManageDialogOpen} 
         onOpenChange={setIsManageDialogOpen} 
       />
 
-      <EditAthleteDialog
-        athlete={athlete}
+      <EditClientDialog
+        client={client}
         open={isEditDialogOpen}
         onOpenChange={setIsEditDialogOpen}
       />
@@ -139,7 +139,7 @@ export function AthleteCard({ athlete, programs, assignments }: { athlete: Clien
   )
 }
 
-export default function AthletesPage() {
+export default function ClientsPage() {
   const [clients, setClients] = useState<Client[]>([])
   const [programs, setPrograms] = useState<Program[]>([])
   const [assignments, setAssignments] = useState<Assignment[]>([])
@@ -185,13 +185,13 @@ export default function AthletesPage() {
   const activeClients = clients.filter(c => c.is_active)
   const archivedClients = clients.filter(c => !c.is_active)
 
-  if (loading) return <div className="p-10">Loading Athletes...</div>
+  if (loading) return <div className="p-10">Loading Clients...</div>
 
   return (
     <div className="container mx-auto py-10 px-4">
       <div className="flex justify-between items-center mb-8">
-        <h1 className="text-4xl font-bold text-foreground uppercase tracking-tight">Athlete Roster</h1>
-        <CreateAthleteDialog />
+        <h1 className="text-4xl font-bold text-foreground uppercase tracking-tight">Client Roster</h1>
+        <CreateClientDialog />
       </div>
       
       <Tabs defaultValue="operational" className="w-full">
@@ -204,13 +204,13 @@ export default function AthletesPage() {
           {activeClients.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {activeClients.map(client => (
-                <AthleteCard key={client.id} athlete={client} programs={programs} assignments={assignments} />
+                <ClientCard key={client.id} client={client} programs={programs} assignments={assignments} />
               ))}
             </div>
           ) : (
             <Card className="p-12 border-dashed flex flex-col items-center justify-center text-center">
-              <CardTitle className="text-muted-foreground mb-2">No Active Athletes</CardTitle>
-              <CardDescription>Onboard your first athlete to get started.</CardDescription>
+              <CardTitle className="text-muted-foreground mb-2">No Active Clients</CardTitle>
+              <CardDescription>Onboard your first client to get started.</CardDescription>
             </Card>
           )}
         </TabsContent>
@@ -219,13 +219,13 @@ export default function AthletesPage() {
           {archivedClients.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {archivedClients.map(client => (
-                <AthleteCard key={client.id} athlete={client} programs={programs} assignments={assignments} />
+                <ClientCard key={client.id} client={client} programs={programs} assignments={assignments} />
               ))}
             </div>
           ) : (
             <Card className="p-12 border-dashed flex flex-col items-center justify-center text-center">
               <CardTitle className="text-muted-foreground mb-2">Vault is Empty</CardTitle>
-              <CardDescription>Archived athletes will appear here.</CardDescription>
+              <CardDescription>Archived clients will appear here.</CardDescription>
             </Card>
           )}
         </TabsContent>

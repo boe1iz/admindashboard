@@ -22,34 +22,34 @@ interface Client {
   email: string
 }
 
-export function EditAthleteDialog({ 
-  athlete, 
+export function EditClientDialog({ 
+  client, 
   open, 
   onOpenChange 
 }: { 
-  athlete: Client
+  client: Client
   open: boolean
   onOpenChange: (open: boolean) => void 
 }) {
   const [loading, setLoading] = useState(false)
   const [formData, setFormData] = useState({
-    name: athlete.name,
-    email: athlete.email
+    name: client.name,
+    email: client.email
   })
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
     try {
-      await updateDoc(doc(db, 'clients', athlete.id), {
+      await updateDoc(doc(db, 'clients', client.id), {
         ...formData,
         updatedAt: serverTimestamp()
       })
       onOpenChange(false)
-      toast.success("Athlete details updated")
+      toast.success("Client details updated")
     } catch (error) {
-      console.error('Error updating athlete: ', error)
-      toast.error("Failed to update athlete")
+      console.error('Error updating client: ', error)
+      toast.error("Failed to update client")
     } finally {
       setLoading(false)
     }
@@ -60,9 +60,9 @@ export function EditAthleteDialog({
       <DialogContent className="sm:max-w-[425px]">
         <form onSubmit={handleSubmit}>
           <DialogHeader>
-            <DialogTitle>Edit Athlete Details</DialogTitle>
+            <DialogTitle>Edit Client Details</DialogTitle>
             <DialogDescription>
-              Update the profile information for {athlete.name}.
+              Update the profile information for {client.name}.
             </DialogDescription>
           </DialogHeader>
           <div className="grid gap-4 py-4">
