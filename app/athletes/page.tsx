@@ -12,9 +12,10 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { Button } from '@/components/ui/button'
-import { MoreVertical, Archive, ArchiveRestore } from 'lucide-react'
+import { MoreVertical, Archive, ArchiveRestore, Settings2 } from 'lucide-react'
 import { toast } from 'sonner'
 import { CreateAthleteDialog } from '@/components/CreateAthleteDialog'
+import { ManageProgramsDialog } from '@/components/ManageProgramsDialog'
 
 interface Athlete {
   id: string
@@ -25,6 +26,8 @@ interface Athlete {
 }
 
 export function AthleteCard({ athlete }: { athlete: Athlete }) {
+  const [isManageDialogOpen, setIsManageDialogOpen] = useState(false)
+
   const toggleArchive = async () => {
     try {
       await updateDoc(doc(db, 'athletes', athlete.id), {
@@ -47,6 +50,10 @@ export function AthleteCard({ athlete }: { athlete: Athlete }) {
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
+            <DropdownMenuItem onClick={() => setIsManageDialogOpen(true)}>
+              <Settings2 className="mr-2 size-4" />
+              Manage Programs
+            </DropdownMenuItem>
             <DropdownMenuItem onClick={() => toggleArchive()}>
               {athlete.isArchived ? (
                 <>
@@ -76,6 +83,11 @@ export function AthleteCard({ athlete }: { athlete: Athlete }) {
           ))}
         </div>
       </CardContent>
+      <ManageProgramsDialog 
+        athlete={athlete} 
+        open={isManageDialogOpen} 
+        onOpenChange={setIsManageDialogOpen} 
+      />
     </Card>
   )
 }
