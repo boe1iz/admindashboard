@@ -11,7 +11,7 @@ This plan outlines the implementation of the Equipment Inventory page, following
 - [x] Task: Tabbed Layout & Search State (d04c84d)
     - [ ] Write failing tests for tab switching and search filtering
     - [ ] Implement Operational/Vault tabs with search bar and item counts
-- [ ] Task: Equipment List Rendering
+- [x] Task: Equipment List Rendering (d04c84d)
     - [ ] Write failing tests for equipment cards and real-time sync
     - [ ] Implement EquipmentList and EquipmentCard components
 - [ ] Task: Conductor - User Manual Verification 'Inventory UI & Listing' (Protocol in workflow.md)
