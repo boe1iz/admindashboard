@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { 
   Package, 
   Search, 
@@ -14,9 +14,41 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Card } from '@/components/ui/card'
+import { db } from '@/lib/firebase'
+import { collection, query, onSnapshot, orderBy } from 'firebase/firestore'
+
+interface Equipment {
+  id: string
+  name: string
+  is_active: boolean
+  createdAt: any
+}
 
 export default function InventoryPage() {
+  const [equipment, setEquipment] = useState<Equipment[]>([])
+  const [loading, setLoading] = useState(true)
   const [searchQuery, setSearchQuery] = useState('')
+
+  useEffect(() => {
+    const q = query(collection(db, 'equipment'), orderBy('name', 'asc'))
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      const items = snapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      })) as Equipment[]
+      setEquipment(items)
+      setLoading(false)
+    })
+
+    return () => unsubscribe()
+  }, [])
+
+  const filteredItems = equipment.filter(item => 
+    item.name.toLowerCase().includes(searchQuery.toLowerCase())
+  )
+
+  const activeItems = filteredItems.filter(item => item.is_active)
+  const archivedItems = filteredItems.filter(item => !item.is_active)
 
   return (
     <div className="flex-1 space-y-8 p-8 pt-6">
@@ -45,13 +77,13 @@ export default function InventoryPage() {
               value="operational" 
               className="rounded-full px-6 data-[state=active]:bg-[#0057FF] data-[state=active]:text-white"
             >
-              Operational
+              Operational ({activeItems.length})
             </TabsTrigger>
             <TabsTrigger 
               value="vault" 
               className="rounded-full px-6 data-[state=active]:bg-[#0057FF] data-[state=active]:text-white"
             >
-              Vault
+              Vault ({archivedItems.length})
             </TabsTrigger>
           </TabsList>
 
@@ -67,27 +99,94 @@ export default function InventoryPage() {
         </div>
 
         <TabsContent value="operational" className="space-y-4">
-          <Card className="bg-zinc-900/50 border-white/5 p-12 text-center">
-            <div className="mx-auto flex size-20 items-center justify-center rounded-full bg-zinc-800/50 mb-4">
-              <Database className="size-10 text-zinc-700" />
+          {loading ? (
+            <div className="flex justify-center py-12">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#0057FF]"></div>
             </div>
-            <h3 className="text-lg font-medium text-white">No Gear Found</h3>
-            <p className="text-zinc-500 max-w-sm mx-auto mt-2">
-              Your operational equipment will appear here once added or restored from the vault.
-            </p>
-          </Card>
+          ) : activeItems.length === 0 ? (
+            <Card className="bg-zinc-900/50 border-white/5 p-12 text-center">
+              <div className="mx-auto flex size-20 items-center justify-center rounded-full bg-zinc-800/50 mb-4">
+                <Database className="size-10 text-zinc-700" />
+              </div>
+              <h3 className="text-lg font-medium text-white">No Gear Found</h3>
+              <p className="text-zinc-500 max-w-sm mx-auto mt-2">
+                Your operational equipment will appear here once added or restored from the vault.
+              </p>
+            </Card>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {activeItems.map((item) => (
+                <Card key={item.id} className="bg-zinc-900/50 border-white/5 p-6 flex items-center justify-between group hover:border-[#0057FF]/50 transition-colors">
+                  <div className="flex items-center gap-4">
+                    <div className="size-12 rounded-2xl bg-[#0057FF]/10 flex items-center justify-center">
+                      <Package className="size-6 text-[#0057FF]" />
+                    </div>
+                    <div>
+                      <h4 className="font-bold text-white uppercase tracking-tight">{item.name}</h4>
+                      <p className="text-[10px] text-zinc-500 uppercase font-bold tracking-widest mt-1">
+                        Operational
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <Button variant="ghost" size="icon" className="text-zinc-400 hover:text-white hover:bg-white/5">
+                      <Edit2 className="size-4" />
+                    </Button>
+                    <Button variant="ghost" size="icon" className="text-zinc-400 hover:text-[#0057FF] hover:bg-[#0057FF]/5">
+                      <Archive className="size-4" />
+                    </Button>
+                    <Button variant="ghost" size="icon" className="text-zinc-400 hover:text-red-500 hover:bg-red-500/5">
+                      <Trash2 className="size-4" />
+                    </Button>
+                  </div>
+                </Card>
+              ))}
+            </div>
+          )}
         </TabsContent>
 
         <TabsContent value="vault" className="space-y-4">
-          <Card className="bg-zinc-900/50 border-white/5 p-12 text-center">
-            <div className="mx-auto flex size-20 items-center justify-center rounded-full bg-zinc-800/50 mb-4">
-              <Archive className="size-10 text-zinc-700" />
+          {loading ? (
+            <div className="flex justify-center py-12">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#0057FF]"></div>
             </div>
-            <h3 className="text-lg font-medium text-white">Vault is Empty</h3>
-            <p className="text-zinc-500 max-w-sm mx-auto mt-2">
-              Archived equipment is stored here for future restoration.
-            </p>
-          </Card>
+          ) : archivedItems.length === 0 ? (
+            <Card className="bg-zinc-900/50 border-white/5 p-12 text-center">
+              <div className="mx-auto flex size-20 items-center justify-center rounded-full bg-zinc-800/50 mb-4">
+                <Archive className="size-10 text-zinc-700" />
+              </div>
+              <h3 className="text-lg font-medium text-white">Vault is Empty</h3>
+              <p className="text-zinc-500 max-w-sm mx-auto mt-2">
+                Archived equipment is stored here for future restoration.
+              </p>
+            </Card>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {archivedItems.map((item) => (
+                <Card key={item.id} className="bg-zinc-900/50 border-white/5 p-6 flex items-center justify-between group opacity-60 hover:opacity-100 transition-all">
+                  <div className="flex items-center gap-4">
+                    <div className="size-12 rounded-2xl bg-zinc-800 flex items-center justify-center">
+                      <Archive className="size-6 text-zinc-500" />
+                    </div>
+                    <div>
+                      <h4 className="font-bold text-white uppercase tracking-tight">{item.name}</h4>
+                      <p className="text-[10px] text-zinc-500 uppercase font-bold tracking-widest mt-1">
+                        In Vault
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <Button variant="ghost" size="icon" className="text-zinc-400 hover:text-[#0057FF] hover:bg-[#0057FF]/5">
+                      <Database className="size-4" />
+                    </Button>
+                    <Button variant="ghost" size="icon" className="text-zinc-400 hover:text-red-500 hover:bg-red-500/5">
+                      <Trash2 className="size-4" />
+                    </Button>
+                  </div>
+                </Card>
+              ))}
+            </div>
+          )}
         </TabsContent>
       </Tabs>
     </div>
