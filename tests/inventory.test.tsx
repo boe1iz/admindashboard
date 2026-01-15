@@ -1,10 +1,11 @@
-import { render, screen } from '@testing-library/react'
+import { render, screen, within } from '@testing-library/react'
 import { describe, it, expect, vi } from 'vitest'
 import InventoryPage from '../app/inventory/page'
+import { updateDoc, doc } from 'firebase/firestore'
 
 // Mock firebase
 vi.mock('@/lib/firebase', () => ({
-  db: {},
+  db: { mock: 'db' },
 }))
 
 // Mock firestore
@@ -12,6 +13,8 @@ vi.mock('firebase/firestore', () => ({
   collection: vi.fn(),
   query: vi.fn(),
   orderBy: vi.fn(),
+  doc: vi.fn((db, coll, id) => ({ id })),
+  updateDoc: vi.fn(() => Promise.resolve()),
   onSnapshot: vi.fn((q, cb) => {
     cb({
       docs: [
@@ -49,5 +52,17 @@ describe('Inventory Page', () => {
     
     expect(screen.getByText('Dumbbell')).toBeDefined()
     expect(screen.queryByText('Bands')).toBeNull()
+  })
+
+  it('calls updateDoc when archive button is clicked', async () => {
+    const { fireEvent } = await import('@testing-library/react')
+    render(<InventoryPage />)
+    
+    const dumbbellCard = screen.getByText('Dumbbell').closest('div')?.parentElement?.parentElement
+    const archiveBtn = within(dumbbellCard!).getByRole('button', { name: /archive/i })
+    
+    fireEvent.click(archiveBtn)
+    
+    expect(updateDoc).toHaveBeenCalledWith(expect.anything(), { is_active: false })
   })
 })

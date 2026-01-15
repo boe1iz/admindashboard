@@ -15,8 +15,10 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Card } from '@/components/ui/card'
 import { db } from '@/lib/firebase'
-import { collection, query, onSnapshot, orderBy } from 'firebase/firestore'
+import { collection, query, onSnapshot, orderBy, doc, updateDoc } from 'firebase/firestore'
 import { CreateEquipmentDialog } from '@/components/CreateEquipmentDialog'
+import { EditEquipmentDialog } from '@/components/EditEquipmentDialog'
+import { toast } from 'sonner'
 
 interface Equipment {
   id: string
@@ -29,6 +31,7 @@ export default function InventoryPage() {
   const [equipment, setEquipment] = useState<Equipment[]>([])
   const [loading, setLoading] = useState(true)
   const [searchQuery, setSearchQuery] = useState('')
+  const [editingItem, setEditingItem] = useState<Equipment | null>(null)
 
   useEffect(() => {
     const q = query(collection(db, 'equipment'), orderBy('name', 'asc'))
@@ -43,6 +46,18 @@ export default function InventoryPage() {
 
     return () => unsubscribe()
   }, [])
+
+  const toggleActive = async (item: Equipment) => {
+    try {
+      await updateDoc(doc(db, 'equipment', item.id), {
+        is_active: !item.is_active
+      })
+      toast.success(item.is_active ? "Equipment archived to Vault" : "Equipment restored to Operational")
+    } catch (error) {
+      console.error('Error toggling status: ', error)
+      toast.error("Failed to update status")
+    }
+  }
 
   const filteredItems = equipment.filter(item => 
     item.name.toLowerCase().includes(searchQuery.toLowerCase())
@@ -127,13 +142,30 @@ export default function InventoryPage() {
                     </div>
                   </div>
                   <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                    <Button variant="ghost" size="icon" className="text-zinc-400 hover:text-white hover:bg-white/5">
+                    <Button 
+                      variant="ghost" 
+                      size="icon" 
+                      className="text-zinc-400 hover:text-white hover:bg-white/5"
+                      onClick={() => setEditingItem(item)}
+                      aria-label="Edit equipment"
+                    >
                       <Edit2 className="size-4" />
                     </Button>
-                    <Button variant="ghost" size="icon" className="text-zinc-400 hover:text-[#0057FF] hover:bg-[#0057FF]/5">
+                    <Button 
+                      variant="ghost" 
+                      size="icon" 
+                      className="text-zinc-400 hover:text-[#0057FF] hover:bg-[#0057FF]/5"
+                      onClick={() => toggleActive(item)}
+                      aria-label="Archive equipment"
+                    >
                       <Archive className="size-4" />
                     </Button>
-                    <Button variant="ghost" size="icon" className="text-zinc-400 hover:text-red-500 hover:bg-red-500/5">
+                    <Button 
+                      variant="ghost" 
+                      size="icon" 
+                      className="text-zinc-400 hover:text-red-500 hover:bg-red-500/5"
+                      aria-label="Delete equipment"
+                    >
                       <Trash2 className="size-4" />
                     </Button>
                   </div>
@@ -174,10 +206,21 @@ export default function InventoryPage() {
                     </div>
                   </div>
                   <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                    <Button variant="ghost" size="icon" className="text-zinc-400 hover:text-[#0057FF] hover:bg-[#0057FF]/5">
+                    <Button 
+                      variant="ghost" 
+                      size="icon" 
+                      className="text-zinc-400 hover:text-[#0057FF] hover:bg-[#0057FF]/5"
+                      onClick={() => toggleActive(item)}
+                      aria-label="Restore equipment"
+                    >
                       <Database className="size-4" />
                     </Button>
-                    <Button variant="ghost" size="icon" className="text-zinc-400 hover:text-red-500 hover:bg-red-500/5">
+                    <Button 
+                      variant="ghost" 
+                      size="icon" 
+                      className="text-zinc-400 hover:text-red-500 hover:bg-red-500/5"
+                      aria-label="Delete equipment"
+                    >
                       <Trash2 className="size-4" />
                     </Button>
                   </div>
@@ -187,6 +230,14 @@ export default function InventoryPage() {
           )}
         </TabsContent>
       </Tabs>
+
+      {editingItem && (
+        <EditEquipmentDialog
+          equipment={editingItem}
+          open={!!editingItem}
+          onOpenChange={(open) => !open && setEditingItem(null)}
+        />
+      )}
     </div>
   )
 }
