@@ -13,7 +13,7 @@ This plan outlines the implementation of the Equipment Inventory page, following
 - [x] Task: Conductor - User Manual Verification 'Inventory UI & Listing' (Protocol in workflow.md) (8ef520c)
 
 ## Phase 3: CRUD Operations
-- [ ] Task: Create Equipment
+- [x] Task: Create Equipment (beac8d2)
     - [ ] Write failing tests for creation dialog and database submission
     - [ ] Implement CreateEquipmentDialog component
 - [ ] Task: Edit & Status Toggling
