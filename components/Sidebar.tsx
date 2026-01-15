@@ -26,7 +26,7 @@ export function Sidebar() {
     <div className="flex h-full w-64 flex-col bg-white border-r border-slate-200 z-20 shadow-sm">
       <div className="flex h-20 items-center px-6">
         <span className="text-2xl font-black tracking-tighter text-[#0057FF]">
-          13CONCEPT
+          ON3 ATHLETICS
         </span>
       </div>
       

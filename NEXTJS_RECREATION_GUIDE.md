@@ -1,6 +1,6 @@
-# 🚀 13Concept Admin Dashboard: Next.js Recreation Reference
+# 🚀 ON3 Athletics Admin Dashboard: Next.js Recreation Reference
 
-This document contains the complete business logic, UI specifications, and technical architecture of the 13Concept Admin Dashboard. Use this as a high-level "vibe" reference for recreating the app in Next.js.
+This document contains the complete business logic, UI specifications, and technical architecture of the ON3 Athletics Admin Dashboard. Use this as a high-level "vibe" reference for recreating the app in Next.js.
 
 ## 🎨 1. Brand Identity & Visual Vibe
 *   **Aesthetic**: "Elite Performance" – Professional, high-contrast, clean, and data-driven.

@@ -1,7 +1,7 @@
 # Specification: Command Center (Dashboard)
 
 ## Overview
-The Dashboard is the central hub of the 13Concept Admin Dashboard. it provides real-time visibility into system health and key business metrics.
+The Dashboard is the central hub of the ON3 Athletics Admin Dashboard. it provides real-time visibility into system health and key business metrics.
 
 ## Features
 ### 1. Real-time Stat Cards

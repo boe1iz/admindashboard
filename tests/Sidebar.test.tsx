@@ -17,7 +17,7 @@ describe('Sidebar Component', () => {
     expect(sidebarDiv.className).toContain('border-r')
     
     // Check for logo text
-    expect(screen.getByText('13CONCEPT')).toBeDefined()
+    expect(screen.getByText('ON3 ATHLETICS')).toBeDefined()
   })
 
   it('renders navigation items with correct active state styling', () => {

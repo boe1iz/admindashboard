@@ -1,7 +1,7 @@
 # Spec: Core Program Management & Training Sequence Builder
 
 ## Overview
-This track implements the core engine of the 13Concept Admin Dashboard. It allows administrators to create, manage, and sequence training programs with nested days and workouts.
+This track implements the core engine of the ON3 Athletics Admin Dashboard. It allows administrators to create, manage, and sequence training programs with nested days and workouts.
 
 ## User Stories
 - As an admin, I want to create a training program with a name, description, and pricing logic.

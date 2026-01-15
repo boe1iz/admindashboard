@@ -1,4 +1,4 @@
-# Technology Stack: 13Concept Admin Dashboard
+# Technology Stack: ON3 Athletics Admin Dashboard
 
 ## Frontend
 - **Framework**: Next.js 14+ (App Router)

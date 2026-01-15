@@ -1,4 +1,4 @@
-# Product Guidelines: 13Concept Admin Dashboard
+# Product Guidelines: ON3 Athletics Admin Dashboard
 
 ## Tone & Voice
 - **Professional & Command-Oriented**: All system messages and labels must be clear, direct, and authoritative. Use action-oriented verbs like "Deploy," "Onboard," and "Archive."
@@ -14,7 +14,7 @@
 - **Typography**:
     - Use thick font weights (Black/900) for page titles and high-level stats to emphasize authority and data-driven focus.
 - **Branding**:
-    - **Sidebar Identity**: The 13Concept logo must be prominently placed at the top of the sidebar in high contrast.
+    - **Sidebar Identity**: The ON3 Athletics logo must be prominently placed at the top of the sidebar in high contrast.
 
 ## Interaction & Feedback
 - **Live Sync Visualization**: All real-time data components must include a subtle "Pulse" indicator or status mark to show active connection to Firestore.

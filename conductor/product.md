@@ -1,6 +1,6 @@
 # Initial Concept
 
-Recreate the 13Concept Admin Dashboard using Next.js, following the "Elite Performance" aesthetic and business logic defined in the NEXTJS_RECREATION_GUIDE.md.
+Recreate the ON3 Athletics Admin Dashboard using Next.js, following the "Elite Performance" aesthetic and business logic defined in the NEXTJS_RECREATION_GUIDE.md.
 
 Key aspects:
 - **Framework**: Next.js 14+ (App Router), Tailwind CSS, Lucide-react.
@@ -13,10 +13,10 @@ Key aspects:
     - Equipment Inventory.
 - **Design**: "Sophisticated Studio" aesthetic (High-contrast light theme with vibrant energetic accents).
 
-# Product Guide: 13Concept Admin Dashboard
+# Product Guide: ON3 Athletics Admin Dashboard
 
 ## Product Vision
-To recreate the 13Concept Admin Dashboard as a high-performance Next.js 14 application that provides administrators and assistant coaches with an "Elite Performance" interface. The system serves as the central hub for managing training programs, athletes, and equipment with full functional parity to the original Firebase system and real-time synchronization.
+To recreate the ON3 Athletics Admin Dashboard as a high-performance Next.js 14 application that provides administrators and assistant coaches with an "Elite Performance" interface. The system serves as the central hub for managing training programs, athletes, and equipment with full functional parity to the original Firebase system and real-time synchronization.
 
 ## Target Users
 - **Administrators**: Primary owners with full system access.
