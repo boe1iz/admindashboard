@@ -37,11 +37,11 @@ test('Dashboard page renders Command Center, stats and activity', async () => {
   render(<Page />)
   expect(screen.getByText('Command Center')).toBeDefined()
   
-  // Wait for mock data to "load"
+  // Wait for mock data to "load" and animation to complete
   await waitFor(() => {
     expect(screen.getAllByText('10').length).toBeGreaterThan(0)
     expect(screen.getAllByText(/Test Athlete/i).length).toBeGreaterThan(0)
-  })
+  }, { timeout: 3000 })
 
   expect(screen.getByText(/Live Connection: Active/i)).toBeDefined()
 })

@@ -11,6 +11,9 @@ export default defineConfig({
     environment: 'jsdom',
     setupFiles: ['./tests/setup.ts'],
     globals: true,
+    env: {
+      NEXT_PUBLIC_CI: 'true',
+    },
   },
   resolve: {
     alias: {

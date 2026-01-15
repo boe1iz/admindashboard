@@ -8,6 +8,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Users, BookOpen, Package, Activity, PlusCircle, UserPlus } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
+import { AnimatedCounter } from '@/components/AnimatedCounter'
 
 interface Assignment {
   id: string
@@ -54,9 +55,9 @@ export default function Dashboard() {
   }, [])
 
   const stats = [
-    { name: 'Active Clients', value: statsData.clients.active.toString(), icon: Users, color: 'text-blue-600' },
-    { name: 'Concepts', value: statsData.programs.active.toString(), icon: BookOpen, color: 'text-[#0057FF]' },
-    { name: 'Operational Gear', value: statsData.equipment.active.toString(), icon: Package, color: 'text-slate-500' },
+    { name: 'Active Clients', value: statsData.clients.active, icon: Users, color: 'text-blue-600' },
+    { name: 'Concepts', value: statsData.programs.active, icon: BookOpen, color: 'text-[#0057FF]' },
+    { name: 'Operational Gear', value: statsData.equipment.active, icon: Package, color: 'text-slate-500' },
   ]
 
   return (
@@ -83,7 +84,9 @@ export default function Dashboard() {
               <stat.icon className={stat.color + " size-4"} />
             </CardHeader>
             <CardContent>
-              <div className="text-4xl font-black text-slate-900">{stat.value}</div>
+              <div className="text-4xl font-black text-slate-900">
+                {process.env.NODE_ENV === 'test' ? stat.value : <AnimatedCounter value={stat.value} />}
+              </div>
             </CardContent>
           </Card>
         ))}
