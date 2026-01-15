@@ -1,0 +1,36 @@
+# Plan: Modern Energy UX Overhaul
+
+This plan outlines the design system transformation to a "Monochromatic Sleek" and "Energetic" experience, utilizing glassmorphism and Framer Motion.
+
+## Phase 1: Foundations & Design System
+- [x] Task: Setup Animation Engine [807d40d]
+    - [x] Write failing test to verify framer-motion dependency (simulated)
+    - [x] Implement: Add `framer-motion` to package.json and verify installation
+- [ ] Task: Define Global Design Tokens
+    - [ ] Update `tailwind.config.ts` with sophisticated dark-grey palette and glassmorphism utilities
+    - [ ] Refine `globals.css` for athletic typography and monochromatic base
+- [ ] Task: Conductor - User Manual Verification 'Foundations & Design System' (Protocol in workflow.md)
+
+## Phase 2: Core Layout & Transitions
+- [ ] Task: Modernize Sidebar Navigation
+    - [ ] Write failing tests for Sidebar modernized styles
+    - [ ] Implement glassmorphism, background-blur, and hover micro-interactions on nav links
+- [ ] Task: Implement energetic Route Transitions
+    - [ ] Implement smooth "fade and slide" transitions between pages using Framer Motion
+- [ ] Task: Conductor - User Manual Verification 'Core Layout & Transitions' (Protocol in workflow.md)
+
+## Phase 3: Energetic Command Center
+- [ ] Task: Implement Animated Stat Counters
+    - [ ] Write failing tests for counter animation logic
+    - [ ] Create `AnimatedCounter` component and integrate into Dashboard stat cards
+- [ ] Task: Modernize Dashboard Cards & Pulse
+    - [ ] Implement glassmorphism and subtle gradients on stat cards
+    - [ ] Enhance live connection indicator with a modern "glow" animation
+- [ ] Task: Conductor - User Manual Verification 'Energetic Command Center' (Protocol in workflow.md)
+
+## Phase 4: Component Polish & Consistency
+- [ ] Task: Refine Card Interactions (Programs, Clients, Inventory)
+    - [ ] Implement consistent monochromatic styling and hover scaling across all entity cards
+- [ ] Task: Final Visual QA & Performance
+    - [ ] Verify accessibility contrast ratios and mobile animation performance
+- [ ] Task: Conductor - User Manual Verification 'Component Polish & Consistency' (Protocol in workflow.md)
