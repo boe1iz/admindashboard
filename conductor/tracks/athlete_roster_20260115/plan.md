@@ -24,7 +24,7 @@
     - [ ] Implement to Pass Tests (Green Phase)
     - [ ] Verify Coverage & Quality Gates
     - [ ] Commit & Record Task (Git Notes, SHA)
-- [~] Task: Implement Program Tag List with Unassign Logic
+- [x] Task: Implement Program Tag List with Unassign Logic [7986b11]
     - [ ] Write Failing Tests (Red Phase)
     - [ ] Implement to Pass Tests (Green Phase)
     - [ ] Verify Coverage & Quality Gates
