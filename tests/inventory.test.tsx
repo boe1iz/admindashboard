@@ -1,7 +1,7 @@
 import { render, screen, within } from '@testing-library/react'
 import { describe, it, expect, vi } from 'vitest'
 import InventoryPage from '../app/inventory/page'
-import { updateDoc, doc } from 'firebase/firestore'
+import { updateDoc, doc, deleteDoc } from 'firebase/firestore'
 
 // Mock firebase
 vi.mock('@/lib/firebase', () => ({
@@ -15,6 +15,7 @@ vi.mock('firebase/firestore', () => ({
   orderBy: vi.fn(),
   doc: vi.fn((db, coll, id) => ({ id })),
   updateDoc: vi.fn(() => Promise.resolve()),
+  deleteDoc: vi.fn(() => Promise.resolve()),
   onSnapshot: vi.fn((q, cb) => {
     cb({
       docs: [
@@ -25,6 +26,21 @@ vi.mock('firebase/firestore', () => ({
     })
     return () => {}
   }),
+}))
+
+// Mock AlertDialog to render content inline for testing
+vi.mock('@/components/ui/alert-dialog', () => ({
+  AlertDialog: ({ children }: any) => <div>{children}</div>,
+  AlertDialogTrigger: ({ children }: any) => <div>{children}</div>,
+  AlertDialogContent: ({ children }: any) => <div>{children}</div>,
+  AlertDialogHeader: ({ children }: any) => <div>{children}</div>,
+  AlertDialogTitle: ({ children }: any) => <div>{children}</div>,
+  AlertDialogDescription: ({ children }: any) => <div>{children}</div>,
+  AlertDialogFooter: ({ children }: any) => <div>{children}</div>,
+  AlertDialogCancel: ({ children }: any) => <button>{children}</button>,
+  AlertDialogAction: ({ children, onClick }: any) => (
+    <button onClick={onClick}>{children}</button>
+  ),
 }))
 
 describe('Inventory Page', () => {
@@ -64,5 +80,20 @@ describe('Inventory Page', () => {
     fireEvent.click(archiveBtn)
     
     expect(updateDoc).toHaveBeenCalledWith(expect.anything(), { is_active: false })
+  })
+
+  it('calls deleteDoc when delete button is clicked', async () => {
+    const { fireEvent } = await import('@testing-library/react')
+    render(<InventoryPage />)
+    
+    const dumbbellCard = screen.getByText('Dumbbell').closest('div')?.parentElement?.parentElement
+    const deleteBtn = within(dumbbellCard!).getByLabelText(/delete equipment/i)
+    
+    fireEvent.click(deleteBtn)
+    
+    const confirmBtn = within(dumbbellCard!).getByText('Delete Permanently')
+    fireEvent.click(confirmBtn)
+    
+    expect(deleteDoc).toHaveBeenCalledWith(expect.anything())
   })
 })
