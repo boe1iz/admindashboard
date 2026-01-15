@@ -1,5 +1,7 @@
 'use client'
 
+import { db } from '@/lib/firebase'
+import { doc, updateDoc, arrayRemove } from 'firebase/firestore'
 import {
   Dialog,
   DialogContent,
@@ -8,7 +10,7 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog'
 import { X } from 'lucide-react'
-import { Button } from '@/components/ui/button'
+import { toast } from 'sonner'
 
 interface Athlete {
   id: string
@@ -23,6 +25,18 @@ interface ManageProgramsDialogProps {
 }
 
 export function ManageProgramsDialog({ athlete, open, onOpenChange }: ManageProgramsDialogProps) {
+  const unassignProgram = async (programId: string) => {
+    try {
+      await updateDoc(doc(db, 'athletes', athlete.id), {
+        assignedPrograms: arrayRemove(programId)
+      })
+      toast.success(`Unassigned ${programId}`)
+    } catch (error) {
+      console.error('Error unassigning program:', error)
+      toast.error('Failed to unassign program')
+    }
+  }
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[500px]">
@@ -40,7 +54,11 @@ export function ManageProgramsDialog({ athlete, open, onOpenChange }: ManageProg
                 athlete.assignedPrograms.map(programId => (
                   <div key={programId} className="flex items-center gap-1 px-3 py-1 bg-secondary text-secondary-foreground rounded-full text-sm font-medium group">
                     {programId}
-                    <button className="hover:text-destructive transition-colors">
+                    <button 
+                      onClick={() => unassignProgram(programId)}
+                      className="hover:text-destructive transition-colors"
+                      aria-label={`Unassign ${programId}`}
+                    >
                       <X className="size-3" />
                     </button>
                   </div>
