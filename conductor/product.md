@@ -48,8 +48,9 @@ To recreate the 13Concept Admin Dashboard as a high-performance Next.js 14 appli
 
 ### 4. Equipment Inventory
 - **Multi-Select Tagging**: Ability to link multiple gear items to a single workout.
-- **Default Seeding**: One-click import of standard gym equipment.
+- **Lifecycle Management**: Dual-tab view ("Operational" and "Archived Vault") for gear.
 - **Integrity Check**: Archived gear remains labeled in old workouts but is hidden from new selections.
+- **Archive, Don't Delete**: Focus on deactivating gear rather than permanent removal.
 
 ## Technical Specifications & UI
 - **Visual Vibe**: "Elite Performance" (Concept Blue: `#0057FF`, Athletic Black: `#0F172A`).
