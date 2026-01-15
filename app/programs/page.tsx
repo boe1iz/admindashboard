@@ -180,7 +180,10 @@ export default function ProgramsPage() {
     <div className="container mx-auto py-10 px-4 min-h-screen">
       <div className="flex justify-between items-center mb-8">
         <div>
-          <h1 className="text-4xl font-black text-slate-900 uppercase tracking-tight">Programs</h1>
+          <h1 className="text-4xl font-black text-slate-900 uppercase tracking-tight flex items-center gap-3">
+            <BookOpen className="size-8 text-[#0057FF]" />
+            Programs
+          </h1>
           <p className="text-xs md:text-sm font-black text-slate-400 uppercase tracking-widest mt-1">
             Build and manage high-performance training sequences.
           </p>

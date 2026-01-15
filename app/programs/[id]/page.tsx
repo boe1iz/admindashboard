@@ -306,7 +306,10 @@ export default function ProgramDetailPage({ params }: { params: Promise<{ id: st
         </Link>
         <div className="flex justify-between items-center">
           <div>
-            <h1 className="text-4xl md:text-5xl font-black text-slate-900 uppercase tracking-tight">{program.name}</h1>
+            <h1 className="text-4xl md:text-5xl font-black text-slate-900 uppercase tracking-tight flex items-center gap-4">
+              <BookOpen className="size-10 text-[#0057FF]" />
+              {program.name}
+            </h1>
             <p className="text-[10px] font-black uppercase tracking-[0.3em] text-primary mt-2 flex items-center gap-2">
               <span className="size-1.5 rounded-full bg-primary animate-pulse" />
               Operational Sequence

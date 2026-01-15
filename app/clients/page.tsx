@@ -199,7 +199,10 @@ export default function ClientsPage() {
     <div className="container mx-auto py-10 px-4 min-h-screen">
       <div className="flex justify-between items-center mb-8">
         <div>
-          <h1 className="text-4xl font-black text-slate-900 uppercase tracking-tight">Client Roster</h1>
+          <h1 className="text-4xl font-black text-slate-900 uppercase tracking-tight flex items-center gap-3">
+            <Users className="size-8 text-[#0057FF]" />
+            Client Roster
+          </h1>
           <p className="text-xs md:text-sm font-black text-slate-400 uppercase tracking-widest mt-1">
             Manage your high-performance athlete network.
           </p>
