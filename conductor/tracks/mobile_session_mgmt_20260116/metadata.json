@@ -1,8 +1,0 @@
-{
-  "track_id": "mobile_session_mgmt_20260116",
-  "type": "bug",
-  "status": "new",
-  "created_at": "2026-01-16T17:30:00Z",
-  "updated_at": "2026-01-16T17:30:00Z",
-  "description": "Logout/change password etc sections are not visible in mobile and responsive views"
-}
