@@ -21,14 +21,14 @@ This plan outlines the implementation of a secure authentication layer using Fir
 - [x] Task: Conductor - User Manual Verification 'Login Experience' (Protocol in workflow.md)
 
 ## Phase 3: Sidebar Integration & Management
-- [ ] Task: Update Sidebar with User Profile & Logout
-    - [ ] Add user email display to the Sidebar footer.
-    - [ ] Implement the "Logout" button with `signOut` logic.
-    - [ ] Write tests in `tests/SidebarAuth.test.tsx` to verify visibility and logout behavior.
-- [ ] Task: Implement Change Password Dialog
-    - [ ] Create `components/ChangePasswordDialog.tsx`.
-    - [ ] Integrate the dialog trigger into the Sidebar footer.
-    - [ ] Implement `updatePassword` logic with success/error toasts.
+- [x] Task: Update Sidebar with User Profile & Logout [66e1322]
+    - [x] Add user email display to the Sidebar footer.
+    - [x] Implement the "Logout" button with `signOut` logic.
+    - [x] Write tests in `tests/SidebarAuth.test.tsx` to verify visibility and logout behavior.
+- [x] Task: Implement Change Password Dialog [66e1322]
+    - [x] Create `components/ChangePasswordDialog.tsx`.
+    - [x] Integrate the dialog trigger into the Sidebar footer.
+    - [x] Implement `updatePassword` logic with success/error toasts.
 - [ ] Task: Conductor - User Manual Verification 'Sidebar & Management' (Protocol in workflow.md)
 
 ## Phase 4: Final Security Audit & Polish
