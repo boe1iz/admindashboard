@@ -2,7 +2,7 @@
 
 This plan outlines the implementation of a dedicated mobile User Profile sheet, ensuring session management actions are accessible on small screens while maintaining the "Elite Performance" aesthetic.
 
-## Phase 1: Mobile Header Enhancements
+## Phase 1: Mobile Header Enhancements [checkpoint: c6bc9f7]
 - [x] Task: Update MobileNav with User Profile Trigger [794c16c]
     - [x] Write failing tests (Red Phase) in `tests/MobileAuth.test.tsx` to verify the user icon visibility.
     - [x] Modify `components/MobileNav.tsx` to add a `User` icon on the far right of the sticky header.
@@ -12,7 +12,7 @@ This plan outlines the implementation of a dedicated mobile User Profile sheet, 
     - [x] Use shadcn `Sheet` or `Drawer` for a polished mobile slide-over.
     - [x] Integrate user email display, `ChangePasswordDialog`, and `signOut` logic.
     - [x] Integrate `ThemeToggle` into the sheet.
-- [ ] Task: Conductor - User Manual Verification 'Mobile Header' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Mobile Header' (Protocol in workflow.md)
 
 ## Phase 2: Refinement & Verification
 - [ ] Task: Functional Verification on Mobile
