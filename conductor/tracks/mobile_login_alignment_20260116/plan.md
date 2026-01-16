@@ -8,7 +8,7 @@ This plan outlines the steps to re-orient the login card to the top of the page 
     - [x] Modify `app/login/page.tsx` to use responsive flexbox and padding classes.
     - [x] Verify that mobile (< 640px) uses `items-start` with `pt-8` (32px).
     - [x] Verify that tablet/desktop (>= 640px) maintains `items-center`.
-- [~] Task: Visual & Interaction Audit
-    - [ ] Ensure background accents and backdrop-blur remain visually consistent.
-    - [ ] Confirm no layout shifts occur during screen resizing.
-- [ ] Task: Conductor - User Manual Verification 'Responsive Alignment' (Protocol in workflow.md)
+- [x] Task: Visual & Interaction Audit [2d7d688]
+    - [x] Ensure background accents and backdrop-blur remain visually consistent.
+    - [x] Confirm no layout shifts occur during screen resizing.
+- [~] Task: Conductor - User Manual Verification 'Responsive Alignment' (Protocol in workflow.md)
