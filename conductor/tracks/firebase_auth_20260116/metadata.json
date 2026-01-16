@@ -1,0 +1,8 @@
+{
+  "track_id": "firebase_auth_20260116",
+  "type": "feature",
+  "status": "new",
+  "created_at": "2026-01-16T14:55:00Z",
+  "updated_at": "2026-01-16T14:55:00Z",
+  "description": "we need to implement firebase authorization and login logout option. a user already defined in firebası side. This will be a email/password login. And after the login password change can be supported. Consider also mobile screens"
+}
