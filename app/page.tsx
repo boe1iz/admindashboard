@@ -6,16 +6,30 @@ import { collection, onSnapshot, query, orderBy, limit } from 'firebase/firestor
 import { motion, AnimatePresence } from 'framer-motion'
 import { cn } from '@/lib/utils'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Users, BookOpen, Package, Activity, PlusCircle, UserPlus } from 'lucide-react'
+import { Users, BookOpen, Package, Activity, PlusCircle, UserPlus, Archive, ArchiveRestore, UserMinus } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 import { AnimatedCounter } from '@/components/AnimatedCounter'
 
-interface Assignment {
+function formatRelativeTime(seconds: number) {
+  if (!seconds || seconds === 0) return 'Just now'
+  const now = Math.floor(Date.now() / 1000)
+  const diff = Math.max(0, now - seconds)
+  
+  if (diff < 300) return 'Just now'
+  if (diff < 3600) return `${Math.floor(diff / 60)}m ago`
+  if (diff < 86400) return `${Math.floor(diff / 3600)}h ago`
+  if (diff < 604800) return `${Math.floor(diff / 86400)}d ago`
+  
+  return new Date(seconds * 1000).toLocaleDateString()
+}
+
+interface ActivityItem {
   id: string
+  type: 'assignment' | 'unassigned' | 'archive' | 'restore' | 'onboarded'
   client_name: string
-  program_name: string
-  assigned_at: { seconds: number; nanoseconds: number }
+  program_name?: string
+  timestamp: number
 }
 
 export default function Dashboard() {
@@ -24,7 +38,7 @@ export default function Dashboard() {
     clients: { active: 0, archived: 0 },
     equipment: { active: 0, archived: 0 },
   })
-  const [recentActivity, setRecentActivity] = useState<Assignment[]>([])
+  const [recentActivity, setRecentActivity] = useState<ActivityItem[]>([])
   const [isConnected, setIsConnected] = useState(false)
 
   useEffect(() => {
@@ -44,9 +58,16 @@ export default function Dashboard() {
       setStatsData(prev => ({ ...prev, equipment: { ...prev.equipment, active } }))
     })
 
-    const q = query(collection(db, 'assignments'), orderBy('assigned_at', 'desc'), limit(5))
-    const unsubActivity = onSnapshot(q, (snap) => {
-      const activity = snap.docs.map(doc => ({ id: doc.id, ...doc.data() })) as Assignment[]
+    const qActivity = query(collection(db, 'activity'), orderBy('timestamp', 'desc'), limit(5))
+    const unsubActivity = onSnapshot(qActivity, (snap) => {
+      const activity = snap.docs.map(doc => {
+        const data = doc.data()
+        return {
+          id: doc.id,
+          ...data,
+          timestamp: data.timestamp?.seconds || Math.floor(Date.now() / 1000)
+        } as ActivityItem
+      })
       setRecentActivity(activity)
     })
 
@@ -123,16 +144,30 @@ export default function Dashboard() {
                   {recentActivity.map((item) => (
                     <div key={item.id} className="flex items-center justify-between border-b border-slate-50 pb-4 last:border-0 last:pb-0">
                       <div className="flex items-center gap-3">
-                        <div className="size-8 rounded-full bg-blue-50 flex items-center justify-center">
-                          <UserPlus className="size-4 text-[#0057FF]" />
+                        <div className={cn(
+                          "size-8 rounded-full flex items-center justify-center",
+                          item.type === 'assignment' || item.type === 'onboarded' ? "bg-blue-50" : "bg-slate-50"
+                        )}>
+                          {(item.type === 'assignment' || item.type === 'onboarded') && <UserPlus className="size-4 text-[#0057FF]" />}
+                          {item.type === 'unassigned' && <UserMinus className="size-4 text-red-400" />}
+                          {item.type === 'archive' && <Archive className="size-4 text-slate-400" />}
+                          {item.type === 'restore' && <ArchiveRestore className="size-4 text-primary" />}
                         </div>
                         <div>
-                          <p className="text-sm font-black uppercase text-slate-900">{item.client_name}</p>
-                          <p className="text-[10px] uppercase font-black text-slate-400">Joined {item.program_name}</p>
+                          <p className="text-sm font-black uppercase text-slate-900">
+                            {item.client_name || 'Unknown Athlete'}
+                          </p>
+                          <p className="text-[10px] uppercase font-black text-slate-400">
+                            {item.type === 'assignment' && `was assigned to ${item.program_name || 'Program'}`}
+                            {item.type === 'unassigned' && `was unassigned from ${item.program_name || 'Program'}`}
+                            {item.type === 'onboarded' && `joined ON3 Performance`}
+                            {item.type === 'archive' && `was archived`}
+                            {item.type === 'restore' && `was restored`}
+                          </p>
                         </div>
                       </div>
                       <span className="text-[10px] font-bold text-slate-300">
-                        {new Date(item.assigned_at.seconds * 1000).toLocaleDateString()}
+                        {formatRelativeTime(item.timestamp)}
                       </span>
                     </div>
                   ))}
