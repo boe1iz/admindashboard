@@ -14,7 +14,7 @@ This plan outlines the implementation of a dedicated mobile User Profile sheet, 
     - [x] Integrate `ThemeToggle` into the sheet.
 - [x] Task: Conductor - User Manual Verification 'Mobile Header' (Protocol in workflow.md)
 
-## Phase 2: Refinement & Verification
+## Phase 2: Refinement & Verification [checkpoint: c2b4cb6]
 - [x] Task: Functional Verification on Mobile [0051638]
     - [x] Test logout flow on a mobile viewport.
     - [x] Test theme toggling within the new mobile sheet.
@@ -22,4 +22,4 @@ This plan outlines the implementation of a dedicated mobile User Profile sheet, 
 - [x] Task: Cross-Device Consistency Audit [d0b8824]
     - [x] Ensure desktop Sidebar footer remains visible and functional.
     - [x] Verify no layout shifts occur when opening the mobile user settings.
-- [~] Task: Conductor - User Manual Verification 'Refinement' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Refinement' (Protocol in workflow.md)
