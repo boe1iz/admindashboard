@@ -2,14 +2,14 @@
 
 This plan outlines the implementation of a secure authentication layer using Firebase Auth, including login/logout flows, route protection, and password management.
 
-## Phase 1: Auth Infrastructure & Provider
-- [x] Task: Create Authentication Context [74c3557]
+## Phase 1: Auth Infrastructure & Provider [checkpoint: 609d8b2]
+- [x] Task: Create Authentication Context [a830030]
     - [x] Create `components/AuthProvider.tsx` to wrap the app and manage `onAuthStateChanged`.
     - [x] Export a `useAuth` hook for components to access user state.
-- [x] Task: Implement Global Route Guard [74c3557]
+- [x] Task: Implement Global Route Guard [a830030]
     - [x] Create a higher-order component or update `app/layout.tsx` to handle redirects based on auth status.
     - [x] Ensure `/login` is the only accessible route for unauthenticated users.
-- [ ] Task: Conductor - User Manual Verification 'Auth Infrastructure' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Auth Infrastructure' (Protocol in workflow.md)
 
 ## Phase 2: Login Experience
 - [ ] Task: Implement Login Page
