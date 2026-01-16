@@ -17,6 +17,7 @@
 - **Branding**:
     - **Sidebar Identity**: The ON3 Athletics logo must be prominently placed at the top of the sidebar in high contrast.
     - **Version Visibility**: The latest Git commit ID must be visible in the sidebar footer to ensure build transparency.
+    - **Coach Identity**: The Sidebar footer must clearly display the currently authenticated coach's identity and provide quick access to session management (Logout/Password Update).
 
 ## Interaction & Feedback
 - **Live Sync Visualization**: All real-time data components must include a subtle "Pulse" indicator or status mark to show active connection to Firestore.
