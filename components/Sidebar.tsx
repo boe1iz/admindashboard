@@ -43,7 +43,7 @@ export function Sidebar() {
   }, [])
 
   return (
-    <div className="flex h-full w-64 flex-col bg-card border-r border-slate-200 dark:border-slate-800 z-20 shadow-sm transition-colors duration-300">
+    <div className="hidden lg:flex h-full w-64 flex-col bg-card border-r border-slate-200 dark:border-slate-800 z-20 shadow-sm transition-colors duration-300">
       <div className="flex h-20 items-center px-6">
         <Link href="/" className="hover:opacity-80 transition-opacity">
           <span className="text-2xl font-black tracking-tighter text-[#0057FF] dark:text-[#3B82F6]">
