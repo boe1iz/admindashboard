@@ -193,5 +193,6 @@ describe('Day Deletion Guard Logic', () => {
     
     // Expect it to be disabled
     expect(deleteButton).toBeDisabled()
+    expect(deleteButton).toHaveAttribute('title', 'Cannot delete a day that contains workouts. Please remove all workouts first.')
   })
 })

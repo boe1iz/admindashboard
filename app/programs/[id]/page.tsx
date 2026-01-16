@@ -269,6 +269,7 @@ function DaySection({
                   variant="ghost" 
                   size="icon" 
                   disabled={workouts.length > 0}
+                  title={workouts.length > 0 ? "Cannot delete a day that contains workouts. Please remove all workouts first." : undefined}
                   className="rounded-full text-slate-400 hover:text-destructive hover:bg-destructive/5 opacity-0 group-hover:opacity-100 transition-opacity"
                 >
                   <Trash2 className="size-4" />
