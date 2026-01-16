@@ -15,11 +15,11 @@ This plan outlines the implementation of a dedicated mobile User Profile sheet, 
 - [x] Task: Conductor - User Manual Verification 'Mobile Header' (Protocol in workflow.md)
 
 ## Phase 2: Refinement & Verification
-- [ ] Task: Functional Verification on Mobile
-    - [ ] Test logout flow on a mobile viewport.
-    - [ ] Test theme toggling within the new mobile sheet.
-    - [ ] Test Change Password flow within the new mobile sheet.
-- [ ] Task: Cross-Device Consistency Audit
+- [x] Task: Functional Verification on Mobile [0051638]
+    - [x] Test logout flow on a mobile viewport.
+    - [x] Test theme toggling within the new mobile sheet.
+    - [x] Test Change Password flow within the new mobile sheet.
+- [~] Task: Cross-Device Consistency Audit
     - [ ] Ensure desktop Sidebar footer remains visible and functional.
     - [ ] Verify no layout shifts occur when opening the mobile user settings.
 - [ ] Task: Conductor - User Manual Verification 'Refinement' (Protocol in workflow.md)
