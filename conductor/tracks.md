@@ -10,8 +10,3 @@ This file tracks all major tracks for the project. Each track has its own detail
 - [x] **Track: Command Center (Dashboard)**
 
   *Link: [./conductor/tracks/command_center_dashboard_20260114/](./conductor/tracks/command_center_dashboard_20260114/)*
-
----
-
-- [x] **Track: Recent Activity Correction**
-*Link: [./tracks/recent_activity_correction_20260116/](./tracks/recent_activity_correction_20260116/)*

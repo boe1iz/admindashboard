@@ -1,0 +1,8 @@
+{
+  "track_id": "recent_activity_correction_20260116",
+  "type": "bug",
+  "status": "new",
+  "created_at": "2026-01-16T09:44:00Z",
+  "updated_at": "2026-01-16T09:44:00Z",
+  "description": "Correct and update the recent activity section on the dashboard to accurately reflect client assignments and status changes."
+}
