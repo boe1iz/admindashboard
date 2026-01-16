@@ -12,10 +12,10 @@ This plan outlines the implementation of a build-time Git commit SHA display in 
     - [x] Verify that `lib/version.json` is generated correctly on `npm run dev`.
 - [x] Task: Conductor - User Manual Verification 'Build-time Git SHA Extraction' (Protocol in workflow.md)
 
-## Phase 2: UI Implementation
-- [ ] Task: Update Sidebar Component
-    - [ ] Write failing tests (Red Phase) in `tests/SidebarVersion.test.tsx` to check for "Commit: [sha]" text.
-    - [ ] Implement the UI changes in `components/Sidebar.tsx` to import and display the ID.
-    - [ ] Apply "Sophisticated Studio" styling (muted, monospace, positioned below title).
-    - [ ] Run tests and verify they pass (Green Phase).
-- [ ] Task: Conductor - User Manual Verification 'UI Implementation' (Protocol in workflow.md)
+## Phase 2: UI Implementation [checkpoint: 6671381]
+- [x] Task: Update Sidebar Component [420e255]
+    - [x] Write failing tests (Red Phase) in `tests/SidebarVersion.test.tsx` to check for "Commit: [sha]" text.
+    - [x] Implement the UI changes in `components/Sidebar.tsx` to import and display the ID.
+    - [x] Apply "Sophisticated Studio" styling (muted, monospace, positioned below title).
+    - [x] Run tests and verify they pass (Green Phase).
+- [x] Task: Conductor - User Manual Verification 'UI Implementation' (Protocol in workflow.md)
