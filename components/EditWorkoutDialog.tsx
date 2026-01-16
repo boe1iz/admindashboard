@@ -12,12 +12,21 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog'
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetFooter,
+  SheetHeader,
+  SheetTitle,
+} from '@/components/ui/sheet'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { toast } from 'sonner'
 import { MultiSelectCombobox } from './ui/multi-select-combobox'
 import { useEquipment } from '@/hooks/useEquipment'
+import { useMediaQuery } from '@/hooks/use-media-query'
 
 interface EditWorkoutDialogProps {
   programId: string
@@ -35,6 +44,7 @@ interface EditWorkoutDialogProps {
 
 export function EditWorkoutDialog({ programId, dayId, workout, open, onOpenChange }: EditWorkoutDialogProps) {
   const [loading, setLoading] = useState(false)
+  const isDesktop = useMediaQuery('(min-width: 768px)')
   const { equipment } = useEquipment()
   const [formData, setFormData] = useState({
     title: workout.title,
@@ -64,64 +74,85 @@ export function EditWorkoutDialog({ programId, dayId, workout, open, onOpenChang
     }
   }
 
-  return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[425px] rounded-[30px] border-slate-200 dark:border-slate-800 bg-card">
-        <form onSubmit={handleSubmit}>
+  const content = (
+    <form onSubmit={handleSubmit} className="flex flex-col h-full overflow-y-auto">
+      <div className="grid gap-4 py-4 flex-1">
+        <div className="grid gap-2">
+          <Label htmlFor="edit-workout-title" className="text-[10px] font-black uppercase tracking-widest text-slate-500 dark:text-slate-400">Workout Title</Label>
+          <Input
+            id="edit-workout-title"
+            value={formData.title}
+            onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+            required
+            className="rounded-xl border-slate-200 dark:border-slate-800 bg-background"
+          />
+        </div>
+        <div className="grid gap-2">
+          <Label htmlFor="edit-equipment" className="text-[10px] font-black uppercase tracking-widest text-slate-500 dark:text-slate-400">Equipment</Label>
+          <MultiSelectCombobox
+            options={equipment}
+            selected={formData.equipmentIds}
+            onChange={(ids) => setFormData({ ...formData, equipmentIds: ids })}
+            placeholder="Select equipment..."
+          />
+        </div>
+        <div className="grid gap-2">
+          <Label htmlFor="edit-workout-instructions" className="text-[10px] font-black uppercase tracking-widest text-slate-500 dark:text-slate-400">Instructions</Label>
+          <Textarea
+            id="edit-workout-instructions"
+            value={formData.instructions}
+            onChange={(e) => setFormData({ ...formData, instructions: e.target.value })}
+            required
+            className="rounded-xl border-slate-200 dark:border-slate-800 bg-background min-h-[100px]"
+          />
+        </div>
+        <div className="grid gap-2">
+          <Label htmlFor="edit-video-url" className="text-[10px] font-black uppercase tracking-widest text-slate-500 dark:text-slate-400">Video Link</Label>
+          <Input
+            id="edit-video-url"
+            value={formData.video_url}
+            onChange={(e) => setFormData({ ...formData, video_url: e.target.value })}
+            placeholder="https://..."
+            className="rounded-xl border-slate-200 dark:border-slate-800 bg-background"
+          />
+        </div>
+      </div>
+      <div className="mt-auto pt-6">
+        <Button type="submit" disabled={loading} className="w-full rounded-full bg-primary font-black uppercase tracking-widest text-xs h-12 shadow-lg shadow-primary/20">
+          {loading ? 'Saving...' : 'Save Changes'}
+        </Button>
+      </div>
+    </form>
+  )
+
+  if (isDesktop) {
+    return (
+      <Dialog open={open} onOpenChange={onOpenChange}>
+        <DialogContent className="sm:max-w-[425px] rounded-[30px] border-slate-200 dark:border-slate-800 bg-card">
           <DialogHeader>
             <DialogTitle className="text-xl font-black text-foreground uppercase tracking-tight">Edit Workout</DialogTitle>
             <DialogDescription className="text-xs font-bold uppercase tracking-widest text-slate-400 dark:text-slate-500">
               Update the title, instructions, or video link for this exercise.
             </DialogDescription>
           </DialogHeader>
-          <div className="grid gap-4 py-4">
-            <div className="grid gap-2">
-              <Label htmlFor="edit-workout-title" className="text-[10px] font-black uppercase tracking-widest text-slate-500 dark:text-slate-400">Workout Title</Label>
-              <Input
-                id="edit-workout-title"
-                value={formData.title}
-                onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                required
-                className="rounded-xl border-slate-200 dark:border-slate-800 bg-background"
-              />
-            </div>
-            <div className="grid gap-2">
-              <Label htmlFor="edit-equipment" className="text-[10px] font-black uppercase tracking-widest text-slate-500 dark:text-slate-400">Equipment</Label>
-              <MultiSelectCombobox
-                options={equipment}
-                selected={formData.equipmentIds}
-                onChange={(ids) => setFormData({ ...formData, equipmentIds: ids })}
-                placeholder="Select equipment..."
-              />
-            </div>
-            <div className="grid gap-2">
-              <Label htmlFor="edit-workout-instructions" className="text-[10px] font-black uppercase tracking-widest text-slate-500 dark:text-slate-400">Instructions</Label>
-              <Textarea
-                id="edit-workout-instructions"
-                value={formData.instructions}
-                onChange={(e) => setFormData({ ...formData, instructions: e.target.value })}
-                required
-                className="rounded-xl border-slate-200 dark:border-slate-800 bg-background min-h-[100px]"
-              />
-            </div>
-            <div className="grid gap-2">
-              <Label htmlFor="edit-video-url" className="text-[10px] font-black uppercase tracking-widest text-slate-500 dark:text-slate-400">Video Link</Label>
-              <Input
-                id="edit-video-url"
-                value={formData.video_url}
-                onChange={(e) => setFormData({ ...formData, video_url: e.target.value })}
-                placeholder="https://..."
-                className="rounded-xl border-slate-200 dark:border-slate-800 bg-background"
-              />
-            </div>
-          </div>
-          <DialogFooter>
-            <Button type="submit" disabled={loading} className="w-full rounded-full bg-primary font-black uppercase tracking-widest text-xs h-12 shadow-lg shadow-primary/20">
-              {loading ? 'Saving...' : 'Save Changes'}
-            </Button>
-          </DialogFooter>
-        </form>
-      </DialogContent>
-    </Dialog>
+          {content}
+        </DialogContent>
+      </Dialog>
+    )
+  }
+
+  return (
+    <Sheet open={open} onOpenChange={onOpenChange}>
+      <SheetContent side="bottom" className="h-[90vh] rounded-t-[30px] border-t border-slate-200 dark:border-slate-800 bg-card px-4">
+        <SheetHeader>
+          <SheetTitle className="text-xl font-black text-foreground uppercase tracking-tight">Edit Workout</SheetTitle>
+          <SheetDescription className="text-xs font-bold uppercase tracking-widest text-slate-400 dark:text-slate-500">
+            Update the title, instructions, or video link for this exercise.
+          </SheetDescription>
+        </SheetHeader>
+        {content}
+      </SheetContent>
+    </Sheet>
   )
 }
+
