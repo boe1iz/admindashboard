@@ -11,6 +11,7 @@ import {
   ChevronRight 
 } from 'lucide-react'
 import { motion } from 'framer-motion'
+import { useEffect, useState } from 'react'
 
 const navItems = [
   { name: 'Dashboard', href: '/', icon: LayoutDashboard },
@@ -21,6 +22,24 @@ const navItems = [
 
 export function Sidebar() {
   const pathname = usePathname()
+  const [version, setVersion] = useState<{ commitId: string } | null>(null)
+
+  useEffect(() => {
+    // Attempt to load version.json. If it fails, it will be handled by the catch block.
+    // In some environments, top-level imports of missing files will fail the build.
+    // Using a dynamic import inside useEffect is safer for build-time generated files.
+    import('@/lib/version.json')
+      .then((mod) => {
+        if (mod.default && mod.default.commitId) {
+          setVersion(mod.default);
+        } else if (mod.commitId) {
+          setVersion(mod as any);
+        }
+      })
+      .catch(() => {
+        // Silently fail if version.json is not yet generated
+      });
+  }, [])
 
   return (
     <div className="flex h-full w-64 flex-col bg-white border-r border-slate-200 z-20 shadow-sm">
@@ -65,8 +84,15 @@ export function Sidebar() {
         })}
       </nav>
 
-      <div className="border-t border-slate-100 p-4 text-[10px] text-slate-300 uppercase tracking-widest font-black">
-        Admin Dashboard v2.0
+      <div className="border-t border-slate-100 p-4 space-y-1">
+        <div className="text-[10px] text-slate-300 uppercase tracking-widest font-black">
+          Admin Dashboard v2.0
+        </div>
+        {version && (
+          <div className="text-[9px] text-slate-300 font-mono opacity-60">
+            Commit: {version.commitId}
+          </div>
+        )}
       </div>
     </div>
   )
