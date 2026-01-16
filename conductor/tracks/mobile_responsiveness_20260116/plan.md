@@ -14,20 +14,20 @@ This plan outlines the systematic adaptation of the ON3 Athletics Admin Dashboar
 - [x] Task: Conductor - User Manual Verification 'Foundation' (Protocol in workflow.md)
 
 ## Phase 2: Dashboard & Core Grids
-- [x] Task: Responsive Stat Cards & Activity Feed [8a36fb7]
+- [x] Task: Responsive Stat Cards & Activity Feed [04a5610]
     - [x] Write failing tests (Red Phase) in `tests/ResponsiveDashboard.test.tsx` for grid column counts.
     - [x] Update `app/page.tsx` to transition from 3-column to 1-column grids on mobile.
     - [x] Adjust Activity Feed item density and icon sizing for small screens.
-- [x] Task: Adaptive Client & Program Rosters [8a36fb7]
+- [x] Task: Adaptive Client & Program Rosters [04a5610]
     - [x] Update `app/clients/page.tsx` and `app/programs/page.tsx` for single-column card layouts.
     - [x] Reduce card border-radius and padding for `sm` breakpoints.
 - [x] Task: Conductor - User Manual Verification 'Dashboard & Grids' (Protocol in workflow.md)
 
 ## Phase 3: Sequence Builder & Dialogs
-- [ ] Task: Mobile-First Sequence Builder
-    - [ ] Update `app/programs/[id]/page.tsx` to ensure Day cards and Workouts fill full screen width.
-    - [ ] Increase touch targets for reordering handles and chevron toggles.
-- [ ] Task: Adaptive CRUD Sheets
+- [x] Task: Mobile-First Sequence Builder [04a5610]
+    - [x] Update `app/programs/[id]/page.tsx` to ensure Day cards and Workouts fill full screen width.
+    - [x] Increase touch targets for reordering handles and chevron toggles.
+- [~] Task: Adaptive CRUD Sheets
     - [ ] Refactor Dialogs (Workout, Client, Program, Equipment) to use `Sheet` or adaptive dialogs that occupy full height on mobile.
     - [ ] Ensure all form inputs are optimized for mobile touch keyboards.
 - [ ] Task: Conductor - User Manual Verification 'Sequence Builder & Dialogs' (Protocol in workflow.md)

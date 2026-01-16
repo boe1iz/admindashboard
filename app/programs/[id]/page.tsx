@@ -82,59 +82,63 @@ export function WorkoutCard({
 
   return (
     <>
-      <div className="flex items-center justify-between p-4 rounded-2xl border border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/50 group/workout hover:border-primary/30 hover:bg-card hover:shadow-md transition-all">
-        <div className="flex items-center gap-4">
-          <div className="flex flex-col gap-0.5 opacity-0 group-hover/workout:opacity-100 transition-opacity">
+      <div className="flex items-center justify-between p-3 md:p-4 rounded-xl md:rounded-2xl border border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/50 group/workout hover:border-primary/30 hover:bg-card hover:shadow-md transition-all">
+        <div className="flex items-center gap-2 md:gap-4 min-w-0">
+          <div className="flex flex-col gap-0.5 md:opacity-0 md:group-hover/workout:opacity-100 transition-opacity">
             <Button 
               variant="ghost" 
               size="icon" 
-              className="size-6 p-0 disabled:opacity-30 hover:text-primary dark:hover:text-blue-400" 
+              className="size-8 md:size-6 p-0 disabled:opacity-30 hover:text-primary dark:hover:text-blue-400" 
               onClick={() => onMove('up')}
               disabled={isFirst}
+              aria-label="Move up"
             >
-              <ChevronUp className="size-4" />
+              <ChevronUp className="size-5 md:size-4" />
             </Button>
             <Button 
               variant="ghost" 
               size="icon" 
-              className="size-6 p-0 disabled:opacity-30 hover:text-primary dark:hover:text-blue-400" 
+              className="size-8 md:size-6 p-0 disabled:opacity-30 hover:text-primary dark:hover:text-blue-400" 
               onClick={() => onMove('down')}
               disabled={isLast}
+              aria-label="Move down"
             >
-              <ChevronDown className="size-4" />
+              <ChevronDown className="size-5 md:size-4" />
             </Button>
           </div>
           {workout.video_url ? (
             <VideoModal videoUrl={workout.video_url} title={workout.title} />
           ) : (
-            <div className="size-10 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-300 dark:text-slate-600">
-              <Video className="size-5" />
+            <div className="size-10 md:size-12 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-300 dark:text-slate-600 shrink-0">
+              <Video className="size-5 md:size-6" />
             </div>
           )}
-          <div>
-            <h4 className="font-black text-foreground uppercase tracking-tight text-sm">{workout.title}</h4>
-            <div className="flex items-center gap-2 mt-1">
-              <p className="text-xs font-medium text-slate-400 dark:text-slate-500 line-clamp-1">{workout.instructions}</p>
+          <div className="min-w-0">
+            <h4 className="font-black text-foreground uppercase tracking-tight text-xs md:text-sm truncate">{workout.title}</h4>
+            <div className="flex flex-wrap items-center gap-1 md:gap-2 mt-0.5 md:mt-1">
+              <p className="text-[10px] md:text-xs font-medium text-slate-400 dark:text-slate-500 line-clamp-1">{workout.instructions}</p>
               {assignedEquipment.length > 0 && (
                 <div className="flex gap-1">
-                  {assignedEquipment.map((name, i) => (
-                    <span key={i} className="text-[8px] font-black uppercase tracking-widest bg-slate-200/50 dark:bg-slate-800 text-slate-500 dark:text-slate-400 px-1.5 py-0.5 rounded-sm">
+                  {assignedEquipment.slice(0, 2).map((name, i) => (
+                    <span key={i} className="text-[7px] md:text-[8px] font-black uppercase tracking-widest bg-slate-200/50 dark:bg-slate-800 text-slate-500 dark:text-slate-400 px-1 md:px-1.5 py-0.5 rounded-sm whitespace-nowrap">
                       {name}
                     </span>
                   ))}
+                  {assignedEquipment.length > 2 && <span className="text-[7px] text-slate-400 font-bold">+</span>}
                 </div>
               )}
             </div>
           </div>
         </div>
-        <div className="flex items-center gap-1 opacity-0 group-hover/workout:opacity-100 transition-opacity">
+        <div className="flex items-center gap-0.5 md:gap-1 md:opacity-0 md:group-hover/workout:opacity-100 transition-opacity shrink-0">
           <Button 
             variant="ghost" 
             size="icon" 
-            className="size-9 rounded-full text-slate-400 hover:text-primary dark:hover:text-blue-400 hover:bg-primary/5 dark:hover:bg-blue-500/10"
+            className="size-10 md:size-9 rounded-full text-slate-400 hover:text-primary dark:hover:text-blue-400 hover:bg-primary/5 dark:hover:bg-blue-500/10"
             onClick={() => setIsEditDialogOpen(true)}
+            aria-label="Edit workout"
           >
-            <Pencil className="size-4" />
+            <Pencil className="size-4 md:size-5" />
           </Button>
           
           <ConfirmDeleteDialog
@@ -145,9 +149,10 @@ export function WorkoutCard({
               <Button 
                 variant="ghost" 
                 size="icon" 
-                className="size-9 rounded-full text-slate-400 hover:text-destructive hover:bg-destructive/5 dark:hover:bg-red-500/10"
+                className="size-10 md:size-9 rounded-full text-slate-400 hover:text-destructive hover:bg-destructive/5 dark:hover:bg-red-500/10"
+                aria-label="Delete workout"
               >
-                <Trash2 className="size-4" />
+                <Trash2 className="size-4 md:size-5" />
               </Button>
             }
           />
@@ -236,20 +241,20 @@ function DaySection({
 
   return (
     <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-      <Card className="group overflow-hidden border-slate-200 dark:border-slate-800 shadow-md rounded-[40px] bg-card">
-        <CardHeader className="flex flex-row items-center justify-between p-6 bg-slate-50 dark:bg-slate-950 border-b border-slate-100 dark:border-slate-800">
-          <div className="flex items-center gap-4">
+      <Card className="group overflow-hidden border-slate-200 dark:border-slate-800 shadow-md rounded-[24px] md:rounded-[40px] bg-card">
+        <CardHeader className="flex flex-row items-center justify-between p-4 md:p-6 bg-slate-50 dark:bg-slate-950 border-b border-slate-100 dark:border-slate-800">
+          <div className="flex items-center gap-2 md:gap-4">
             <Button
               variant="ghost"
               size="icon"
-              className="rounded-full hover:bg-slate-200 dark:hover:bg-slate-800 transition-transform duration-200"
+              className="size-10 md:size-10 rounded-full hover:bg-slate-200 dark:hover:bg-slate-800 transition-transform duration-200"
               onClick={() => setIsExpanded(!isExpanded)}
               aria-label={isExpanded ? "Collapse day" : "Expand day"}
             >
-              <ChevronDown className={cn("size-5 text-slate-500 dark:text-slate-400 transition-transform duration-200", !isExpanded && "-rotate-90")} />
+              <ChevronDown className={cn("size-6 md:size-5 text-slate-500 dark:text-slate-400 transition-transform duration-200", !isExpanded && "-rotate-90")} />
             </Button>
             <div>
-              <CardTitle className="text-xl font-black text-foreground uppercase tracking-tight">{day.title}</CardTitle>
+              <CardTitle className="text-lg md:text-xl font-black text-foreground uppercase tracking-tight">{day.title}</CardTitle>
               {!isExpanded && (
                 <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 dark:text-slate-500 mt-0.5">
                   {workouts.length} {workouts.length === 1 ? 'Workout' : 'Workouts'}
@@ -257,12 +262,12 @@ function DaySection({
               )}
             </div>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1 md:gap-2">
             <CreateWorkoutDialog programId={programId} dayId={day.id} nextOrderIndex={workouts.length} />
             
             <div 
               title={workouts.length > 0 ? "Cannot delete a day that contains workouts. Please remove all workouts first." : undefined}
-              className="opacity-0 group-hover:opacity-100 transition-opacity"
+              className="md:opacity-0 md:group-hover:opacity-100 transition-opacity"
             >
               <ConfirmDeleteDialog
                 title="Delete Training Day"
@@ -273,9 +278,9 @@ function DaySection({
                     variant="ghost" 
                     size="icon" 
                     disabled={workouts.length > 0}
-                    className="rounded-full text-slate-400 dark:text-slate-500 hover:text-destructive dark:hover:text-red-500 hover:bg-destructive/5 dark:hover:bg-red-500/10"
+                    className="size-10 md:size-9 rounded-full text-slate-400 dark:text-slate-500 hover:text-destructive dark:hover:text-red-500 hover:bg-destructive/5 dark:hover:bg-red-500/10"
                   >
-                    <Trash2 className="size-4" />
+                    <Trash2 className="size-4 md:size-5" />
                     <span className="sr-only">Delete {day.title}</span>
                   </Button>
                 }
@@ -291,16 +296,16 @@ function DaySection({
               exit={{ height: 0, opacity: 0 }}
               transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
             >
-              <CardContent className="p-6 space-y-4 bg-card border-t border-slate-50 dark:border-slate-800">
+              <CardContent className="p-3 md:p-6 space-y-3 md:space-y-4 bg-card border-t border-slate-50 dark:border-slate-800">
                 {workouts.length === 0 ? (
                   <div className="py-12 flex flex-col items-center justify-center text-center">
                     <div className="size-12 rounded-full bg-slate-50 dark:bg-slate-800 flex items-center justify-center mb-3">
                       <Plus className="size-6 text-slate-200 dark:text-slate-700" />
                     </div>
-                    <p className="text-sm font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">No workouts added yet.</p>
+                    <p className="text-xs md:text-sm font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">No workouts added yet.</p>
                   </div>
                 ) : (
-                  <div className="space-y-4">
+                  <div className="space-y-3 md:space-y-4">
                     {workouts.map((workout, index) => (
                       <WorkoutCard 
                         key={workout.id} 
@@ -320,6 +325,7 @@ function DaySection({
         </AnimatePresence>
       </Card>
     </motion.div>
+  )
   )
 }
 
