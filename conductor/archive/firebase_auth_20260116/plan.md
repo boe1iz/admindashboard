@@ -20,19 +20,19 @@ This plan outlines the implementation of a secure authentication layer using Fir
     - [x] Ensure the Sidebar and MobileNav only render when the user is authenticated.
 - [x] Task: Conductor - User Manual Verification 'Login Experience' (Protocol in workflow.md)
 
-## Phase 3: Sidebar Integration & Management
-- [x] Task: Update Sidebar with User Profile & Logout [66e1322]
+## Phase 3: Sidebar Integration & Management [checkpoint: 16fab57]
+- [x] Task: Update Sidebar with User Profile & Logout [16fab57]
     - [x] Add user email display to the Sidebar footer.
     - [x] Implement the "Logout" button with `signOut` logic.
     - [x] Write tests in `tests/SidebarAuth.test.tsx` to verify visibility and logout behavior.
-- [x] Task: Implement Change Password Dialog [66e1322]
+- [x] Task: Implement Change Password Dialog [16fab57]
     - [x] Create `components/ChangePasswordDialog.tsx`.
     - [x] Integrate the dialog trigger into the Sidebar footer.
     - [x] Implement `updatePassword` logic with success/error toasts.
-- [ ] Task: Conductor - User Manual Verification 'Sidebar & Management' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Sidebar & Management' (Protocol in workflow.md)
 
-## Phase 4: Final Security Audit & Polish
-- [ ] Task: End-to-End Auth Verification
-    - [ ] Verify session persistence across page refreshes.
-    - [ ] Audit all protected routes to ensure no data leaks before auth is confirmed.
-- [ ] Task: Conductor - User Manual Verification 'Final Audit' (Protocol in workflow.md)
+## Phase 4: Final Security Audit & Polish [checkpoint: 16fab57]
+- [x] Task: End-to-End Auth Verification [16fab57]
+    - [x] Verify session persistence across page refreshes.
+    - [x] Audit all protected routes to ensure no data leaks before auth is confirmed.
+- [x] Task: Conductor - User Manual Verification 'Final Audit' (Protocol in workflow.md)
