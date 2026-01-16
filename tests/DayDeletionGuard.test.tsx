@@ -30,10 +30,10 @@ vi.mock('firebase/firestore', () => {
     query: vi.fn((q) => q),
     where: vi.fn(),
     orderBy: vi.fn(),
-    onSnapshot: vi.fn((q, cb) => {
-      if (q.path.includes('workouts')) {
+    onSnapshot: vi.fn((q: any, cb: any) => {
+      if (q.path && q.path.includes('workouts')) {
         cb({ docs: [] })
-      } else if (q.path.includes('days')) {
+      } else if (q.path && q.path.includes('days')) {
         cb({
           docs: [
             { 
@@ -144,10 +144,11 @@ describe('Day Deletion Guard Logic', () => {
     const { onSnapshot: mockedOnSnapshot, getDocs: mockedGetDocs, deleteDoc: mockedDeleteDoc } = await import('firebase/firestore')
     
     // Override onSnapshot for this test to return workouts
-    vi.mocked(mockedOnSnapshot).mockImplementation((q, cb) => {
-      if (q.path.includes('workouts')) {
+    // Override onSnapshot for this test to return workouts
+    vi.mocked(mockedOnSnapshot).mockImplementation((q: any, cb: any) => {
+      if (q.path && q.path.includes('workouts')) {
         cb({ docs: [{ id: 'workout1', data: () => ({ title: 'W1' }) }] } as any)
-      } else if (q.path.includes('days')) {
+      } else if (q.path && q.path.includes('days')) {
         cb({ docs: [{ id: 'day1', data: () => ({ title: 'Day One', day_number: 1 }) }] } as any)
       }
       return () => {}
@@ -173,10 +174,11 @@ describe('Day Deletion Guard Logic', () => {
     const { onSnapshot: mockedOnSnapshot } = await import('firebase/firestore')
     
     // Return workouts in snapshot
-    vi.mocked(mockedOnSnapshot).mockImplementation((q, cb) => {
-      if (q.path.includes('workouts')) {
+    // Override onSnapshot for this test to return workouts
+    vi.mocked(mockedOnSnapshot).mockImplementation((q: any, cb: any) => {
+      if (q.path && q.path.includes('workouts')) {
         cb({ docs: [{ id: 'workout1', data: () => ({ title: 'W1' }) }] } as any)
-      } else if (q.path.includes('days')) {
+      } else if (q.path && q.path.includes('days')) {
         cb({ docs: [{ id: 'day1', data: () => ({ title: 'Day One', day_number: 1 }) }] } as any)
       }
       return () => {}

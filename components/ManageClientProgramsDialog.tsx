@@ -31,7 +31,6 @@ interface Assignment {
   id: string
   clientId?: string
   client_id?: string
-  client_id?: string
   programId?: string
   program_id?: string
 }

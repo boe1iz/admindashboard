@@ -45,7 +45,7 @@ vi.mock('@/components/ui/dropdown-menu', () => ({
 describe('ClientCard', () => {
   it('renders client info and toggles archive', async () => {
     const client = { id: '1', name: 'Test Client', email: 'test@test.com', is_active: true }
-    const programs = [{ id: 'prog1', name: 'Program Name' }]
+    const programs = [{ id: 'prog1', name: 'Program Name', isArchived: false }]
     const assignments = [{ id: 'a1', client_id: '1', program_id: 'prog1' }]
     
     render(<ClientCard client={client} programs={programs} assignments={assignments as any} />)

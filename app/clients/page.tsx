@@ -29,6 +29,7 @@ interface Client {
 interface Program {
   id: string
   name: string
+  isArchived: boolean
 }
 
 interface Assignment {
