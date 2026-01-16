@@ -66,27 +66,27 @@ export function EditWorkoutDialog({ programId, dayId, workout, open, onOpenChang
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[425px] rounded-[30px] border-slate-200">
+      <DialogContent className="sm:max-w-[425px] rounded-[30px] border-slate-200 dark:border-slate-800 bg-card">
         <form onSubmit={handleSubmit}>
           <DialogHeader>
-            <DialogTitle className="text-xl font-black uppercase tracking-tight">Edit Workout</DialogTitle>
-            <DialogDescription className="text-xs font-bold uppercase tracking-widest text-slate-400">
+            <DialogTitle className="text-xl font-black text-foreground uppercase tracking-tight">Edit Workout</DialogTitle>
+            <DialogDescription className="text-xs font-bold uppercase tracking-widest text-slate-400 dark:text-slate-500">
               Update the title, instructions, or video link for this exercise.
             </DialogDescription>
           </DialogHeader>
           <div className="grid gap-4 py-4">
             <div className="grid gap-2">
-              <Label htmlFor="edit-workout-title" className="text-[10px] font-black uppercase tracking-widest text-slate-500">Workout Title</Label>
+              <Label htmlFor="edit-workout-title" className="text-[10px] font-black uppercase tracking-widest text-slate-500 dark:text-slate-400">Workout Title</Label>
               <Input
                 id="edit-workout-title"
                 value={formData.title}
                 onChange={(e) => setFormData({ ...formData, title: e.target.value })}
                 required
-                className="rounded-xl border-slate-200"
+                className="rounded-xl border-slate-200 dark:border-slate-800 bg-background"
               />
             </div>
             <div className="grid gap-2">
-              <Label htmlFor="edit-equipment" className="text-[10px] font-black uppercase tracking-widest text-slate-500">Equipment</Label>
+              <Label htmlFor="edit-equipment" className="text-[10px] font-black uppercase tracking-widest text-slate-500 dark:text-slate-400">Equipment</Label>
               <MultiSelectCombobox
                 options={equipment}
                 selected={formData.equipmentIds}
@@ -95,23 +95,23 @@ export function EditWorkoutDialog({ programId, dayId, workout, open, onOpenChang
               />
             </div>
             <div className="grid gap-2">
-              <Label htmlFor="edit-workout-instructions" className="text-[10px] font-black uppercase tracking-widest text-slate-500">Instructions</Label>
+              <Label htmlFor="edit-workout-instructions" className="text-[10px] font-black uppercase tracking-widest text-slate-500 dark:text-slate-400">Instructions</Label>
               <Textarea
                 id="edit-workout-instructions"
                 value={formData.instructions}
                 onChange={(e) => setFormData({ ...formData, instructions: e.target.value })}
                 required
-                className="rounded-xl border-slate-200 min-h-[100px]"
+                className="rounded-xl border-slate-200 dark:border-slate-800 bg-background min-h-[100px]"
               />
             </div>
             <div className="grid gap-2">
-              <Label htmlFor="edit-video-url" className="text-[10px] font-black uppercase tracking-widest text-slate-500">Video Link</Label>
+              <Label htmlFor="edit-video-url" className="text-[10px] font-black uppercase tracking-widest text-slate-500 dark:text-slate-400">Video Link</Label>
               <Input
                 id="edit-video-url"
                 value={formData.video_url}
                 onChange={(e) => setFormData({ ...formData, video_url: e.target.value })}
                 placeholder="https://..."
-                className="rounded-xl border-slate-200"
+                className="rounded-xl border-slate-200 dark:border-slate-800 bg-background"
               />
             </div>
           </div>

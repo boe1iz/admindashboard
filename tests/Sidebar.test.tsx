@@ -12,8 +12,8 @@ describe('Sidebar Component', () => {
     const { container } = render(<Sidebar />)
     const sidebarDiv = container.firstChild as HTMLElement
     
-    // Check for white background and border
-    expect(sidebarDiv.className).toContain('bg-white')
+    // Check for theme-aware card background and border
+    expect(sidebarDiv.className).toContain('bg-card')
     expect(sidebarDiv.className).toContain('border-r')
     
     // Check for logo text

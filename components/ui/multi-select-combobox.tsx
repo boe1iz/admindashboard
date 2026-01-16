@@ -53,7 +53,7 @@ export function MultiSelectCombobox({
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className="w-full justify-between min-h-[44px] h-auto py-2 rounded-2xl border-slate-200 bg-white hover:bg-slate-50"
+          className="w-full justify-between min-h-[44px] h-auto py-2 rounded-2xl border-slate-200 dark:border-slate-800 bg-card hover:bg-slate-50 dark:hover:bg-slate-800"
         >
           <div className="flex flex-wrap gap-1">
             {selected.length > 0 ? (
@@ -61,33 +61,33 @@ export function MultiSelectCombobox({
                 <Badge
                   variant="secondary"
                   key={value}
-                  className="mr-1 rounded-full px-2 py-0 font-black uppercase text-[10px] bg-slate-100 text-slate-600 border-none"
+                  className="mr-1 rounded-full px-2 py-0 font-black uppercase text-[10px] bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 border-none"
                   onClick={(e) => {
                     e.stopPropagation()
                     handleUnselect(value)
                   }}
                 >
                   {options.find((o) => o.value === value)?.label}
-                  <X className="ml-1 h-3 w-3 text-slate-400 hover:text-slate-600 cursor-pointer" />
+                  <X className="ml-1 h-3 w-3 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 cursor-pointer" />
                 </Badge>
               ))
             ) : (
-              <span className="text-slate-400 font-bold uppercase tracking-widest text-[10px]">
+              <span className="text-slate-400 dark:text-slate-500 font-bold uppercase tracking-widest text-[10px]">
                 {placeholder}
               </span>
             )}
           </div>
-          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50 text-slate-400" />
+          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50 text-slate-400 dark:text-slate-500" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-[var(--radix-popover-trigger-width)] p-0 rounded-2xl border-slate-200 shadow-xl overflow-hidden bg-white">
-        <Command>
-          <CommandInput placeholder="Search..." className="font-bold uppercase text-[10px] tracking-widest" />
-          <CommandList>
-            <CommandEmpty className="py-6 text-center text-[10px] font-bold uppercase tracking-widest text-slate-400">
+      <PopoverContent className="w-[var(--radix-popover-trigger-width)] p-0 rounded-2xl border-slate-200 dark:border-slate-800 shadow-xl overflow-hidden bg-card">
+        <Command className="bg-card">
+          <CommandInput placeholder="Search..." className="font-bold uppercase text-[10px] tracking-widest text-foreground" />
+          <CommandList className="bg-card">
+            <CommandEmpty className="py-6 text-center text-[10px] font-bold uppercase tracking-widest text-slate-400 dark:text-slate-500">
               {emptyText}
             </CommandEmpty>
-            <CommandGroup>
+            <CommandGroup className="bg-card">
               {options.map((option) => (
                 <CommandItem
                   key={option.value}
@@ -98,7 +98,7 @@ export function MultiSelectCombobox({
                         : [...selected, option.value]
                     )
                   }}
-                  className="rounded-xl m-1 font-black uppercase text-[10px] tracking-widest"
+                  className="rounded-xl m-1 font-black uppercase text-[10px] tracking-widest text-foreground dark:hover:bg-slate-800"
                 >
                   <Check
                     className={cn(

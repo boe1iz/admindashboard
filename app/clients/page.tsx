@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { db } from '@/lib/firebase'
-import { collection, query, onSnapshot, doc, updateDoc } from 'firebase/firestore'
+import { collection, query, onSnapshot, doc, updateDoc, serverTimestamp } from 'firebase/firestore'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import {
@@ -18,6 +18,7 @@ import { CreateClientDialog } from '@/components/CreateClientDialog'
 import { ManageClientProgramsDialog } from '@/components/ManageClientProgramsDialog'
 import { EditClientDialog } from '@/components/EditClientDialog'
 import { motion } from 'framer-motion'
+import { logActivity } from '@/lib/activity'
 
 interface Client {
   id: string
@@ -49,7 +50,12 @@ export function ClientCard({ client, programs, assignments }: { client: Client, 
     setIsProcessing(true)
     try {
       await updateDoc(doc(db, 'clients', client.id), {
-        is_active: !client.is_active
+        is_active: !client.is_active,
+        updated_at: serverTimestamp()
+      })
+      await logActivity({
+        type: !client.is_active ? 'restore' : 'archive',
+        client_name: client.name
       })
       toast.success(!client.is_active ? "Client restored" : "Client archived")
     } catch (error) {
@@ -73,22 +79,22 @@ export function ClientCard({ client, programs, assignments }: { client: Client, 
         whileHover={{ scale: 1.02, y: -4 }}
       >
         <Card 
-          className={`relative group cursor-pointer border-slate-200 bg-white shadow-md hover:shadow-xl hover:border-primary/30 transition-all rounded-[40px] overflow-hidden ${isProcessing ? 'opacity-50 pointer-events-none scale-[0.98]' : ''} ${!client.is_active ? 'opacity-60' : ''}`}
+          className={`relative group cursor-pointer border-slate-200 dark:border-slate-800 bg-card shadow-md hover:shadow-xl hover:border-primary/30 transition-all rounded-[40px] overflow-hidden ${isProcessing ? 'opacity-50 pointer-events-none scale-[0.98]' : ''} ${!client.is_active ? 'opacity-60 grayscale' : ''}`}
           onClick={() => setIsManageDialogOpen(true)}
         >
           <div className="absolute top-4 right-4 z-10">
             <DropdownMenu>
               <DropdownMenuTrigger asChild onClick={(e) => e.stopPropagation()}>
-                <Button variant="ghost" size="icon" className="rounded-full hover:bg-slate-100">
-                  <MoreVertical className="size-4" />
+                <Button variant="ghost" size="icon" className="rounded-full hover:bg-slate-100 dark:hover:bg-slate-800">
+                  <MoreVertical className="size-4 dark:text-slate-400" />
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="rounded-2xl border-slate-200 shadow-xl">
-                <DropdownMenuItem onClick={(e) => { e.stopPropagation(); setIsEditDialogOpen(true); }} className="rounded-xl m-1">
+              <DropdownMenuContent align="end" className="rounded-2xl border-slate-200 dark:border-slate-800 bg-card shadow-xl">
+                <DropdownMenuItem onClick={(e) => { e.stopPropagation(); setIsEditDialogOpen(true); }} className="rounded-xl m-1 dark:hover:bg-slate-800">
                   <Pencil className="mr-2 size-4" />
                   Edit Details
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={(e) => { e.stopPropagation(); toggleActive(); }} className="rounded-xl m-1">
+                <DropdownMenuItem onClick={(e) => { e.stopPropagation(); toggleActive(); }} className="rounded-xl m-1 dark:hover:bg-slate-800">
                   {client.is_active ? (
                     <>
                       <Archive className="mr-2 size-4" />
@@ -106,10 +112,10 @@ export function ClientCard({ client, programs, assignments }: { client: Client, 
           </div>
           <CardHeader className="p-6">
             <div className="size-12 rounded-2xl bg-primary/10 flex items-center justify-center mb-4">
-              <Users className="size-6 text-primary" />
+              <Users className="size-6 text-primary dark:text-blue-400" />
             </div>
-            <CardTitle className="font-black text-slate-900 uppercase tracking-tight">{client.name}</CardTitle>
-            <CardDescription className="text-xs font-bold text-slate-400">{client.email}</CardDescription>
+            <CardTitle className="font-black text-foreground uppercase tracking-tight">{client.name}</CardTitle>
+            <CardDescription className="text-xs font-bold text-slate-400 dark:text-slate-500">{client.email}</CardDescription>
           </CardHeader>
           <CardContent className="px-6 pb-6">
             <div className="flex flex-wrap gap-2">
@@ -118,13 +124,13 @@ export function ClientCard({ client, programs, assignments }: { client: Client, 
                    const progId = assignment.programId || assignment.program_id
                    const programName = programs.find(p => p.id === progId)?.name || progId || 'Unknown Program'
                    return (
-                     <span key={assignment.id} className="px-3 py-1 bg-slate-100 text-slate-600 text-[10px] font-black uppercase tracking-widest rounded-full">
+                     <span key={assignment.id} className="px-3 py-1 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 text-[10px] font-black uppercase tracking-widest rounded-full">
                        {programName}
                      </span>
                    )
                 })
               ) : (
-                <span className="text-[10px] font-black uppercase tracking-widest text-slate-300">No active programs</span>
+                <span className="text-[10px] font-black uppercase tracking-widest text-slate-300 dark:text-slate-600">No active programs</span>
               )}
             </div>
           </CardContent>
@@ -200,11 +206,11 @@ export default function ClientsPage() {
     <div className="container mx-auto py-10 px-4 min-h-screen">
       <div className="flex justify-between items-center mb-8">
         <div>
-          <h1 className="text-4xl font-black text-slate-900 uppercase tracking-tight flex items-center gap-3">
-            <Users className="size-8 text-[#0057FF]" />
+          <h1 className="text-4xl font-black text-foreground uppercase tracking-tight flex items-center gap-3">
+            <Users className="size-8 text-[#0057FF] dark:text-[#3B82F6]" />
             Client Roster
           </h1>
-          <p className="text-xs md:text-sm font-black text-slate-400 uppercase tracking-widest mt-1">
+          <p className="text-xs md:text-sm font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mt-1">
             Manage your high-performance athlete network.
           </p>
         </div>
@@ -212,9 +218,9 @@ export default function ClientsPage() {
       </div>
       
       <Tabs defaultValue="operational" className="w-full">
-        <TabsList className="bg-white border border-slate-200 p-1 rounded-full w-fit shadow-sm mb-8">
-          <TabsTrigger value="operational" className="rounded-full px-4 md:px-6 data-[state=active]:bg-[#0057FF] data-[state=active]:text-white text-xs md:text-sm font-black uppercase tracking-tight">Operational ({activeClients.length})</TabsTrigger>
-          <TabsTrigger value="vault" className="rounded-full px-4 md:px-6 data-[state=active]:bg-[#0057FF] data-[state=active]:text-white text-xs md:text-sm font-black uppercase tracking-tight">Archived Vault ({archivedClients.length})</TabsTrigger>
+        <TabsList className="bg-card border border-slate-200 dark:border-slate-800 p-1 rounded-full w-fit shadow-sm mb-8">
+          <TabsTrigger value="operational" className="rounded-full px-4 md:px-6 data-[state=active]:bg-[#0057FF] data-[state=active]:text-white text-xs md:text-sm font-black uppercase tracking-tight dark:text-slate-400">Operational ({activeClients.length})</TabsTrigger>
+          <TabsTrigger value="vault" className="rounded-full px-4 md:px-6 data-[state=active]:bg-[#0057FF] data-[state=active]:text-white text-xs md:text-sm font-black uppercase tracking-tight dark:text-slate-400">Archived Vault ({archivedClients.length})</TabsTrigger>
         </TabsList>
         
         <TabsContent value="operational" className="space-y-4 outline-none">
@@ -225,12 +231,12 @@ export default function ClientsPage() {
               ))}
             </div>
           ) : (
-            <Card className="p-12 border-slate-200 bg-white flex flex-col items-center justify-center text-center rounded-[40px] shadow-md">
-              <div className="size-20 bg-slate-50 rounded-full flex items-center justify-center mb-4">
-                <Users className="size-10 text-slate-200" />
+            <Card className="p-12 border-slate-200 dark:border-slate-800 bg-card flex flex-col items-center justify-center text-center rounded-[40px] shadow-md">
+              <div className="size-20 bg-slate-50 dark:bg-slate-800 rounded-full flex items-center justify-center mb-4">
+                <Users className="size-10 text-slate-200 dark:text-slate-700" />
               </div>
-              <CardTitle className="text-slate-900 font-black uppercase tracking-tight mb-2">No Active Clients</CardTitle>
-              <CardDescription className="font-medium text-slate-500">Onboard your first client to get started.</CardDescription>
+              <CardTitle className="text-foreground font-black uppercase tracking-tight mb-2">No Active Clients</CardTitle>
+              <CardDescription className="font-medium text-slate-500 dark:text-slate-400">Onboard your first client to get started.</CardDescription>
             </Card>
           )}
         </TabsContent>
@@ -243,12 +249,12 @@ export default function ClientsPage() {
               ))}
             </div>
           ) : (
-            <Card className="p-12 border-slate-200 bg-white flex flex-col items-center justify-center text-center rounded-[40px] shadow-md">
-              <div className="size-20 bg-slate-50 rounded-full flex items-center justify-center mb-4">
-                <Archive className="size-10 text-slate-200" />
+            <Card className="p-12 border-slate-200 dark:border-slate-800 bg-card flex flex-col items-center justify-center text-center rounded-[40px] shadow-md">
+              <div className="size-20 bg-slate-50 dark:bg-slate-800 rounded-full flex items-center justify-center mb-4">
+                <Archive className="size-10 text-slate-200 dark:text-slate-700" />
               </div>
-              <CardTitle className="text-slate-900 font-black uppercase tracking-tight mb-2">Vault is Empty</CardTitle>
-              <CardDescription className="font-medium text-slate-500">Archived clients will appear here.</CardDescription>
+              <CardTitle className="text-foreground font-black uppercase tracking-tight mb-2">Vault is Empty</CardTitle>
+              <CardDescription className="font-medium text-slate-500 dark:text-slate-400">Archived clients will appear here.</CardDescription>
             </Card>
           )}
         </TabsContent>

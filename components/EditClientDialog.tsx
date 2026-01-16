@@ -43,7 +43,7 @@ export function EditClientDialog({
     try {
       await updateDoc(doc(db, 'clients', client.id), {
         ...formData,
-        updatedAt: serverTimestamp()
+        updated_at: serverTimestamp()
       })
       onOpenChange(false)
       toast.success("Client details updated")

@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { db } from '@/lib/firebase'
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore'
+import { logActivity } from '@/lib/activity'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -33,8 +34,12 @@ export function CreateClientDialog() {
       await addDoc(collection(db, 'clients'), {
         ...formData,
         is_active: true,
-        createdAt: serverTimestamp(),
-        updatedAt: serverTimestamp()
+        created_at: serverTimestamp(),
+        updated_at: serverTimestamp()
+      })
+      await logActivity({
+        type: 'onboarded',
+        client_name: formData.name
       })
       setOpen(false)
       setFormData({ name: '', email: '' })

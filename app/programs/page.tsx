@@ -93,24 +93,24 @@ function ProgramCard({ program }: { program: Program }) {
         animate={{ opacity: 1, y: 0 }}
         whileHover={{ scale: 1.02, y: -4 }}
       >
-        <Card className={`relative group cursor-pointer border-slate-200 bg-white shadow-md hover:shadow-xl hover:border-primary/30 transition-all rounded-[40px] overflow-hidden ${duplicating ? 'opacity-50 pointer-events-none' : ''} ${program.isArchived ? 'opacity-60' : ''}`}>
+        <Card className={`relative group cursor-pointer border-slate-200 dark:border-slate-800 bg-card shadow-md hover:shadow-xl hover:border-primary/30 transition-all rounded-[40px] overflow-hidden ${duplicating ? 'opacity-50 pointer-events-none scale-[0.98]' : ''} ${program.isArchived ? 'opacity-60 grayscale' : ''}`}>
           <div className="absolute top-4 right-4 z-10">
             <DropdownMenu>
               <DropdownMenuTrigger asChild onClick={(e) => e.stopPropagation()}>
-                <Button variant="ghost" size="icon" className="rounded-full hover:bg-slate-100">
-                  <MoreVertical className="size-4" />
+                <Button variant="ghost" size="icon" className="rounded-full hover:bg-slate-100 dark:hover:bg-slate-800">
+                  <MoreVertical className="size-4 dark:text-slate-400" />
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="rounded-2xl border-slate-200 shadow-xl">
-                <DropdownMenuItem onClick={(e) => { e.stopPropagation(); setIsEditDialogOpen(true); }} className="rounded-xl m-1">
+              <DropdownMenuContent align="end" className="rounded-2xl border-slate-200 dark:border-slate-800 bg-card shadow-xl">
+                <DropdownMenuItem onClick={(e) => { e.stopPropagation(); setIsEditDialogOpen(true); }} className="rounded-xl m-1 dark:hover:bg-slate-800">
                   <Pencil className="mr-2 size-4" />
                   Edit Details
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={(e) => { e.stopPropagation(); duplicateProgram(); }} className="rounded-xl m-1">
+                <DropdownMenuItem onClick={(e) => { e.stopPropagation(); duplicateProgram(); }} className="rounded-xl m-1 dark:hover:bg-slate-800">
                   <Copy className="mr-2 size-4" />
                   Duplicate
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={(e) => { e.stopPropagation(); toggleArchive(); }} className="rounded-xl m-1">
+                <DropdownMenuItem onClick={(e) => { e.stopPropagation(); toggleArchive(); }} className="rounded-xl m-1 dark:hover:bg-slate-800">
                   {program.isArchived ? (
                     <>
                       <ArchiveRestore className="mr-2 size-4 text-primary" />
@@ -129,10 +129,10 @@ function ProgramCard({ program }: { program: Program }) {
           <Link href={`/programs/${program.id}`}>
             <CardHeader className="p-6">
               <div className="size-12 rounded-2xl bg-primary/10 flex items-center justify-center mb-4">
-                <BookOpen className="size-6 text-primary" />
+                <BookOpen className="size-6 text-primary dark:text-blue-400" />
               </div>
-              <CardTitle className="font-black text-slate-900 uppercase tracking-tight">{program.name}</CardTitle>
-              <CardDescription className="line-clamp-2 text-xs font-bold text-slate-400">{program.description}</CardDescription>
+              <CardTitle className="font-black text-foreground uppercase tracking-tight">{program.name}</CardTitle>
+              <CardDescription className="line-clamp-2 text-xs font-bold text-slate-400 dark:text-slate-500">{program.description}</CardDescription>
             </CardHeader>
           </Link>
         </Card>
@@ -180,11 +180,11 @@ export default function ProgramsPage() {
     <div className="container mx-auto py-10 px-4 min-h-screen">
       <div className="flex justify-between items-center mb-8">
         <div>
-          <h1 className="text-4xl font-black text-slate-900 uppercase tracking-tight flex items-center gap-3">
-            <BookOpen className="size-8 text-[#0057FF]" />
+          <h1 className="text-4xl font-black text-foreground uppercase tracking-tight flex items-center gap-3">
+            <BookOpen className="size-8 text-[#0057FF] dark:text-[#3B82F6]" />
             Programs
           </h1>
-          <p className="text-xs md:text-sm font-black text-slate-400 uppercase tracking-widest mt-1">
+          <p className="text-xs md:text-sm font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mt-1">
             Build and manage high-performance training sequences.
           </p>
         </div>
@@ -192,9 +192,9 @@ export default function ProgramsPage() {
       </div>
       
       <Tabs defaultValue="operational" className="w-full">
-        <TabsList className="bg-white border border-slate-200 p-1 rounded-full w-fit shadow-sm mb-8">
-          <TabsTrigger value="operational" className="rounded-full px-4 md:px-6 data-[state=active]:bg-[#0057FF] data-[state=active]:text-white text-xs md:text-sm font-black uppercase tracking-tight">Operational ({activePrograms.length})</TabsTrigger>
-          <TabsTrigger value="vault" className="rounded-full px-4 md:px-6 data-[state=active]:bg-[#0057FF] data-[state=active]:text-white text-xs md:text-sm font-black uppercase tracking-tight">Archived Vault ({archivedPrograms.length})</TabsTrigger>
+        <TabsList className="bg-card border border-slate-200 dark:border-slate-800 p-1 rounded-full w-fit shadow-sm mb-8">
+          <TabsTrigger value="operational" className="rounded-full px-4 md:px-6 data-[state=active]:bg-[#0057FF] data-[state=active]:text-white text-xs md:text-sm font-black uppercase tracking-tight dark:text-slate-400">Operational ({activePrograms.length})</TabsTrigger>
+          <TabsTrigger value="vault" className="rounded-full px-4 md:px-6 data-[state=active]:bg-[#0057FF] data-[state=active]:text-white text-xs md:text-sm font-black uppercase tracking-tight dark:text-slate-400">Archived Vault ({archivedPrograms.length})</TabsTrigger>
         </TabsList>
         
         <TabsContent value="operational" className="space-y-4 outline-none">
@@ -205,12 +205,12 @@ export default function ProgramsPage() {
               ))}
             </div>
           ) : (
-            <Card className="p-12 border-slate-200 bg-white flex flex-col items-center justify-center text-center rounded-[40px] shadow-md">
-              <div className="size-20 bg-slate-50 rounded-full flex items-center justify-center mb-4">
-                <BookOpen className="size-10 text-slate-200" />
+            <Card className="p-12 border-slate-200 dark:border-slate-800 bg-card flex flex-col items-center justify-center text-center rounded-[40px] shadow-md">
+              <div className="size-20 bg-slate-50 dark:bg-slate-800 rounded-full flex items-center justify-center mb-4">
+                <BookOpen className="size-10 text-slate-200 dark:text-slate-700" />
               </div>
-              <CardTitle className="text-slate-900 font-black uppercase tracking-tight mb-2">No Programs Found</CardTitle>
-              <CardDescription className="font-medium text-slate-500">Create your first concept to begin building.</CardDescription>
+              <CardTitle className="text-foreground font-black uppercase tracking-tight mb-2">No Programs Found</CardTitle>
+              <CardDescription className="font-medium text-slate-500 dark:text-slate-400">Create your first concept to begin building.</CardDescription>
             </Card>
           )}
         </TabsContent>
@@ -223,12 +223,12 @@ export default function ProgramsPage() {
               ))}
             </div>
           ) : (
-            <Card className="p-12 border-slate-200 bg-white flex flex-col items-center justify-center text-center rounded-[40px] shadow-md">
-              <div className="size-20 bg-slate-50 rounded-full flex items-center justify-center mb-4">
-                <Archive className="size-10 text-slate-200" />
+            <Card className="p-12 border-slate-200 dark:border-slate-800 bg-card flex flex-col items-center justify-center text-center rounded-[40px] shadow-md">
+              <div className="size-20 bg-slate-50 dark:bg-slate-800 rounded-full flex items-center justify-center mb-4">
+                <Archive className="size-10 text-slate-200 dark:text-slate-700" />
               </div>
-              <CardTitle className="text-slate-900 font-black uppercase tracking-tight mb-2">Vault is Empty</CardTitle>
-              <CardDescription className="font-medium text-slate-500">Archived programs will appear here.</CardDescription>
+              <CardTitle className="text-foreground font-black uppercase tracking-tight mb-2">Vault is Empty</CardTitle>
+              <CardDescription className="font-medium text-slate-500 dark:text-slate-400">Archived programs will appear here.</CardDescription>
             </Card>
           )}
         </TabsContent>

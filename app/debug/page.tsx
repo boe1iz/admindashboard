@@ -74,28 +74,28 @@ export default function DebugPage() {
     diagnose()
   }, [])
 
-  if (loading) return <div className="p-10 font-black uppercase tracking-widest text-xs animate-pulse">Diagnosing database structure...</div>
+  if (loading) return <div className="p-10 font-black uppercase tracking-widest text-xs animate-pulse text-foreground">Diagnosing database structure...</div>
 
   return (
     <div className="p-10 font-mono text-[10px]">
-      <h1 className="text-2xl font-black mb-8 uppercase tracking-tight text-slate-900">Database Diagnosis</h1>
+      <h1 className="text-2xl font-black mb-8 uppercase tracking-tight text-foreground">Database Diagnosis</h1>
       {results.map((res, i) => (
-        <div key={i} className="mb-8 border border-slate-200 p-6 rounded-[20px] bg-white shadow-sm">
-          <p className="font-black text-slate-900 uppercase tracking-widest mb-4 border-b border-slate-50 pb-2">{res.name} ({res.programId || 'Collection'})</p>
+        <div key={i} className="mb-8 border border-slate-200 dark:border-slate-800 p-6 rounded-[20px] bg-card shadow-sm">
+          <p className="font-black text-foreground uppercase tracking-widest mb-4 border-b border-slate-50 dark:border-slate-800 pb-2">{res.name} ({res.programId || 'Collection'})</p>
           {res.samples ? (
-             <pre className="mt-2 text-slate-500 overflow-x-auto">{JSON.stringify(res.samples, null, 2)}</pre>
+             <pre className="mt-2 text-slate-500 dark:text-slate-400 overflow-x-auto">{JSON.stringify(res.samples, null, 2)}</pre>
           ) : (
             res.subCollections.length === 0 ? (
               <p className="text-red-500 mt-2 font-bold">No sub-collections found.</p>
             ) : (
               res.subCollections.map((sub: any, j: number) => (
                 <div key={j} className="mt-4 ml-4">
-                  <p className="text-primary font-black uppercase underline">Sub-collection: {sub.name} ({sub.count} docs)</p>
-                  <pre className="mt-2 text-slate-500 overflow-x-auto">{JSON.stringify(sub.sample, null, 2)}</pre>
+                  <p className="text-primary dark:text-blue-400 font-black uppercase underline">Sub-collection: {sub.name} ({sub.count} docs)</p>
+                  <pre className="mt-2 text-slate-500 dark:text-slate-400 overflow-x-auto">{JSON.stringify(sub.sample, null, 2)}</pre>
                   {sub.nested.map((nes: any, k: number) => (
-                    <div key={k} className="mt-4 ml-8 border-l-2 border-slate-100 pl-4">
-                      <p className="text-blue-400 font-black uppercase underline">Nested Sub-collection: {nes.name} ({nes.count} docs)</p>
-                      <pre className="mt-2 text-slate-400 overflow-x-auto">{JSON.stringify(nes.sample, null, 2)}</pre>
+                    <div key={k} className="mt-4 ml-8 border-l-2 border-slate-100 dark:border-slate-800 pl-4">
+                      <p className="text-blue-400 dark:text-blue-300 font-black uppercase underline">Nested Sub-collection: {nes.name} ({nes.count} docs)</p>
+                      <pre className="mt-2 text-slate-400 dark:text-slate-500 overflow-x-auto">{JSON.stringify(nes.sample, null, 2)}</pre>
                     </div>
                   ))}
                 </div>
@@ -104,7 +104,7 @@ export default function DebugPage() {
           )}
         </div>
       ))}
-      {results.length === 0 && <p className="font-black uppercase text-slate-400">No programs found.</p>}
+      {results.length === 0 && <p className="font-black uppercase text-slate-400 dark:text-slate-600">No programs found.</p>}
     </div>
   )
 }

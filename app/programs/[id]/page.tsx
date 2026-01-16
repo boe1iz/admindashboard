@@ -82,13 +82,13 @@ export function WorkoutCard({
 
   return (
     <>
-      <div className="flex items-center justify-between p-4 rounded-2xl border border-slate-100 bg-slate-50/50 group/workout hover:border-primary/30 hover:bg-white hover:shadow-md transition-all">
+      <div className="flex items-center justify-between p-4 rounded-2xl border border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/50 group/workout hover:border-primary/30 hover:bg-card hover:shadow-md transition-all">
         <div className="flex items-center gap-4">
           <div className="flex flex-col gap-0.5 opacity-0 group-hover/workout:opacity-100 transition-opacity">
             <Button 
               variant="ghost" 
               size="icon" 
-              className="size-6 p-0 disabled:opacity-30 hover:text-primary" 
+              className="size-6 p-0 disabled:opacity-30 hover:text-primary dark:hover:text-blue-400" 
               onClick={() => onMove('up')}
               disabled={isFirst}
             >
@@ -97,7 +97,7 @@ export function WorkoutCard({
             <Button 
               variant="ghost" 
               size="icon" 
-              className="size-6 p-0 disabled:opacity-30 hover:text-primary" 
+              className="size-6 p-0 disabled:opacity-30 hover:text-primary dark:hover:text-blue-400" 
               onClick={() => onMove('down')}
               disabled={isLast}
             >
@@ -107,18 +107,18 @@ export function WorkoutCard({
           {workout.video_url ? (
             <VideoModal videoUrl={workout.video_url} title={workout.title} />
           ) : (
-            <div className="size-10 rounded-xl bg-slate-100 flex items-center justify-center text-slate-300">
+            <div className="size-10 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-300 dark:text-slate-600">
               <Video className="size-5" />
             </div>
           )}
           <div>
-            <h4 className="font-black text-slate-900 uppercase tracking-tight text-sm">{workout.title}</h4>
+            <h4 className="font-black text-foreground uppercase tracking-tight text-sm">{workout.title}</h4>
             <div className="flex items-center gap-2 mt-1">
-              <p className="text-xs font-medium text-slate-400 line-clamp-1">{workout.instructions}</p>
+              <p className="text-xs font-medium text-slate-400 dark:text-slate-500 line-clamp-1">{workout.instructions}</p>
               {assignedEquipment.length > 0 && (
                 <div className="flex gap-1">
                   {assignedEquipment.map((name, i) => (
-                    <span key={i} className="text-[8px] font-black uppercase tracking-widest bg-slate-200/50 text-slate-500 px-1.5 py-0.5 rounded-sm">
+                    <span key={i} className="text-[8px] font-black uppercase tracking-widest bg-slate-200/50 dark:bg-slate-800 text-slate-500 dark:text-slate-400 px-1.5 py-0.5 rounded-sm">
                       {name}
                     </span>
                   ))}
@@ -131,7 +131,7 @@ export function WorkoutCard({
           <Button 
             variant="ghost" 
             size="icon" 
-            className="size-9 rounded-full text-slate-400 hover:text-primary hover:bg-primary/5"
+            className="size-9 rounded-full text-slate-400 hover:text-primary dark:hover:text-blue-400 hover:bg-primary/5 dark:hover:bg-blue-500/10"
             onClick={() => setIsEditDialogOpen(true)}
           >
             <Pencil className="size-4" />
@@ -145,7 +145,7 @@ export function WorkoutCard({
               <Button 
                 variant="ghost" 
                 size="icon" 
-                className="size-9 rounded-full text-slate-400 hover:text-destructive hover:bg-destructive/5"
+                className="size-9 rounded-full text-slate-400 hover:text-destructive hover:bg-destructive/5 dark:hover:bg-red-500/10"
               >
                 <Trash2 className="size-4" />
               </Button>
@@ -236,22 +236,22 @@ function DaySection({
 
   return (
     <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-      <Card className="group overflow-hidden border-slate-200 shadow-md rounded-[40px]">
-        <CardHeader className="flex flex-row items-center justify-between p-6 bg-slate-50 border-b border-slate-100">
+      <Card className="group overflow-hidden border-slate-200 dark:border-slate-800 shadow-md rounded-[40px] bg-card">
+        <CardHeader className="flex flex-row items-center justify-between p-6 bg-slate-50 dark:bg-slate-950 border-b border-slate-100 dark:border-slate-800">
           <div className="flex items-center gap-4">
             <Button
               variant="ghost"
               size="icon"
-              className="rounded-full hover:bg-slate-200 transition-transform duration-200"
+              className="rounded-full hover:bg-slate-200 dark:hover:bg-slate-800 transition-transform duration-200"
               onClick={() => setIsExpanded(!isExpanded)}
               aria-label={isExpanded ? "Collapse day" : "Expand day"}
             >
-              <ChevronDown className={cn("size-5 text-slate-500 transition-transform duration-200", !isExpanded && "-rotate-90")} />
+              <ChevronDown className={cn("size-5 text-slate-500 dark:text-slate-400 transition-transform duration-200", !isExpanded && "-rotate-90")} />
             </Button>
             <div>
-              <CardTitle className="text-xl font-black text-slate-900 uppercase tracking-tight">{day.title}</CardTitle>
+              <CardTitle className="text-xl font-black text-foreground uppercase tracking-tight">{day.title}</CardTitle>
               {!isExpanded && (
-                <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 mt-0.5">
+                <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 dark:text-slate-500 mt-0.5">
                   {workouts.length} {workouts.length === 1 ? 'Workout' : 'Workouts'}
                 </p>
               )}
@@ -273,7 +273,7 @@ function DaySection({
                     variant="ghost" 
                     size="icon" 
                     disabled={workouts.length > 0}
-                    className="rounded-full text-slate-400 hover:text-destructive hover:bg-destructive/5"
+                    className="rounded-full text-slate-400 dark:text-slate-500 hover:text-destructive dark:hover:text-red-500 hover:bg-destructive/5 dark:hover:bg-red-500/10"
                   >
                     <Trash2 className="size-4" />
                     <span className="sr-only">Delete {day.title}</span>
@@ -291,13 +291,13 @@ function DaySection({
               exit={{ height: 0, opacity: 0 }}
               transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
             >
-              <CardContent className="p-6 space-y-4 bg-white border-t border-slate-50">
+              <CardContent className="p-6 space-y-4 bg-card border-t border-slate-50 dark:border-slate-800">
                 {workouts.length === 0 ? (
                   <div className="py-12 flex flex-col items-center justify-center text-center">
-                    <div className="size-12 rounded-full bg-slate-50 flex items-center justify-center mb-3">
-                      <Plus className="size-6 text-slate-200" />
+                    <div className="size-12 rounded-full bg-slate-50 dark:bg-slate-800 flex items-center justify-center mb-3">
+                      <Plus className="size-6 text-slate-200 dark:text-slate-700" />
                     </div>
-                    <p className="text-sm font-bold text-slate-400 uppercase tracking-widest">No workouts added yet.</p>
+                    <p className="text-sm font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">No workouts added yet.</p>
                   </div>
                 ) : (
                   <div className="space-y-4">
@@ -376,7 +376,7 @@ export default function ProgramDetailPage({ params }: { params: Promise<{ id: st
   }
 
   if (loading) return <div className="p-8 text-slate-500 font-black text-xs uppercase tracking-[0.2em] animate-pulse">Synchronizing Data...</div>
-  if (!program) return <div className="p-8 text-slate-900 font-black uppercase">Program not found.</div>
+  if (!program) return <div className="p-8 text-foreground font-black uppercase">Program not found.</div>
 
   return (
     <div className="container mx-auto py-10 px-4 min-h-screen">
@@ -387,22 +387,22 @@ export default function ProgramDetailPage({ params }: { params: Promise<{ id: st
         </Link>
         <div className="flex flex-col md:flex-row justify-between md:items-end gap-6">
           <div>
-            <h1 className="text-4xl md:text-5xl font-black text-slate-900 uppercase tracking-tight flex items-center gap-4">
-              <BookOpen className="size-10 text-[#0057FF]" />
+            <h1 className="text-4xl md:text-5xl font-black text-foreground uppercase tracking-tight flex items-center gap-4">
+              <BookOpen className="size-10 text-[#0057FF] dark:text-[#3B82F6]" />
               {program.name}
             </h1>
-            <p className="text-[10px] font-black uppercase tracking-[0.3em] text-primary mt-2 flex items-center gap-2">
-              <span className="size-1.5 rounded-full bg-primary animate-pulse" />
+            <p className="text-[10px] font-black uppercase tracking-[0.3em] text-primary dark:text-blue-400 mt-2 flex items-center gap-2">
+              <span className="size-1.5 rounded-full bg-primary dark:bg-blue-400 animate-pulse" />
               Operational Sequence
             </p>
           </div>
           <div className="flex flex-wrap items-center gap-4">
-            <div className="flex bg-slate-100 p-1 rounded-full border border-slate-200 shadow-inner overflow-hidden">
+            <div className="flex bg-slate-100 dark:bg-slate-900 p-1 rounded-full border border-slate-200 dark:border-slate-800 shadow-inner overflow-hidden">
               <Button 
                 variant="ghost" 
                 size="sm" 
                 onClick={() => handleGlobalToggle('expand')}
-                className="rounded-full px-3 md:px-4 font-black uppercase text-[9px] md:text-[10px] tracking-widest hover:bg-white hover:shadow-sm transition-all"
+                className="rounded-full px-3 md:px-4 font-black uppercase text-[9px] md:text-[10px] tracking-widest hover:bg-card hover:shadow-sm transition-all dark:text-slate-400 dark:hover:text-slate-100"
               >
                 Expand All
               </Button>
@@ -410,7 +410,7 @@ export default function ProgramDetailPage({ params }: { params: Promise<{ id: st
                 variant="ghost" 
                 size="sm" 
                 onClick={() => handleGlobalToggle('collapse')}
-                className="rounded-full px-3 md:px-4 font-black uppercase text-[9px] md:text-[10px] tracking-widest hover:bg-white hover:shadow-sm transition-all"
+                className="rounded-full px-3 md:px-4 font-black uppercase text-[9px] md:text-[10px] tracking-widest hover:bg-card hover:shadow-sm transition-all dark:text-slate-400 dark:hover:text-slate-100"
               >
                 Collapse All
               </Button>

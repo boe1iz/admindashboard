@@ -27,15 +27,15 @@ export function ConfirmDeleteDialog({ trigger, title, description, onConfirm }: 
       <AlertDialogTrigger asChild>
         {trigger}
       </AlertDialogTrigger>
-      <AlertDialogContent className="rounded-[30px] border-none shadow-2xl">
+      <AlertDialogContent className="rounded-[30px] border border-slate-200 dark:border-slate-800 bg-card shadow-2xl">
         <AlertDialogHeader>
-          <AlertDialogTitle className="text-xl font-black uppercase tracking-tight">{title}</AlertDialogTitle>
-          <AlertDialogDescription className="text-zinc-500 font-medium">
+          <AlertDialogTitle className="text-xl font-black text-foreground uppercase tracking-tight">{title}</AlertDialogTitle>
+          <AlertDialogDescription className="text-slate-500 dark:text-slate-400 font-medium">
             {description}
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter className="gap-2">
-          <AlertDialogCancel className="rounded-full border-zinc-200 dark:border-zinc-800 font-bold uppercase tracking-widest text-[10px]">
+          <AlertDialogCancel className="rounded-full border-slate-200 dark:border-slate-800 bg-background text-foreground hover:bg-slate-100 dark:hover:bg-slate-800 font-bold uppercase tracking-widest text-[10px]">
             Cancel
           </AlertDialogCancel>
           <AlertDialogAction 

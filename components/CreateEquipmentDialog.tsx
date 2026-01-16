@@ -60,44 +60,44 @@ export function CreateEquipmentDialog({ trigger }: CreateEquipmentDialogProps) {
           </Button>
         )}
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px] bg-zinc-950 border-white/10 text-white">
+      <DialogContent className="sm:max-w-[425px] bg-card border-slate-200 dark:border-slate-800 text-foreground rounded-[30px]">
         <form onSubmit={handleSubmit}>
           <DialogHeader>
-            <DialogTitle className="flex items-center gap-2">
-              <Package className="size-5 text-[#0057FF]" />
+            <DialogTitle className="flex items-center gap-2 text-xl font-black uppercase tracking-tight">
+              <Package className="size-5 text-[#0057FF] dark:text-[#3B82F6]" />
               Add New Gear
             </DialogTitle>
-            <DialogDescription className="text-zinc-400">
+            <DialogDescription className="text-xs font-bold uppercase tracking-widest text-slate-400 dark:text-slate-500">
               Enter the name of the equipment to add it to your inventory.
             </DialogDescription>
           </DialogHeader>
           <div className="grid gap-4 py-4">
             <div className="grid gap-2">
-              <Label htmlFor="name" className="text-zinc-300">Equipment Name</Label>
+              <Label htmlFor="name" className="text-[10px] font-black uppercase tracking-widest text-slate-500 dark:text-slate-400">Equipment Name</Label>
               <Input
                 id="name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 placeholder="e.g. Dumbbell 25lbs"
-                className="bg-zinc-900 border-white/5 text-white focus-visible:ring-[#0057FF]"
+                className="bg-background border-slate-200 dark:border-slate-800 rounded-xl focus-visible:ring-[#0057FF]"
                 required
                 autoFocus
               />
             </div>
           </div>
-          <DialogFooter>
+          <DialogFooter className="gap-2">
             <Button 
               type="button" 
               variant="ghost" 
               onClick={() => setOpen(false)}
-              className="text-zinc-400 hover:text-white hover:bg-white/5"
+              className="rounded-full text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 font-black uppercase tracking-widest text-[10px]"
             >
               Cancel
             </Button>
             <Button 
               type="submit" 
               disabled={loading || !name.trim()}
-              className="bg-[#0057FF] hover:bg-[#0057FF]/90 text-white"
+              className="bg-[#0057FF] hover:bg-[#0057FF]/90 text-white rounded-full font-black uppercase tracking-widest text-[10px] px-6"
             >
               {loading ? 'Adding...' : 'Add Equipment'}
             </Button>

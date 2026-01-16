@@ -70,28 +70,28 @@ export function CreateWorkoutDialog({ programId, dayId, nextOrderIndex }: Create
           Add Workout
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px] rounded-[30px] border-slate-200">
+      <DialogContent className="sm:max-w-[425px] rounded-[30px] border-slate-200 dark:border-slate-800 bg-card">
         <form onSubmit={handleSubmit}>
           <DialogHeader>
-            <DialogTitle className="text-xl font-black uppercase tracking-tight">Add Workout</DialogTitle>
-            <DialogDescription className="text-xs font-bold uppercase tracking-widest text-slate-400">
+            <DialogTitle className="text-xl font-black text-foreground uppercase tracking-tight">Add Workout</DialogTitle>
+            <DialogDescription className="text-xs font-bold uppercase tracking-widest text-slate-400 dark:text-slate-500">
               Define a new workout for this day.
             </DialogDescription>
           </DialogHeader>
           <div className="grid gap-4 py-4">
             <div className="grid gap-2">
-              <Label htmlFor="workout-name" className="text-[10px] font-black uppercase tracking-widest text-slate-500">Workout Name</Label>
+              <Label htmlFor="workout-name" className="text-[10px] font-black uppercase tracking-widest text-slate-500 dark:text-slate-400">Workout Name</Label>
               <Input
                 id="workout-name"
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                 placeholder="e.g. Bench Press"
                 required
-                className="rounded-xl border-slate-200"
+                className="rounded-xl border-slate-200 dark:border-slate-800 bg-background"
               />
             </div>
             <div className="grid gap-2">
-              <Label htmlFor="equipment" className="text-[10px] font-black uppercase tracking-widest text-slate-500">Equipment</Label>
+              <Label htmlFor="equipment" className="text-[10px] font-black uppercase tracking-widest text-slate-500 dark:text-slate-400">Equipment</Label>
               <MultiSelectCombobox
                 options={equipment}
                 selected={formData.equipmentIds}
@@ -100,24 +100,24 @@ export function CreateWorkoutDialog({ programId, dayId, nextOrderIndex }: Create
               />
             </div>
             <div className="grid gap-2">
-              <Label htmlFor="workout-description" className="text-[10px] font-black uppercase tracking-widest text-slate-500">Description</Label>
+              <Label htmlFor="workout-description" className="text-[10px] font-black uppercase tracking-widest text-slate-500 dark:text-slate-400">Description</Label>
               <Textarea
                 id="workout-description"
                 value={formData.description}
                 onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                 placeholder="Sets, reps, and coaching cues"
                 required
-                className="rounded-xl border-slate-200 min-h-[100px]"
+                className="rounded-xl border-slate-200 dark:border-slate-800 bg-background min-h-[100px]"
               />
             </div>
             <div className="grid gap-2">
-              <Label htmlFor="video-url" className="text-[10px] font-black uppercase tracking-widest text-slate-500">Video Link (YouTube/Vimeo)</Label>
+              <Label htmlFor="video-url" className="text-[10px] font-black uppercase tracking-widest text-slate-500 dark:text-slate-400">Video Link (YouTube/Vimeo)</Label>
               <Input
                 id="video-url"
                 value={formData.videoUrl}
                 onChange={(e) => setFormData({ ...formData, videoUrl: e.target.value })}
                 placeholder="https://..."
-                className="rounded-xl border-slate-200"
+                className="rounded-xl border-slate-200 dark:border-slate-800 bg-background"
               />
             </div>
           </div>

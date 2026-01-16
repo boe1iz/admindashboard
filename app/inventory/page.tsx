@@ -67,14 +67,14 @@ export default function InventoryPage() {
   const archivedItems = equipment.filter(item => !item.is_active)
 
   return (
-    <div className="flex-1 space-y-8 p-4 md:p-8 pt-6 bg-slate-100 min-h-full">
+    <div className="flex-1 space-y-8 p-4 md:p-8 pt-6 min-h-full">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h2 className="text-3xl md:text-4xl font-black tracking-tight text-slate-900 flex items-center gap-3 uppercase">
-            <Package className="size-6 md:size-8 text-[#0057FF]" />
+          <h2 className="text-3xl md:text-4xl font-black tracking-tight text-foreground flex items-center gap-3 uppercase">
+            <Package className="size-6 md:size-8 text-[#0057FF] dark:text-[#3B82F6]" />
             Equipment Inventory
           </h2>
-          <p className="text-xs md:text-sm font-black text-slate-400 uppercase tracking-widest mt-1">
+          <p className="text-xs md:text-sm font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mt-1">
             Manage facility gear and operational equipment.
           </p>
         </div>
@@ -85,16 +85,16 @@ export default function InventoryPage() {
 
       <Tabs defaultValue="operational" className="space-y-6">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-          <TabsList className="bg-white border border-slate-200 p-1 rounded-full w-fit shadow-sm">
+          <TabsList className="bg-card border border-slate-200 dark:border-slate-800 p-1 rounded-full w-fit shadow-sm">
             <TabsTrigger 
               value="operational" 
-              className="rounded-full px-4 md:px-6 data-[state=active]:bg-[#0057FF] data-[state=active]:text-white text-xs md:text-sm font-black uppercase tracking-tight"
+              className="rounded-full px-4 md:px-6 data-[state=active]:bg-[#0057FF] data-[state=active]:text-white text-xs md:text-sm font-black uppercase tracking-tight dark:text-slate-400"
             >
               Operational ({activeItems.length})
             </TabsTrigger>
             <TabsTrigger 
               value="vault" 
-              className="rounded-full px-4 md:px-6 data-[state=active]:bg-[#0057FF] data-[state=active]:text-white text-xs md:text-sm font-black uppercase tracking-tight"
+              className="rounded-full px-4 md:px-6 data-[state=active]:bg-[#0057FF] data-[state=active]:text-white text-xs md:text-sm font-black uppercase tracking-tight dark:text-slate-400"
             >
               Archived Vault ({archivedItems.length})
             </TabsTrigger>
@@ -108,12 +108,12 @@ export default function InventoryPage() {
             </div>
           ) : activeItems.length === 0 ? (
             <div>
-              <Card className="bg-white border-slate-200 p-12 text-center shadow-md rounded-[40px]">
-                <div className="mx-auto flex size-20 items-center justify-center rounded-full bg-slate-50 mb-4">
-                  <Database className="size-10 text-slate-300" />
+              <Card className="bg-card border-slate-200 dark:border-slate-800 p-12 text-center shadow-md rounded-[40px]">
+                <div className="mx-auto flex size-20 items-center justify-center rounded-full bg-slate-50 dark:bg-slate-800 mb-4">
+                  <Database className="size-10 text-slate-300 dark:text-slate-700" />
                 </div>
-                <h3 className="text-lg font-black text-slate-900 uppercase tracking-tight">No Gear Found</h3>
-                <p className="text-slate-500 max-w-sm mx-auto mt-2 font-medium">
+                <h3 className="text-lg font-black text-foreground uppercase tracking-tight">No Gear Found</h3>
+                <p className="text-slate-500 dark:text-slate-400 max-w-sm mx-auto mt-2 font-medium">
                   Your operational equipment will appear here once added or restored from the vault.
                 </p>
               </Card>
@@ -127,20 +127,20 @@ export default function InventoryPage() {
                   animate={{ opacity: 1, y: 0 }}
                   whileHover={{ scale: 1.02, y: -4 }}
                 >
-                  <Card className="relative group cursor-pointer border-slate-200 bg-white shadow-md hover:shadow-xl hover:border-primary/30 transition-all rounded-[40px] overflow-hidden">
+                  <Card className="relative group cursor-pointer border-slate-200 dark:border-slate-800 bg-card shadow-md hover:shadow-xl hover:border-primary/30 transition-all rounded-[40px] overflow-hidden">
                     <div className="absolute top-4 right-4 z-10">
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild onClick={(e) => e.stopPropagation()}>
-                          <Button variant="ghost" size="icon" className="rounded-full hover:bg-slate-100">
-                            <MoreVertical className="size-4" />
+                          <Button variant="ghost" size="icon" className="rounded-full hover:bg-slate-100 dark:hover:bg-slate-800">
+                            <MoreVertical className="size-4 dark:text-slate-400" />
                           </Button>
                         </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end" className="rounded-2xl border-slate-200 shadow-xl">
-                          <DropdownMenuItem onClick={() => setEditingItem(item)} className="rounded-xl m-1">
+                        <DropdownMenuContent align="end" className="rounded-2xl border-slate-200 dark:border-slate-800 bg-card shadow-xl">
+                          <DropdownMenuItem onClick={() => setEditingItem(item)} className="rounded-xl m-1 dark:hover:bg-slate-800">
                             <Pencil className="mr-2 size-4" />
                             Edit Details
                           </DropdownMenuItem>
-                          <DropdownMenuItem onClick={() => toggleActive(item)} className="rounded-xl m-1 text-slate-500">
+                          <DropdownMenuItem onClick={() => toggleActive(item)} className="rounded-xl m-1 text-slate-500 dark:hover:bg-slate-800">
                             <Archive className="mr-2 size-4" />
                             Archive
                           </DropdownMenuItem>
@@ -149,10 +149,10 @@ export default function InventoryPage() {
                     </div>
                     <CardHeader className="p-6">
                       <div className="size-12 rounded-2xl bg-primary/10 flex items-center justify-center mb-4">
-                        <Package className="size-6 text-primary" />
+                        <Package className="size-6 text-primary dark:text-blue-400" />
                       </div>
-                      <CardTitle className="line-clamp-1 font-black text-slate-900 uppercase tracking-tight">{item.name}</CardTitle>
-                      <CardDescription className="text-[10px] uppercase font-black tracking-[0.2em] text-slate-400">
+                      <CardTitle className="line-clamp-1 font-black text-foreground uppercase tracking-tight">{item.name}</CardTitle>
+                      <CardDescription className="text-[10px] uppercase font-black tracking-[0.2em] text-slate-400 dark:text-slate-500">
                         Operational
                       </CardDescription>
                     </CardHeader>
@@ -170,12 +170,12 @@ export default function InventoryPage() {
             </div>
           ) : archivedItems.length === 0 ? (
             <div>
-              <Card className="bg-white border-slate-200 p-12 text-center shadow-md rounded-[40px]">
-                <div className="mx-auto flex size-20 items-center justify-center rounded-full bg-slate-50 mb-4">
-                  <Archive className="size-10 text-slate-300" />
+              <Card className="bg-card border-slate-200 dark:border-slate-800 p-12 text-center shadow-md rounded-[40px]">
+                <div className="mx-auto flex size-20 items-center justify-center rounded-full bg-slate-50 dark:bg-slate-800 mb-4">
+                  <Archive className="size-10 text-slate-300 dark:text-slate-700" />
                 </div>
-                <h3 className="text-lg font-black text-slate-900 uppercase tracking-tight">Vault is Empty</h3>
-                <p className="text-slate-500 max-w-sm mx-auto mt-2 font-medium">
+                <h3 className="text-lg font-black text-foreground uppercase tracking-tight">Vault is Empty</h3>
+                <p className="text-slate-500 dark:text-slate-400 max-w-sm mx-auto mt-2 font-medium">
                   Archived equipment is stored here for future restoration.
                 </p>
               </Card>
@@ -189,20 +189,20 @@ export default function InventoryPage() {
                   animate={{ opacity: 1, y: 0 }}
                   whileHover={{ scale: 1.02, y: -4 }}
                 >
-                  <Card className="relative group cursor-pointer border-slate-200 bg-white/50 opacity-60 hover:opacity-100 hover:bg-white shadow-sm hover:shadow-xl transition-all rounded-[40px] overflow-hidden">
+                  <Card className="relative group cursor-pointer border-slate-200 dark:border-slate-800 bg-card opacity-60 hover:opacity-100 shadow-sm hover:shadow-xl transition-all rounded-[40px] overflow-hidden grayscale">
                     <div className="absolute top-4 right-4 z-10">
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild onClick={(e) => e.stopPropagation()}>
-                          <Button variant="ghost" size="icon" className="rounded-full hover:bg-slate-100">
-                            <MoreVertical className="size-4" />
+                          <Button variant="ghost" size="icon" className="rounded-full hover:bg-slate-100 dark:hover:bg-slate-800">
+                            <MoreVertical className="size-4 dark:text-slate-400" />
                           </Button>
                         </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end" className="rounded-2xl border-slate-200 shadow-xl">
-                          <DropdownMenuItem onClick={() => setEditingItem(item)} className="rounded-xl m-1">
+                        <DropdownMenuContent align="end" className="rounded-2xl border-slate-200 dark:border-slate-800 bg-card shadow-xl">
+                          <DropdownMenuItem onClick={() => setEditingItem(item)} className="rounded-xl m-1 dark:hover:bg-slate-800">
                             <Pencil className="mr-2 size-4" />
                             Edit Details
                           </DropdownMenuItem>
-                          <DropdownMenuItem onClick={() => toggleActive(item)} className="rounded-xl m-1 text-primary font-bold">
+                          <DropdownMenuItem onClick={() => toggleActive(item)} className="rounded-xl m-1 text-primary font-bold dark:text-blue-400 dark:hover:bg-slate-800">
                             <ArchiveRestore className="mr-2 size-4" />
                             Restore
                           </DropdownMenuItem>
@@ -210,11 +210,11 @@ export default function InventoryPage() {
                       </DropdownMenu>
                     </div>
                     <CardHeader className="p-6">
-                      <div className="size-12 rounded-2xl bg-slate-100 flex items-center justify-center mb-4">
-                        <Archive className="size-6 text-slate-400" />
+                      <div className="size-12 rounded-2xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center mb-4">
+                        <Archive className="size-6 text-slate-400 dark:text-slate-600" />
                       </div>
-                      <CardTitle className="line-clamp-1 font-black text-slate-900 uppercase tracking-tight grayscale">{item.name}</CardTitle>
-                      <CardDescription className="text-[10px] uppercase font-black tracking-[0.2em] text-slate-300">
+                      <CardTitle className="line-clamp-1 font-black text-foreground uppercase tracking-tight">{item.name}</CardTitle>
+                      <CardDescription className="text-[10px] uppercase font-black tracking-[0.2em] text-slate-300 dark:text-slate-700">
                         In Vault
                       </CardDescription>
                     </CardHeader>

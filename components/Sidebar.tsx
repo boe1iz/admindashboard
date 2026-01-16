@@ -12,6 +12,7 @@ import {
 } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
+import { ThemeToggle } from '@/components/ThemeToggle'
 
 const navItems = [
   { name: 'Dashboard', href: '/', icon: LayoutDashboard },
@@ -42,10 +43,10 @@ export function Sidebar() {
   }, [])
 
   return (
-    <div className="flex h-full w-64 flex-col bg-white border-r border-slate-200 z-20 shadow-sm">
+    <div className="flex h-full w-64 flex-col bg-card border-r border-slate-200 dark:border-slate-800 z-20 shadow-sm transition-colors duration-300">
       <div className="flex h-20 items-center px-6">
         <Link href="/" className="hover:opacity-80 transition-opacity">
-          <span className="text-2xl font-black tracking-tighter text-[#0057FF]">
+          <span className="text-2xl font-black tracking-tighter text-[#0057FF] dark:text-[#3B82F6]">
             ON3 ATHLETICS
           </span>
         </Link>
@@ -67,13 +68,13 @@ export function Sidebar() {
                   "group flex items-center justify-between rounded-xl px-3 py-2.5 text-sm font-black uppercase tracking-tight transition-all",
                   isActive 
                     ? "bg-[#0057FF] text-white shadow-lg shadow-[#0057FF]/20" 
-                    : "text-slate-400 hover:text-[#0057FF] hover:bg-slate-50"
+                    : "text-slate-400 hover:text-[#0057FF] dark:hover:text-blue-400 hover:bg-slate-50 dark:hover:bg-slate-800"
                 )}
               >
                 <div className="flex items-center gap-3">
                   <item.icon className={cn(
                     "size-5 transition-transform",
-                    isActive ? "text-white" : "text-slate-400 group-hover:text-[#0057FF]"
+                    isActive ? "text-white" : "text-slate-400 group-hover:text-[#0057FF] dark:group-hover:text-blue-400"
                   )} />
                   {item.name}
                 </div>
@@ -84,15 +85,20 @@ export function Sidebar() {
         })}
       </nav>
 
-      <div className="border-t border-slate-100 p-4 space-y-1">
-        <div className="text-[10px] text-slate-300 uppercase tracking-widest font-black">
-          Admin Dashboard v2.0
-        </div>
-        {version && (
-          <div className="text-[9px] text-slate-300 font-mono opacity-60">
-            Commit: {version.commitId}
+      <div className="border-t border-slate-100 dark:border-slate-800 p-4 space-y-4">
+        <div className="flex items-center justify-between">
+          <div className="space-y-1">
+            <div className="text-[10px] text-slate-300 dark:text-slate-500 uppercase tracking-widest font-black">
+              Admin Dashboard v2.0
+            </div>
+            {version && (
+              <div className="text-[9px] text-slate-300 dark:text-slate-500 font-mono opacity-60">
+                Commit: {version.commitId}
+              </div>
+            )}
           </div>
-        )}
+          <ThemeToggle />
+        </div>
       </div>
     </div>
   )
