@@ -42,7 +42,7 @@ To recreate the ON3 Athletics Admin Dashboard as a high-performance Next.js 14 a
 ### 2. Command Center (Dashboard)
 - **Real-time Stat Cards**: Active Athletes, Concepts, Operational Gear, and Vault counts.
 - **Connection Pulse**: Visual indicator showing active Firestore connection status.
-- **Recent Activity**: Feed of the last 5 athlete assignments.
+- **Recent Activity**: Feed of the last 5 relevant actions (Onboarding, Assignments, Status Changes).
 
 ### 3. Athlete Roster & Assignment
 - Lifecycle Management: Card-based grid roster with Operational/Archived tabs.
