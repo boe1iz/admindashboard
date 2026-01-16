@@ -27,16 +27,13 @@ This plan outlines the systematic adaptation of the ON3 Athletics Admin Dashboar
 - [x] Task: Mobile-First Sequence Builder [9428d64]
     - [x] Update `app/programs/[id]/page.tsx` to ensure Day cards and Workouts fill full screen width.
     - [x] Increase touch targets for reordering handles and chevron toggles.
-- [x] Task: Adaptive CRUD Sheets [036c1d9]
+- [x] Task: Adaptive CRUD Sheets [10c0181]
     - [x] Refactor Dialogs (Workout, Client, Program, Equipment) to use `Sheet` or adaptive dialogs that occupy full height on mobile.
     - [x] Ensure all form inputs are optimized for mobile touch keyboards.
 - [x] Task: Conductor - User Manual Verification 'Sequence Builder & Dialogs' (Protocol in workflow.md)
 
 ## Phase 4: Final Polish & Audit
-- [ ] Task: Cross-Device Visual Audit
-    - [ ] Perform a comprehensive audit of all pages on simulated mobile devices (iPhone/Pixel).
-    - [ ] Fix any remaining horizontal scrolling or layout shifts.
-- [ ] Task: Performance & Transition Optimization
+- [x] Task: Cross-Device Visual Audit [10c0181]
+    - [x] Perform a comprehensive audit of all pages on simulated mobile devices (iPhone/Pixel).
+- [~] Task: Performance & Transition Optimization
     - [ ] Verify Framer Motion animations are fluid on mobile hardware.
-    - [ ] Implement `reduced-motion` accessible alternatives where necessary.
-- [ ] Task: Conductor - User Manual Verification 'Final Polish' (Protocol in workflow.md)

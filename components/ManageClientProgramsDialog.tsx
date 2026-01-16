@@ -105,75 +105,87 @@ export function ManageClientProgramsDialog({ client, programs, assignments, open
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className={`sm:max-w-[500px] transition-all border-slate-200 dark:border-slate-800 bg-card rounded-[30px] ${isProcessing ? 'opacity-50 pointer-events-none' : ''}`}>
-        <DialogHeader>
-          <DialogTitle className="text-xl font-black text-foreground uppercase tracking-tight">Manage Programs for {client.name}</DialogTitle>
-          <DialogDescription className="text-xs font-bold uppercase tracking-widest text-slate-400 dark:text-slate-500">
-            Assign or unassign training programs for this client.
-          </DialogDescription>
-        </DialogHeader>
-        <div className="py-4 space-y-6">
-          <div className="space-y-2">
-            <h3 className="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest">Assigned Programs</h3>
-            <div className="flex flex-wrap gap-2">
-              {clientAssignments.length > 0 ? (
-                clientAssignments.map(assignment => {
-                  const progId = assignment.programId || assignment.program_id
-                  const programName = programs.find(p => p.id === progId)?.name || progId || 'Unknown Program'
-                  return (
-                    <div key={assignment.id} className="flex items-center gap-1 px-3 py-1 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 rounded-full text-xs font-black uppercase tracking-tight group">
-                      {programName}
-                      <button 
-                        onClick={() => unassignProgram(assignment.id, programName)}
-                        className="hover:text-destructive transition-colors"
-                        aria-label={`Unassign ${programName}`}
-                      >
-                        <X className="size-3" />
-                      </button>
-                    </div>
-                  )
-                })
-              ) : (
-                <p className="text-xs text-slate-400 dark:text-slate-600 italic">No programs assigned.</p>
-              )}
+      <DialogContent className="sm:max-w-[500px] w-[95vw] rounded-[30px] border-slate-200 dark:border-slate-800 bg-card p-0 overflow-hidden">
+        <div className="p-6 md:p-8 max-h-[90vh] overflow-y-auto">
+          <DialogHeader className="mb-6">
+            <DialogTitle className="text-2xl font-black text-foreground uppercase tracking-tight">Manage Programs</DialogTitle>
+            <DialogDescription className="text-xs font-bold uppercase tracking-widest text-slate-400 dark:text-slate-500">
+              Assign or unassign training programs for {client.name}.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-8">
+            <div className="space-y-3">
+              <h3 className="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest ml-1">Assigned Programs</h3>
+              <div className="flex flex-wrap gap-2">
+                {clientAssignments.length > 0 ? (
+                  clientAssignments.map(assignment => {
+                    const progId = assignment.programId || assignment.program_id
+                    const programName = programs.find(p => p.id === progId)?.name || progId || 'Unknown Program'
+                    return (
+                      <div key={assignment.id} className="flex items-center gap-2 px-4 py-2 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 rounded-full text-xs font-black uppercase tracking-tight group border border-slate-200/50 dark:border-slate-700/50">
+                        {programName}
+                        <button 
+                          onClick={() => unassignProgram(assignment.id, programName)}
+                          className="hover:text-destructive transition-colors shrink-0"
+                          aria-label={`Unassign ${programName}`}
+                        >
+                          <X className="size-3.5" />
+                        </button>
+                      </div>
+                    )
+                  })
+                ) : (
+                  <p className="text-xs text-slate-400 dark:text-slate-600 italic ml-1">No programs assigned.</p>
+                )}
+              </div>
             </div>
-          </div>
-          
-          <div className="space-y-4">
-             <h3 className="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest">Available Programs</h3>
-             <div className="relative">
-               <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-slate-400" />
-               <Input 
-                 placeholder="Search programs..." 
-                 className="pl-9 rounded-xl border-slate-200 dark:border-slate-800 bg-background"
-                 value={searchTerm}
-                 onChange={(e) => setSearchTerm(e.target.value)}
-                 disabled={isProcessing}
-               />
-             </div>
-             
-             <div className="max-h-[200px] overflow-y-auto space-y-1 border border-slate-100 dark:border-slate-800 rounded-xl p-1">
-               {availablePrograms.length > 0 ? (
-                 availablePrograms.map(program => (
-                   <div key={program.id} className="flex items-center justify-between p-2 hover:bg-slate-50 dark:hover:bg-slate-800/50 rounded-lg group transition-colors">
-                     <span className="text-sm font-bold text-foreground">{program.name}</span>
-                     <Button 
-                       size="sm" 
-                       variant="ghost" 
-                       className="h-8 gap-1 opacity-0 group-hover:opacity-100 transition-opacity dark:text-blue-400 dark:hover:bg-blue-500/10"
-                       onClick={() => assignProgram(program.id, program.name)}
-                       aria-label={`Assign ${program.name}`}
-                       disabled={isProcessing}
-                     >
-                       <Plus className="size-3" />
-                       Assign
-                     </Button>
-                   </div>
-                 ))
-               ) : (
-                 <p className="text-[10px] uppercase font-black text-slate-400 p-4 text-center">No available programs found.</p>
-               )}
-             </div>
+            
+            <div className="space-y-4">
+               <h3 className="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest ml-1">Available Programs</h3>
+               <div className="relative">
+                 <Search className="absolute left-4 top-1/2 -translate-y-1/2 size-4 text-slate-400" />
+                 <Input 
+                   placeholder="Search programs..." 
+                   className="h-12 pl-11 rounded-2xl border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900 focus-visible:ring-[#0057FF]"
+                   value={searchTerm}
+                   onChange={(e) => setSearchTerm(e.target.value)}
+                   disabled={isProcessing}
+                 />
+               </div>
+               
+               <div className="max-h-[250px] overflow-y-auto space-y-1 border border-slate-100 dark:border-slate-800 rounded-2xl p-1 bg-slate-50/50 dark:bg-slate-900/30">
+                 {availablePrograms.length > 0 ? (
+                   availablePrograms.map(program => (
+                     <div key={program.id} className="flex items-center justify-between p-3 hover:bg-white dark:hover:bg-slate-800 rounded-xl group transition-all">
+                       <span className="text-sm font-bold text-foreground">{program.name}</span>
+                       <Button 
+                         size="sm" 
+                         variant="ghost" 
+                         className="h-9 rounded-full gap-1 opacity-0 md:group-hover:opacity-100 transition-opacity text-[#0057FF] dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-500/10 font-black uppercase text-[10px] tracking-widest"
+                         onClick={() => assignProgram(program.id, program.name)}
+                         aria-label={`Assign ${program.name}`}
+                         disabled={isProcessing}
+                       >
+                         <Plus className="size-3.5" />
+                         Assign
+                       </Button>
+                       {/* Mobile-only visible assign button */}
+                       <Button 
+                         size="sm" 
+                         variant="ghost" 
+                         className="h-9 rounded-full md:hidden text-[#0057FF] dark:text-blue-400 font-black uppercase text-[10px] tracking-widest"
+                         onClick={() => assignProgram(program.id, program.name)}
+                         disabled={isProcessing}
+                       >
+                         Assign
+                       </Button>
+                     </div>
+                   ))
+                 ) : (
+                   <p className="text-[10px] uppercase font-black text-slate-400 p-6 text-center">No available programs found.</p>
+                 )}
+               </div>
+            </div>
           </div>
         </div>
       </DialogContent>
