@@ -13,5 +13,5 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 ---
 
-- [~] **Track: Training Day Deletion Guard**
+- [x] **Track: Training Day Deletion Guard**
   *Link: [./tracks/training_day_deletion_guard_20260115/](./tracks/training_day_deletion_guard_20260115/)*
