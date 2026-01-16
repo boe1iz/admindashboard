@@ -268,6 +268,7 @@ function DaySection({
                 <Button 
                   variant="ghost" 
                   size="icon" 
+                  disabled={workouts.length > 0}
                   className="rounded-full text-slate-400 hover:text-destructive hover:bg-destructive/5 opacity-0 group-hover:opacity-100 transition-opacity"
                 >
                   <Trash2 className="size-4" />
