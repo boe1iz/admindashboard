@@ -13,6 +13,16 @@ vi.mock('@/components/AuthProvider', () => ({
   useAuth: vi.fn(),
 }))
 
+// Mock Firebase
+vi.mock('firebase/auth', () => ({
+  signOut: vi.fn(),
+  getAuth: vi.fn(),
+}))
+
+vi.mock('@/lib/firebase', () => ({
+  auth: {},
+}))
+
 import { useAuth } from '@/components/AuthProvider'
 
 describe('Mobile Session Management', () => {
@@ -45,6 +55,37 @@ describe('Mobile Session Management', () => {
     expect(screen.getByText(/Logout Session/i)).toBeDefined()
     expect(screen.getByText(/Change Password/i)).toBeDefined()
     // Theme toggle should also be there
+    expect(screen.getByTitle(/Switch to/i)).toBeDefined()
+  })
+
+  it('calls signOut when Logout Session is clicked', async () => {
+    const { signOut } = await import('firebase/auth')
+    vi.mocked(useAuth).mockReturnValue({
+      user: { email: 'coach@on3.com' } as any,
+      loading: false
+    })
+
+    render(<MobileNav />)
+    const trigger = screen.getByRole('button', { name: /open user settings/i })
+    fireEvent.click(trigger)
+    
+    const logoutBtn = screen.getByText(/Logout Session/i)
+    fireEvent.click(logoutBtn)
+    
+    expect(signOut).toHaveBeenCalled()
+  })
+
+  it('renders ThemeToggle within the sheet', () => {
+    vi.mocked(useAuth).mockReturnValue({
+      user: { email: 'coach@on3.com' } as any,
+      loading: false
+    })
+
+    render(<MobileNav />)
+    const trigger = screen.getByRole('button', { name: /open user settings/i })
+    fireEvent.click(trigger)
+    
+    expect(screen.getByText(/Interface Theme/i)).toBeDefined()
     expect(screen.getByTitle(/Switch to/i)).toBeDefined()
   })
 })
