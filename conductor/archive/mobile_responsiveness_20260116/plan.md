@@ -32,8 +32,10 @@ This plan outlines the systematic adaptation of the ON3 Athletics Admin Dashboar
     - [x] Ensure all form inputs are optimized for mobile touch keyboards.
 - [x] Task: Conductor - User Manual Verification 'Sequence Builder & Dialogs' (Protocol in workflow.md)
 
-## Phase 4: Final Polish & Audit
-- [x] Task: Cross-Device Visual Audit [10c0181]
+## Phase 4: Final Polish & Audit [checkpoint: c36609e]
+- [x] Task: Cross-Device Visual Audit [c36609e]
     - [x] Perform a comprehensive audit of all pages on simulated mobile devices (iPhone/Pixel).
-- [~] Task: Performance & Transition Optimization
-    - [ ] Verify Framer Motion animations are fluid on mobile hardware.
+- [x] Task: Performance & Transition Optimization [c36609e]
+    - [x] Verify Framer Motion animations are fluid on mobile hardware.
+    - [x] Implement `reduced-motion` accessible alternatives where necessary.
+- [x] Task: Conductor - User Manual Verification 'Final Polish' (Protocol in workflow.md)
