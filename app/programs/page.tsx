@@ -94,10 +94,10 @@ function ProgramCard({ program }: { program: Program }) {
         whileHover={{ scale: 1.02, y: -4 }}
       >
         <Card className={`relative group cursor-pointer border-slate-200 dark:border-slate-800 bg-card shadow-md hover:shadow-xl hover:border-primary/30 transition-all rounded-[24px] md:rounded-[40px] overflow-hidden ${duplicating ? 'opacity-50 pointer-events-none scale-[0.98]' : ''} ${program.isArchived ? 'opacity-60 grayscale' : ''}`}>
-          <div className="absolute top-4 right-4 z-10">
+          <div className="absolute top-2 right-2 md:top-4 md:right-4 z-10">
             <DropdownMenu>
               <DropdownMenuTrigger asChild onClick={(e) => e.stopPropagation()}>
-                <Button variant="ghost" size="icon" className="rounded-full hover:bg-slate-100 dark:hover:bg-slate-800">
+                <Button variant="ghost" size="icon" className="size-8 md:size-10 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800">
                   <MoreVertical className="size-4 dark:text-slate-400" />
                 </Button>
               </DropdownMenuTrigger>
@@ -127,12 +127,14 @@ function ProgramCard({ program }: { program: Program }) {
             </DropdownMenu>
           </div>
           <Link href={`/programs/${program.id}`}>
-            <CardHeader className="p-6">
-              <div className="size-12 rounded-2xl bg-primary/10 flex items-center justify-center mb-4">
-                <BookOpen className="size-6 text-primary dark:text-blue-400" />
+            <CardHeader className="p-4 md:p-6 flex flex-row md:flex-col items-center md:items-start gap-4 md:gap-0">
+              <div className="size-10 md:size-12 rounded-xl md:rounded-2xl bg-primary/10 flex items-center justify-center md:mb-4 shrink-0">
+                <BookOpen className="size-5 md:size-6 text-primary dark:text-blue-400" />
               </div>
-              <CardTitle className="font-black text-foreground uppercase tracking-tight">{program.name}</CardTitle>
-              <CardDescription className="line-clamp-2 text-xs font-bold text-slate-400 dark:text-slate-500">{program.description}</CardDescription>
+              <div className="min-w-0">
+                <CardTitle className="font-black text-foreground uppercase tracking-tight text-sm md:text-base truncate">{program.name}</CardTitle>
+                <CardDescription className="line-clamp-1 md:line-clamp-2 text-[10px] md:text-xs font-bold text-slate-400 dark:text-slate-500">{program.description}</CardDescription>
+              </div>
             </CardHeader>
           </Link>
         </Card>

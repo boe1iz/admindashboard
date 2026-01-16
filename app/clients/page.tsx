@@ -82,10 +82,10 @@ export function ClientCard({ client, programs, assignments }: { client: Client, 
           className={`relative group cursor-pointer border-slate-200 dark:border-slate-800 bg-card shadow-md hover:shadow-xl hover:border-primary/30 transition-all rounded-[24px] md:rounded-[40px] overflow-hidden ${isProcessing ? 'opacity-50 pointer-events-none scale-[0.98]' : ''} ${!client.is_active ? 'opacity-60 grayscale' : ''}`}
           onClick={() => setIsManageDialogOpen(true)}
         >
-          <div className="absolute top-4 right-4 z-10">
+          <div className="absolute top-2 right-2 md:top-4 md:right-4 z-10">
             <DropdownMenu>
               <DropdownMenuTrigger asChild onClick={(e) => e.stopPropagation()}>
-                <Button variant="ghost" size="icon" className="rounded-full hover:bg-slate-100 dark:hover:bg-slate-800">
+                <Button variant="ghost" size="icon" className="size-8 md:size-10 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800">
                   <MoreVertical className="size-4 dark:text-slate-400" />
                 </Button>
               </DropdownMenuTrigger>
@@ -110,14 +110,16 @@ export function ClientCard({ client, programs, assignments }: { client: Client, 
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
-          <CardHeader className="p-6">
-            <div className="size-12 rounded-2xl bg-primary/10 flex items-center justify-center mb-4">
-              <Users className="size-6 text-primary dark:text-blue-400" />
+          <CardHeader className="p-4 md:p-6 flex flex-row md:flex-col items-center md:items-start gap-4 md:gap-0">
+            <div className="size-10 md:size-12 rounded-xl md:rounded-2xl bg-primary/10 flex items-center justify-center md:mb-4 shrink-0">
+              <Users className="size-5 md:size-6 text-primary dark:text-blue-400" />
             </div>
-            <CardTitle className="font-black text-foreground uppercase tracking-tight">{client.name}</CardTitle>
-            <CardDescription className="text-xs font-bold text-slate-400 dark:text-slate-500">{client.email}</CardDescription>
+            <div className="min-w-0">
+              <CardTitle className="font-black text-foreground uppercase tracking-tight text-sm md:text-base truncate">{client.name}</CardTitle>
+              <CardDescription className="text-[10px] md:text-xs font-bold text-slate-400 dark:text-slate-500 truncate">{client.email}</CardDescription>
+            </div>
           </CardHeader>
-          <CardContent className="px-6 pb-6">
+          <CardContent className="px-4 pb-4 md:px-6 md:pb-6 hidden md:block">
             <div className="flex flex-wrap gap-2">
               {clientAssignments.length > 0 ? (
                 clientAssignments.map(assignment => {

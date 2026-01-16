@@ -105,18 +105,18 @@ export default function Dashboard() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
+      <div className="flex flex-row overflow-x-auto md:grid md:grid-cols-3 gap-4 md:gap-6 pb-4 md:pb-0 scrollbar-hide">
         {stats.map((stat) => (
-          <motion.div key={stat.name} whileHover={{ scale: 1.02, y: -4 }}>
-            <Card className="border border-slate-200 dark:border-slate-800 bg-card shadow-md rounded-[24px] md:rounded-[40px] p-1 md:p-2 h-full">
-              <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0 px-4 md:px-6">
-                <CardTitle className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 dark:text-slate-500">
+          <motion.div key={stat.name} whileHover={{ scale: 1.02, y: -4 }} className="flex-1 min-w-[120px] md:min-w-0">
+            <Card className="border border-slate-200 dark:border-slate-800 bg-card shadow-md rounded-[20px] md:rounded-[40px] p-1 md:p-2 h-full">
+              <CardHeader className="flex flex-row items-center justify-between pb-1 md:pb-2 space-y-0 px-3 md:px-6">
+                <CardTitle className="text-[8px] md:text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 dark:text-slate-500">
                   {stat.name}
                 </CardTitle>
-                <stat.icon className={stat.color + " size-4"} />
+                <stat.icon className={stat.color + " size-3 md:size-4"} />
               </CardHeader>
-              <CardContent className="px-4 md:px-6">
-                <div className="text-3xl md:text-4xl font-black text-foreground">
+              <CardContent className="px-3 md:px-6">
+                <div className="text-2xl md:text-4xl font-black text-foreground">
                   {process.env.NODE_ENV === 'test' ? stat.value : <AnimatedCounter value={stat.value} />}
                 </div>
               </CardContent>
@@ -177,7 +177,7 @@ export default function Dashboard() {
           </Card>
         </motion.div>
 
-        <div className="space-y-6">
+        <div className="hidden lg:block space-y-6">
           <h2 className="text-xs font-black uppercase tracking-[0.2em] text-slate-400 dark:text-slate-500 px-4">
             Quick Actions
           </h2>

@@ -128,10 +128,10 @@ export default function InventoryPage() {
                   whileHover={{ scale: 1.02, y: -4 }}
                 >
                   <Card className="relative group cursor-pointer border-slate-200 dark:border-slate-800 bg-card shadow-md hover:shadow-xl hover:border-primary/30 transition-all rounded-[24px] md:rounded-[40px] overflow-hidden">
-                    <div className="absolute top-4 right-4 z-10">
+                    <div className="absolute top-2 right-2 md:top-4 md:right-4 z-10">
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild onClick={(e) => e.stopPropagation()}>
-                          <Button variant="ghost" size="icon" className="rounded-full hover:bg-slate-100 dark:hover:bg-slate-800">
+                          <Button variant="ghost" size="icon" className="size-8 md:size-10 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800">
                             <MoreVertical className="size-4 dark:text-slate-400" />
                           </Button>
                         </DropdownMenuTrigger>
@@ -147,14 +147,16 @@ export default function InventoryPage() {
                         </DropdownMenuContent>
                       </DropdownMenu>
                     </div>
-                    <CardHeader className="p-6">
-                      <div className="size-12 rounded-2xl bg-primary/10 flex items-center justify-center mb-4">
-                        <Package className="size-6 text-primary dark:text-blue-400" />
+                    <CardHeader className="p-4 md:p-6 flex flex-row md:flex-col items-center md:items-start gap-4 md:gap-0">
+                      <div className="size-10 md:size-12 rounded-xl md:rounded-2xl bg-primary/10 flex items-center justify-center md:mb-4 shrink-0">
+                        <Package className="size-5 md:size-6 text-primary dark:text-blue-400" />
                       </div>
-                      <CardTitle className="line-clamp-1 font-black text-foreground uppercase tracking-tight">{item.name}</CardTitle>
-                      <CardDescription className="text-[10px] uppercase font-black tracking-[0.2em] text-slate-400 dark:text-slate-500">
-                        Operational
-                      </CardDescription>
+                      <div className="min-w-0">
+                        <CardTitle className="line-clamp-1 font-black text-foreground uppercase tracking-tight text-sm md:text-base truncate">{item.name}</CardTitle>
+                        <CardDescription className="text-[10px] uppercase font-black tracking-[0.2em] text-slate-400 dark:text-slate-500">
+                          Operational
+                        </CardDescription>
+                      </div>
                     </CardHeader>
                   </Card>
                 </motion.div>
@@ -190,10 +192,10 @@ export default function InventoryPage() {
                   whileHover={{ scale: 1.02, y: -4 }}
                 >
                   <Card className="relative group cursor-pointer border-slate-200 dark:border-slate-800 bg-card opacity-60 hover:opacity-100 shadow-sm hover:shadow-xl transition-all rounded-[24px] md:rounded-[40px] overflow-hidden grayscale">
-                    <div className="absolute top-4 right-4 z-10">
+                    <div className="absolute top-2 right-2 md:top-4 md:right-4 z-10">
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild onClick={(e) => e.stopPropagation()}>
-                          <Button variant="ghost" size="icon" className="rounded-full hover:bg-slate-100 dark:hover:bg-slate-800">
+                          <Button variant="ghost" size="icon" className="size-8 md:size-10 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800">
                             <MoreVertical className="size-4 dark:text-slate-400" />
                           </Button>
                         </DropdownMenuTrigger>
@@ -209,14 +211,16 @@ export default function InventoryPage() {
                         </DropdownMenuContent>
                       </DropdownMenu>
                     </div>
-                    <CardHeader className="p-6">
-                      <div className="size-12 rounded-2xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center mb-4">
-                        <Archive className="size-6 text-slate-400 dark:text-slate-600" />
+                    <CardHeader className="p-4 md:p-6 flex flex-row md:flex-col items-center md:items-start gap-4 md:gap-0">
+                      <div className="size-10 md:size-12 rounded-xl md:rounded-2xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center md:mb-4 shrink-0">
+                        <Archive className="size-5 md:size-6 text-slate-400 dark:text-slate-600" />
                       </div>
-                      <CardTitle className="line-clamp-1 font-black text-foreground uppercase tracking-tight">{item.name}</CardTitle>
-                      <CardDescription className="text-[10px] uppercase font-black tracking-[0.2em] text-slate-300 dark:text-slate-700">
-                        In Vault
-                      </CardDescription>
+                      <div className="min-w-0">
+                        <CardTitle className="line-clamp-1 font-black text-foreground uppercase tracking-tight text-sm md:text-base truncate">{item.name}</CardTitle>
+                        <CardDescription className="text-[10px] uppercase font-black tracking-[0.2em] text-slate-300 dark:text-slate-700">
+                          In Vault
+                        </CardDescription>
+                      </div>
                     </CardHeader>
                   </Card>
                 </motion.div>
