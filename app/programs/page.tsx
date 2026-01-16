@@ -93,7 +93,7 @@ function ProgramCard({ program }: { program: Program }) {
         animate={{ opacity: 1, y: 0 }}
         whileHover={{ scale: 1.02, y: -4 }}
       >
-        <Card className={`relative group cursor-pointer border-slate-200 dark:border-slate-800 bg-card shadow-md hover:shadow-xl hover:border-primary/30 transition-all rounded-[40px] overflow-hidden ${duplicating ? 'opacity-50 pointer-events-none scale-[0.98]' : ''} ${program.isArchived ? 'opacity-60 grayscale' : ''}`}>
+        <Card className={`relative group cursor-pointer border-slate-200 dark:border-slate-800 bg-card shadow-md hover:shadow-xl hover:border-primary/30 transition-all rounded-[24px] md:rounded-[40px] overflow-hidden ${duplicating ? 'opacity-50 pointer-events-none scale-[0.98]' : ''} ${program.isArchived ? 'opacity-60 grayscale' : ''}`}>
           <div className="absolute top-4 right-4 z-10">
             <DropdownMenu>
               <DropdownMenuTrigger asChild onClick={(e) => e.stopPropagation()}>
@@ -199,36 +199,36 @@ export default function ProgramsPage() {
         
         <TabsContent value="operational" className="space-y-4 outline-none">
           {activePrograms.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
               {activePrograms.map(program => (
                 <ProgramCard key={program.id} program={program} />
               ))}
             </div>
           ) : (
-            <Card className="p-12 border-slate-200 dark:border-slate-800 bg-card flex flex-col items-center justify-center text-center rounded-[40px] shadow-md">
-              <div className="size-20 bg-slate-50 dark:bg-slate-800 rounded-full flex items-center justify-center mb-4">
-                <BookOpen className="size-10 text-slate-200 dark:text-slate-700" />
+            <Card className="p-8 md:p-12 border-slate-200 dark:border-slate-800 bg-card flex flex-col items-center justify-center text-center rounded-[24px] md:rounded-[40px] shadow-md">
+              <div className="size-16 md:size-20 bg-slate-50 dark:bg-slate-800 rounded-full flex items-center justify-center mb-4">
+                <BookOpen className="size-8 md:size-10 text-slate-200 dark:text-slate-700" />
               </div>
-              <CardTitle className="text-foreground font-black uppercase tracking-tight mb-2">No Programs Found</CardTitle>
-              <CardDescription className="font-medium text-slate-500 dark:text-slate-400">Create your first concept to begin building.</CardDescription>
+              <CardTitle className="text-foreground font-black uppercase tracking-tight mb-2 text-lg md:text-xl">No Programs Found</CardTitle>
+              <CardDescription className="font-medium text-slate-500 dark:text-slate-400 text-sm">Create your first concept to begin building.</CardDescription>
             </Card>
           )}
         </TabsContent>
         
         <TabsContent value="vault" className="space-y-4 outline-none">
           {archivedPrograms.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
               {archivedPrograms.map(program => (
                 <ProgramCard key={program.id} program={program} />
               ))}
             </div>
           ) : (
-            <Card className="p-12 border-slate-200 dark:border-slate-800 bg-card flex flex-col items-center justify-center text-center rounded-[40px] shadow-md">
-              <div className="size-20 bg-slate-50 dark:bg-slate-800 rounded-full flex items-center justify-center mb-4">
-                <Archive className="size-10 text-slate-200 dark:text-slate-700" />
+            <Card className="p-8 md:p-12 border-slate-200 dark:border-slate-800 bg-card flex flex-col items-center justify-center text-center rounded-[24px] md:rounded-[40px] shadow-md">
+              <div className="size-16 md:size-20 bg-slate-50 dark:bg-slate-800 rounded-full flex items-center justify-center mb-4">
+                <Archive className="size-8 md:size-10 text-slate-200 dark:text-slate-700" />
               </div>
-              <CardTitle className="text-foreground font-black uppercase tracking-tight mb-2">Vault is Empty</CardTitle>
-              <CardDescription className="font-medium text-slate-500 dark:text-slate-400">Archived programs will appear here.</CardDescription>
+              <CardTitle className="text-foreground font-black uppercase tracking-tight mb-2 text-lg md:text-xl">Vault is Empty</CardTitle>
+              <CardDescription className="font-medium text-slate-500 dark:text-slate-400 text-sm">Archived programs will appear here.</CardDescription>
             </Card>
           )}
         </TabsContent>

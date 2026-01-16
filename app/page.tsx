@@ -105,18 +105,18 @@ export default function Dashboard() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
         {stats.map((stat) => (
           <motion.div key={stat.name} whileHover={{ scale: 1.02, y: -4 }}>
-            <Card className="border border-slate-200 dark:border-slate-800 bg-card shadow-md rounded-[40px] p-2 h-full">
-              <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
+            <Card className="border border-slate-200 dark:border-slate-800 bg-card shadow-md rounded-[24px] md:rounded-[40px] p-1 md:p-2 h-full">
+              <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0 px-4 md:px-6">
                 <CardTitle className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 dark:text-slate-500">
                   {stat.name}
                 </CardTitle>
                 <stat.icon className={stat.color + " size-4"} />
               </CardHeader>
-              <CardContent>
-                <div className="text-4xl font-black text-foreground">
+              <CardContent className="px-4 md:px-6">
+                <div className="text-3xl md:text-4xl font-black text-foreground">
                   {process.env.NODE_ENV === 'test' ? stat.value : <AnimatedCounter value={stat.value} />}
                 </div>
               </CardContent>
@@ -125,10 +125,10 @@ export default function Dashboard() {
         ))}
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8">
         <motion.div className="lg:col-span-2" whileHover={{ scale: 1.01 }}>
-          <Card className="border border-slate-200 dark:border-slate-800 bg-card shadow-md rounded-[40px] p-2 h-full">
-            <CardHeader>
+          <Card className="border border-slate-200 dark:border-slate-800 bg-card shadow-md rounded-[24px] md:rounded-[40px] p-1 md:p-2 h-full">
+            <CardHeader className="px-4 md:px-6">
               <div className="flex items-center gap-2">
                 <Activity className="size-4 text-[#0057FF] dark:text-[#3B82F6]" />
                 <CardTitle className="text-xs font-black uppercase tracking-[0.2em] text-slate-400 dark:text-slate-500">
@@ -136,16 +136,16 @@ export default function Dashboard() {
                 </CardTitle>
               </div>
             </CardHeader>
-            <CardContent>
+            <CardContent className="px-4 md:px-6">
               {recentActivity.length === 0 ? (
                 <div className="py-12 text-center text-slate-400 dark:text-slate-600 text-sm font-bold uppercase tracking-widest">No recent activity.</div>
               ) : (
                 <div className="space-y-4">
                   {recentActivity.map((item) => (
                     <div key={item.id} className="flex items-center justify-between border-b border-slate-50 dark:border-slate-800 pb-4 last:border-0 last:pb-0">
-                      <div className="flex items-center gap-3">
+                      <div className="flex items-center gap-2 md:gap-3">
                         <div className={cn(
-                          "size-8 rounded-full flex items-center justify-center",
+                          "size-8 rounded-full flex items-center justify-center shrink-0",
                           item.type === 'assignment' || item.type === 'onboarded' ? "bg-blue-50 dark:bg-blue-950/30" : "bg-slate-50 dark:bg-slate-800/50"
                         )}>
                           {(item.type === 'assignment' || item.type === 'onboarded') && <UserPlus className="size-4 text-[#0057FF] dark:text-blue-400" />}
@@ -153,11 +153,11 @@ export default function Dashboard() {
                           {item.type === 'archive' && <Archive className="size-4 text-slate-400 dark:text-slate-500" />}
                           {item.type === 'restore' && <ArchiveRestore className="size-4 text-primary dark:text-blue-400" />}
                         </div>
-                        <div>
-                          <p className="text-sm font-black uppercase text-foreground">
+                        <div className="min-w-0">
+                          <p className="text-xs md:text-sm font-black uppercase text-foreground truncate">
                             {item.client_name || 'Unknown Athlete'}
                           </p>
-                          <p className="text-[10px] uppercase font-black text-slate-400 dark:text-slate-500">
+                          <p className="text-[9px] md:text-[10px] uppercase font-black text-slate-400 dark:text-slate-500 truncate">
                             {item.type === 'assignment' && `was assigned to ${item.program_name || 'Program'}`}
                             {item.type === 'unassigned' && `was unassigned from ${item.program_name || 'Program'}`}
                             {item.type === 'onboarded' && `joined ON3 Performance`}
@@ -166,7 +166,7 @@ export default function Dashboard() {
                           </p>
                         </div>
                       </div>
-                      <span className="text-[10px] font-bold text-slate-300 dark:text-slate-600">
+                      <span className="text-[9px] md:text-[10px] font-bold text-slate-300 dark:text-slate-600 whitespace-nowrap ml-2">
                         {formatRelativeTime(item.timestamp)}
                       </span>
                     </div>
@@ -183,10 +183,10 @@ export default function Dashboard() {
           </h2>
           <div className="grid grid-cols-1 gap-4">
             {['Build Concept', 'Onboard Client', 'Manage Gear'].map((label, i) => (
-              <Button key={label} variant="outline" asChild className="h-24 rounded-[30px] border-slate-200 dark:border-slate-800 bg-card shadow-sm flex flex-col gap-2 items-start px-8 justify-center hover:bg-slate-50 dark:hover:bg-slate-800 hover:border-[#0057FF]/30 dark:hover:border-blue-500/30 transition-all">
+              <Button key={label} variant="outline" asChild className="h-20 md:h-24 rounded-[20px] md:rounded-[30px] border-slate-200 dark:border-slate-800 bg-card shadow-sm flex flex-col gap-2 items-start px-6 md:px-8 justify-center hover:bg-slate-50 dark:hover:bg-slate-800 hover:border-[#0057FF]/30 dark:hover:border-blue-500/30 transition-all">
                 <Link href={['/programs', '/clients', '/inventory'][i]}>
                   {i === 0 ? <PlusCircle className="size-5 text-[#0057FF] dark:text-[#3B82F6]" /> : i === 1 ? <UserPlus className="size-5 text-[#0057FF] dark:text-[#3B82F6]" /> : <Package className="size-5 text-[#0057FF] dark:text-[#3B82F6]" />}
-                  <span className="font-bold text-foreground">{label}</span>
+                  <span className="font-bold text-foreground text-sm md:text-base">{label}</span>
                 </Link>
               </Button>
             ))}

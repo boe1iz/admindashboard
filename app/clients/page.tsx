@@ -79,7 +79,7 @@ export function ClientCard({ client, programs, assignments }: { client: Client, 
         whileHover={{ scale: 1.02, y: -4 }}
       >
         <Card 
-          className={`relative group cursor-pointer border-slate-200 dark:border-slate-800 bg-card shadow-md hover:shadow-xl hover:border-primary/30 transition-all rounded-[40px] overflow-hidden ${isProcessing ? 'opacity-50 pointer-events-none scale-[0.98]' : ''} ${!client.is_active ? 'opacity-60 grayscale' : ''}`}
+          className={`relative group cursor-pointer border-slate-200 dark:border-slate-800 bg-card shadow-md hover:shadow-xl hover:border-primary/30 transition-all rounded-[24px] md:rounded-[40px] overflow-hidden ${isProcessing ? 'opacity-50 pointer-events-none scale-[0.98]' : ''} ${!client.is_active ? 'opacity-60 grayscale' : ''}`}
           onClick={() => setIsManageDialogOpen(true)}
         >
           <div className="absolute top-4 right-4 z-10">
@@ -225,36 +225,36 @@ export default function ClientsPage() {
         
         <TabsContent value="operational" className="space-y-4 outline-none">
           {activeClients.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
               {activeClients.map(client => (
                 <ClientCard key={client.id} client={client} programs={programs} assignments={assignments} />
               ))}
             </div>
           ) : (
-            <Card className="p-12 border-slate-200 dark:border-slate-800 bg-card flex flex-col items-center justify-center text-center rounded-[40px] shadow-md">
-              <div className="size-20 bg-slate-50 dark:bg-slate-800 rounded-full flex items-center justify-center mb-4">
-                <Users className="size-10 text-slate-200 dark:text-slate-700" />
+            <Card className="p-8 md:p-12 border-slate-200 dark:border-slate-800 bg-card flex flex-col items-center justify-center text-center rounded-[24px] md:rounded-[40px] shadow-md">
+              <div className="size-16 md:size-20 bg-slate-50 dark:bg-slate-800 rounded-full flex items-center justify-center mb-4">
+                <Users className="size-8 md:size-10 text-slate-200 dark:text-slate-700" />
               </div>
-              <CardTitle className="text-foreground font-black uppercase tracking-tight mb-2">No Active Clients</CardTitle>
-              <CardDescription className="font-medium text-slate-500 dark:text-slate-400">Onboard your first client to get started.</CardDescription>
+              <CardTitle className="text-foreground font-black uppercase tracking-tight mb-2 text-lg md:text-xl">No Active Clients</CardTitle>
+              <CardDescription className="font-medium text-slate-500 dark:text-slate-400 text-sm">Onboard your first client to get started.</CardDescription>
             </Card>
           )}
         </TabsContent>
         
         <TabsContent value="vault" className="space-y-4 outline-none">
           {archivedClients.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
               {archivedClients.map(client => (
                 <ClientCard key={client.id} client={client} programs={programs} assignments={assignments} />
               ))}
             </div>
           ) : (
-            <Card className="p-12 border-slate-200 dark:border-slate-800 bg-card flex flex-col items-center justify-center text-center rounded-[40px] shadow-md">
-              <div className="size-20 bg-slate-50 dark:bg-slate-800 rounded-full flex items-center justify-center mb-4">
-                <Archive className="size-10 text-slate-200 dark:text-slate-700" />
+            <Card className="p-8 md:p-12 border-slate-200 dark:border-slate-800 bg-card flex flex-col items-center justify-center text-center rounded-[24px] md:rounded-[40px] shadow-md">
+              <div className="size-16 md:size-20 bg-slate-50 dark:bg-slate-800 rounded-full flex items-center justify-center mb-4">
+                <Archive className="size-8 md:size-10 text-slate-200 dark:text-slate-700" />
               </div>
-              <CardTitle className="text-foreground font-black uppercase tracking-tight mb-2">Vault is Empty</CardTitle>
-              <CardDescription className="font-medium text-slate-500 dark:text-slate-400">Archived clients will appear here.</CardDescription>
+              <CardTitle className="text-foreground font-black uppercase tracking-tight mb-2 text-lg md:text-xl">Vault is Empty</CardTitle>
+              <CardDescription className="font-medium text-slate-500 dark:text-slate-400 text-sm">Archived clients will appear here.</CardDescription>
             </Card>
           )}
         </TabsContent>

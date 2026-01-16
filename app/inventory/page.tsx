@@ -108,18 +108,18 @@ export default function InventoryPage() {
             </div>
           ) : activeItems.length === 0 ? (
             <div>
-              <Card className="bg-card border-slate-200 dark:border-slate-800 p-12 text-center shadow-md rounded-[40px]">
-                <div className="mx-auto flex size-20 items-center justify-center rounded-full bg-slate-50 dark:bg-slate-800 mb-4">
-                  <Database className="size-10 text-slate-300 dark:text-slate-700" />
+              <Card className="bg-card border-slate-200 dark:border-slate-800 p-8 md:p-12 text-center shadow-md rounded-[24px] md:rounded-[40px]">
+                <div className="mx-auto flex size-16 md:size-20 items-center justify-center rounded-full bg-slate-50 dark:bg-slate-800 mb-4">
+                  <Database className="size-8 md:size-10 text-slate-300 dark:text-slate-700" />
                 </div>
                 <h3 className="text-lg font-black text-foreground uppercase tracking-tight">No Gear Found</h3>
-                <p className="text-slate-500 dark:text-slate-400 max-w-sm mx-auto mt-2 font-medium">
+                <p className="text-slate-500 dark:text-slate-400 max-w-sm mx-auto mt-2 font-medium text-sm">
                   Your operational equipment will appear here once added or restored from the vault.
                 </p>
               </Card>
             </div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
               {activeItems.map((item) => (
                 <motion.div 
                   key={item.id}
@@ -127,7 +127,7 @@ export default function InventoryPage() {
                   animate={{ opacity: 1, y: 0 }}
                   whileHover={{ scale: 1.02, y: -4 }}
                 >
-                  <Card className="relative group cursor-pointer border-slate-200 dark:border-slate-800 bg-card shadow-md hover:shadow-xl hover:border-primary/30 transition-all rounded-[40px] overflow-hidden">
+                  <Card className="relative group cursor-pointer border-slate-200 dark:border-slate-800 bg-card shadow-md hover:shadow-xl hover:border-primary/30 transition-all rounded-[24px] md:rounded-[40px] overflow-hidden">
                     <div className="absolute top-4 right-4 z-10">
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild onClick={(e) => e.stopPropagation()}>
@@ -170,18 +170,18 @@ export default function InventoryPage() {
             </div>
           ) : archivedItems.length === 0 ? (
             <div>
-              <Card className="bg-card border-slate-200 dark:border-slate-800 p-12 text-center shadow-md rounded-[40px]">
-                <div className="mx-auto flex size-20 items-center justify-center rounded-full bg-slate-50 dark:bg-slate-800 mb-4">
-                  <Archive className="size-10 text-slate-300 dark:text-slate-700" />
+              <Card className="bg-card border-slate-200 dark:border-slate-800 p-8 md:p-12 text-center shadow-md rounded-[24px] md:rounded-[40px]">
+                <div className="mx-auto flex size-16 md:size-20 items-center justify-center rounded-full bg-slate-50 dark:bg-slate-800 mb-4">
+                  <Archive className="size-8 md:size-10 text-slate-300 dark:text-slate-700" />
                 </div>
                 <h3 className="text-lg font-black text-foreground uppercase tracking-tight">Vault is Empty</h3>
-                <p className="text-slate-500 dark:text-slate-400 max-w-sm mx-auto mt-2 font-medium">
+                <p className="text-slate-500 dark:text-slate-400 max-w-sm mx-auto mt-2 font-medium text-sm">
                   Archived equipment is stored here for future restoration.
                 </p>
               </Card>
             </div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
               {archivedItems.map((item) => (
                 <motion.div 
                   key={item.id}
@@ -189,7 +189,7 @@ export default function InventoryPage() {
                   animate={{ opacity: 1, y: 0 }}
                   whileHover={{ scale: 1.02, y: -4 }}
                 >
-                  <Card className="relative group cursor-pointer border-slate-200 dark:border-slate-800 bg-card opacity-60 hover:opacity-100 shadow-sm hover:shadow-xl transition-all rounded-[40px] overflow-hidden grayscale">
+                  <Card className="relative group cursor-pointer border-slate-200 dark:border-slate-800 bg-card opacity-60 hover:opacity-100 shadow-sm hover:shadow-xl transition-all rounded-[24px] md:rounded-[40px] overflow-hidden grayscale">
                     <div className="absolute top-4 right-4 z-10">
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild onClick={(e) => e.stopPropagation()}>

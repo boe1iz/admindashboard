@@ -14,13 +14,13 @@ This plan outlines the systematic adaptation of the ON3 Athletics Admin Dashboar
 - [x] Task: Conductor - User Manual Verification 'Foundation' (Protocol in workflow.md)
 
 ## Phase 2: Dashboard & Core Grids
-- [ ] Task: Responsive Stat Cards & Activity Feed
-    - [ ] Write failing tests (Red Phase) in `tests/ResponsiveDashboard.test.tsx` for grid column counts.
-    - [ ] Update `app/page.tsx` to transition from 3-column to 1-column grids on mobile.
-    - [ ] Adjust Activity Feed item density and icon sizing for small screens.
-- [ ] Task: Adaptive Client & Program Rosters
-    - [ ] Update `app/clients/page.tsx` and `app/programs/page.tsx` for single-column card layouts.
-    - [ ] Reduce card border-radius and padding for `sm` breakpoints.
+- [x] Task: Responsive Stat Cards & Activity Feed [0fed52f]
+    - [x] Write failing tests (Red Phase) in `tests/ResponsiveDashboard.test.tsx` for grid column counts.
+    - [x] Update `app/page.tsx` to transition from 3-column to 1-column grids on mobile.
+    - [x] Adjust Activity Feed item density and icon sizing for small screens.
+- [x] Task: Adaptive Client & Program Rosters [0fed52f]
+    - [x] Update `app/clients/page.tsx` and `app/programs/page.tsx` for single-column card layouts.
+    - [x] Reduce card border-radius and padding for `sm` breakpoints.
 - [ ] Task: Conductor - User Manual Verification 'Dashboard & Grids' (Protocol in workflow.md)
 
 ## Phase 3: Sequence Builder & Dialogs
