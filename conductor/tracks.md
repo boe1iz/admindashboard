@@ -10,3 +10,7 @@ This file tracks all major tracks for the project. Each track has its own detail
 - [x] **Track: Command Center (Dashboard)**
 
   *Link: [./conductor/tracks/command_center_dashboard_20260114/](./conductor/tracks/command_center_dashboard_20260114/)*
+---
+
+- [x] **Track: Sidebar Commit ID Display**
+*Link: [./conductor/tracks/sidebar_commit_id_20260116/](./conductor/tracks/sidebar_commit_id_20260116/)*
