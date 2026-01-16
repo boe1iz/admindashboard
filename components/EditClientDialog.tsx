@@ -98,34 +98,49 @@ export function EditClientDialog({
     </form>
   )
 
-  if (isDesktop) {
-    return (
-      <Dialog open={open} onOpenChange={onOpenChange}>
-        <DialogContent className="sm:max-w-[425px] rounded-[30px] border-slate-200 dark:border-slate-800 bg-card">
-          <DialogHeader>
-            <DialogTitle className="text-xl font-black text-foreground uppercase tracking-tight">Edit Client Details</DialogTitle>
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="sm:max-w-[425px] w-[95vw] rounded-[30px] border-slate-200 dark:border-slate-800 bg-card p-0 overflow-hidden">
+        <div className="p-6 md:p-8">
+          <DialogHeader className="mb-6">
+            <DialogTitle className="text-2xl font-black text-foreground uppercase tracking-tight">Edit Client</DialogTitle>
             <DialogDescription className="text-xs font-bold uppercase tracking-widest text-slate-400 dark:text-slate-500">
               Update the profile information for {client.name}.
             </DialogDescription>
           </DialogHeader>
-          {content}
-        </DialogContent>
-      </Dialog>
-    )
-  }
-
-  return (
-    <Sheet open={open} onOpenChange={onOpenChange}>
-      <SheetContent side="bottom" className="h-[85vh] rounded-t-[30px] border-t border-slate-200 dark:border-slate-800 bg-card">
-        <SheetHeader>
-          <SheetTitle className="text-xl font-black text-foreground uppercase tracking-tight">Edit Client Details</SheetTitle>
-          <SheetDescription className="text-xs font-bold uppercase tracking-widest text-slate-400 dark:text-slate-500">
-            Update the profile information for {client.name}.
-          </SheetDescription>
-        </SheetHeader>
-        {content}
-      </SheetContent>
-    </Sheet>
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div className="space-y-4">
+              <div className="grid gap-2">
+                <Label htmlFor="edit-name" className="text-[10px] font-black uppercase tracking-widest text-slate-500 dark:text-slate-400 ml-1">Full Name</Label>
+                <Input
+                  id="edit-name"
+                  value={formData.name}
+                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                  required
+                  className="h-12 rounded-2xl border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900 px-4 focus-visible:ring-[#0057FF]"
+                />
+              </div>
+              <div className="grid gap-2">
+                <Label htmlFor="edit-email" className="text-[10px] font-black uppercase tracking-widest text-slate-500 dark:text-slate-400 ml-1">Email Address</Label>
+                <Input
+                  id="edit-email"
+                  type="email"
+                  value={formData.email}
+                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                  required
+                  className="h-12 rounded-2xl border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900 px-4 focus-visible:ring-[#0057FF]"
+                />
+              </div>
+            </div>
+            <DialogFooter className="mt-8">
+              <Button type="submit" disabled={loading} className="w-full rounded-2xl bg-primary hover:bg-primary/90 font-black uppercase tracking-widest text-xs h-14 shadow-xl shadow-primary/20 transition-all active:scale-[0.98]">
+                {loading ? 'Saving...' : 'Save Changes'}
+              </Button>
+            </DialogFooter>
+          </form>
+        </div>
+      </DialogContent>
+    </Dialog>
   )
 }
 

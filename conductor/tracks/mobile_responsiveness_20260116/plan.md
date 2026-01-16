@@ -23,14 +23,14 @@ This plan outlines the systematic adaptation of the ON3 Athletics Admin Dashboar
     - [x] Reduce card border-radius and padding for `sm` breakpoints.
 - [x] Task: Conductor - User Manual Verification 'Dashboard & Grids' (Protocol in workflow.md)
 
-## Phase 3: Sequence Builder & Dialogs
+## Phase 3: Sequence Builder & Dialogs [checkpoint: 036c1d9]
 - [x] Task: Mobile-First Sequence Builder [9428d64]
     - [x] Update `app/programs/[id]/page.tsx` to ensure Day cards and Workouts fill full screen width.
     - [x] Increase touch targets for reordering handles and chevron toggles.
-- [x] Task: Adaptive CRUD Sheets [9428d64]
+- [x] Task: Adaptive CRUD Sheets [036c1d9]
     - [x] Refactor Dialogs (Workout, Client, Program, Equipment) to use `Sheet` or adaptive dialogs that occupy full height on mobile.
     - [x] Ensure all form inputs are optimized for mobile touch keyboards.
-- [ ] Task: Conductor - User Manual Verification 'Sequence Builder & Dialogs' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Sequence Builder & Dialogs' (Protocol in workflow.md)
 
 ## Phase 4: Final Polish & Audit
 - [ ] Task: Cross-Device Visual Audit

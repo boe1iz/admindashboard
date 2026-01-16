@@ -133,40 +133,72 @@ export function CreateWorkoutDialog({ programId, dayId, nextOrderIndex }: Create
     </Button>
   )
 
-  if (isDesktop) {
-    return (
-      <Dialog open={open} onOpenChange={setOpen}>
-        <DialogTrigger asChild>
-          {trigger}
-        </DialogTrigger>
-        <DialogContent className="sm:max-w-[425px] rounded-[30px] border-slate-200 dark:border-slate-800 bg-card">
-          <DialogHeader>
-            <DialogTitle className="text-xl font-black text-foreground uppercase tracking-tight">Add Workout</DialogTitle>
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>
+        {trigger}
+      </DialogTrigger>
+      <DialogContent className="sm:max-w-[425px] w-[95vw] rounded-[30px] border-slate-200 dark:border-slate-800 bg-card p-0 overflow-hidden">
+        <div className="p-6 md:p-8 max-h-[90vh] overflow-y-auto">
+          <DialogHeader className="mb-6">
+            <DialogTitle className="text-2xl font-black text-foreground uppercase tracking-tight">Add Workout</DialogTitle>
             <DialogDescription className="text-xs font-bold uppercase tracking-widest text-slate-400 dark:text-slate-500">
               Define a new workout for this day.
             </DialogDescription>
           </DialogHeader>
-          {content}
-        </DialogContent>
-      </Dialog>
-    )
-  }
-
-  return (
-    <Sheet open={open} onOpenChange={setOpen}>
-      <SheetTrigger asChild>
-        {trigger}
-      </SheetTrigger>
-      <SheetContent side="bottom" className="h-[90vh] rounded-t-[30px] border-t border-slate-200 dark:border-slate-800 bg-card px-4">
-        <SheetHeader>
-          <SheetTitle className="text-xl font-black text-foreground uppercase tracking-tight">Add Workout</SheetTitle>
-          <SheetDescription className="text-xs font-bold uppercase tracking-widest text-slate-400 dark:text-slate-500">
-            Define a new workout for this day.
-          </SheetDescription>
-        </SheetHeader>
-        {content}
-      </SheetContent>
-    </Sheet>
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div className="space-y-4">
+              <div className="grid gap-2">
+                <Label htmlFor="workout-name" className="text-[10px] font-black uppercase tracking-widest text-slate-500 dark:text-slate-400 ml-1">Workout Name</Label>
+                <Input
+                  id="workout-name"
+                  value={formData.name}
+                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                  placeholder="e.g. Bench Press"
+                  required
+                  className="h-12 rounded-2xl border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900 px-4 focus-visible:ring-[#0057FF]"
+                />
+              </div>
+              <div className="grid gap-2">
+                <Label htmlFor="equipment" className="text-[10px] font-black uppercase tracking-widest text-slate-500 dark:text-slate-400 ml-1">Equipment</Label>
+                <MultiSelectCombobox
+                  options={equipment}
+                  selected={formData.equipmentIds}
+                  onChange={(ids) => setFormData({ ...formData, equipmentIds: ids })}
+                  placeholder="Select equipment..."
+                />
+              </div>
+              <div className="grid gap-2">
+                <Label htmlFor="workout-description" className="text-[10px] font-black uppercase tracking-widest text-slate-500 dark:text-slate-400 ml-1">Description</Label>
+                <Textarea
+                  id="workout-description"
+                  value={formData.description}
+                  onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                  placeholder="Sets, reps, and coaching cues"
+                  required
+                  className="rounded-2xl border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900 px-4 py-3 focus-visible:ring-[#0057FF] min-h-[100px]"
+                />
+              </div>
+              <div className="grid gap-2">
+                <Label htmlFor="video-url" className="text-[10px] font-black uppercase tracking-widest text-slate-500 dark:text-slate-400 ml-1">Video Link (YouTube/Vimeo)</Label>
+                <Input
+                  id="video-url"
+                  value={formData.videoUrl}
+                  onChange={(e) => setFormData({ ...formData, videoUrl: e.target.value })}
+                  placeholder="https://..."
+                  className="h-12 rounded-2xl border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900 px-4 focus-visible:ring-[#0057FF]"
+                />
+              </div>
+            </div>
+            <DialogFooter className="mt-8">
+              <Button type="submit" disabled={loading} className="w-full rounded-2xl bg-primary hover:bg-primary/90 font-black uppercase tracking-widest text-xs h-14 shadow-xl shadow-primary/20 transition-all active:scale-[0.98]">
+                {loading ? 'Adding...' : 'Add Workout'}
+              </Button>
+            </DialogFooter>
+          </form>
+        </div>
+      </DialogContent>
+    </Dialog>
   )
 }
 

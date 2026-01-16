@@ -326,7 +326,6 @@ function DaySection({
       </Card>
     </motion.div>
   )
-  )
 }
 
 export default function ProgramDetailPage({ params }: { params: Promise<{ id: string }> | { id: string } }) {

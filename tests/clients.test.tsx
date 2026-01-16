@@ -79,7 +79,7 @@ describe('ClientCard', () => {
     fireEvent.click(editBtn)
     
     // Check if dialog title is present
-    expect(screen.getByText(/Edit Client Details/i)).toBeDefined()
+    expect(screen.getByText(/Edit Client/i)).toBeDefined()
   })
 })
 
