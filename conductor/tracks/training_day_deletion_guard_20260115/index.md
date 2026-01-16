@@ -1,4 +1,4 @@
-# Track workout_equipment_assignment_20260115 Context
+# Track training_day_deletion_guard_20260115 Context
 
 - [Specification](./spec.md)
 - [Implementation Plan](./plan.md)
