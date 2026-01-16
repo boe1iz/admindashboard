@@ -2,7 +2,7 @@
 
 This plan outlines the implementation of a strict operational guard to prevent the deletion of Training Days that contain workouts, ensuring data integrity and providing clear user feedback.
 
-## Phase 1: Operational Logic Guard
+## Phase 1: Operational Logic Guard [checkpoint: 0626534]
 - [x] Task: Secure Deletion Logic in Program Detail [6f28964]
     - [x] Write failing test verifying that the deletion function prevents removal if workouts are detected in the subcollection
     - [x] Implement a pre-deletion check in the `deleteDay` function within `app/programs/[id]/page.tsx` that performs a fresh query for workouts
