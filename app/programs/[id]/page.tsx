@@ -260,23 +260,27 @@ function DaySection({
           <div className="flex items-center gap-2">
             <CreateWorkoutDialog programId={programId} dayId={day.id} nextOrderIndex={workouts.length} />
             
-            <ConfirmDeleteDialog
-              title="Delete Training Day"
-              description={`Are you sure you want to delete "${day.title}"?`}
-              onConfirm={deleteDay}
-              trigger={
-                <Button 
-                  variant="ghost" 
-                  size="icon" 
-                  disabled={workouts.length > 0}
-                  title={workouts.length > 0 ? "Cannot delete a day that contains workouts. Please remove all workouts first." : undefined}
-                  className="rounded-full text-slate-400 hover:text-destructive hover:bg-destructive/5 opacity-0 group-hover:opacity-100 transition-opacity"
-                >
-                  <Trash2 className="size-4" />
-                  <span className="sr-only">Delete {day.title}</span>
-                </Button>
-              }
-            />
+            <div 
+              title={workouts.length > 0 ? "Cannot delete a day that contains workouts. Please remove all workouts first." : undefined}
+              className="opacity-0 group-hover:opacity-100 transition-opacity"
+            >
+              <ConfirmDeleteDialog
+                title="Delete Training Day"
+                description={`Are you sure you want to delete "${day.title}"?`}
+                onConfirm={deleteDay}
+                trigger={
+                  <Button 
+                    variant="ghost" 
+                    size="icon" 
+                    disabled={workouts.length > 0}
+                    className="rounded-full text-slate-400 hover:text-destructive hover:bg-destructive/5"
+                  >
+                    <Trash2 className="size-4" />
+                    <span className="sr-only">Delete {day.title}</span>
+                  </Button>
+                }
+              />
+            </div>
           </div>
         </CardHeader>
         <AnimatePresence initial={false}>
