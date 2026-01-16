@@ -10,8 +10,3 @@ This file tracks all major tracks for the project. Each track has its own detail
 - [x] **Track: Command Center (Dashboard)**
 
   *Link: [./conductor/tracks/command_center_dashboard_20260114/](./conductor/tracks/command_center_dashboard_20260114/)*
-
----
-
-- [x] **Track: Training Day Deletion Guard**
-  *Link: [./tracks/training_day_deletion_guard_20260115/](./tracks/training_day_deletion_guard_20260115/)*

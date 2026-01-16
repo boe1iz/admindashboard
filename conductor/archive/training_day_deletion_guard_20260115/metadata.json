@@ -1,0 +1,8 @@
+{
+  "track_id": "training_day_deletion_guard_20260115",
+  "type": "feature",
+  "status": "new",
+  "created_at": "2026-01-15T16:58:00Z",
+  "updated_at": "2026-01-15T16:58:00Z",
+  "description": "On the prgram view details if the day has an workout deleteion is not possible only the days can be deleted if there is not workout assigned"
+}
