@@ -56,9 +56,10 @@ To recreate the ON3 Athletics Admin Dashboard as a high-performance Next.js 14 a
 - **Archive, Don't Delete**: Focus on deactivating gear rather than permanent removal.
 
 ## Technical Specifications & UI
-- **Visual Vibe**: "Sophisticated Studio" (Concept Blue: `#0057FF`, Studio Grey: `#F1F5F9`).
+- **Visual Vibe**: "Sophisticated Studio" (Concept Blue: `#0057FF`, Studio Grey: `#F1F5F9`, with a High-Performance Dark Mode variant).
 - **UI Components**: shadcn/ui, Lucide-react icons, 40px border-radius cards.
 - **Build Tracking**: Integrated Git SHA display in sidebar for version auditability.
+- **Theme Support**: Integrated Light and Dark mode switching with persistent user preference.
 - **Interaction**: Framer Motion for modal/tab transitions.
 - **Optimistic UI**: Immediate local state updates for reordering/assigning.
 

@@ -15,5 +15,6 @@
 
 ## Development & Tooling
 - **State Management**: React Context / Hooks (Optimistic UI updates)
+- **Theme Management**: next-themes
 - **Data Fetching**: Firebase SDK
 - **Environment Management**: `.env` (Strictly managed for Firebase keys)

@@ -8,6 +8,7 @@
 - **Elite Performance Aesthetic**:
     - **Primary Palette**: Concept Blue (`#0057FF`) for active states and primary actions.
     - **Backgrounds**: Studio White (`#FFFFFF`) for sidebars/cards, Studio Slate (`#F1F5F9`) for the main workspace.
+    - **Dark Mode Variant**: Uses Deep Slate (`#020617`) and Zinc foundations for a high-performance, focused environment.
     - **Vault Styling**: Archived data must use grayscale and reduced opacity to visually separate it from active content.
 - **Card Design**:
     - **Border Radius**: Maintain a strict `40px` border-radius for all main cards to ensure consistency with the "Elite" brand signature.
