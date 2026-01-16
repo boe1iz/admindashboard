@@ -64,5 +64,5 @@ To recreate the ON3 Athletics Admin Dashboard as a high-performance Next.js 14 a
 - **Optimistic UI**: Immediate local state updates for reordering/assigning.
 
 ## Non-Functional Requirements
-- **High Mobile Responsiveness**: Full administration capability on mobile devices.
+- **Mobile-First Accessibility**: Full administrative control optimized for touch interfaces and small screens.
 - **Security**: Mandatory password change on first login (`passwordChanged` flag).

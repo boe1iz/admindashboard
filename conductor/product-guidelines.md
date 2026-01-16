@@ -11,7 +11,7 @@
     - **Dark Mode Variant**: Uses Deep Slate (`#020617`) and Zinc foundations for a high-performance, focused environment.
     - **Vault Styling**: Archived data must use grayscale and reduced opacity to visually separate it from active content.
 - **Card Design**:
-    - **Border Radius**: Maintain a strict `40px` border-radius for all main cards to ensure consistency with the "Elite" brand signature.
+    - **Responsive Geometry**: Maintain a signature `40px` border-radius on desktop, automatically adapting to `24px` on mobile for optimized screen real estate.
 - **Typography**:
     - Use thick font weights (Black/900) for page titles and high-level stats to emphasize authority and data-driven focus.
 - **Branding**:
