@@ -36,7 +36,8 @@ To recreate the ON3 Athletics Admin Dashboard as a high-performance Next.js 14 a
 - **Collapsible Structure**: Accordion-style training days with mass-action global toggles for efficient sequence management.
 - **Pricing Engine**: Conditional logic for "Free" vs "Paid" status.
 - **Deep Copy**: One-click duplication of entire programs including sub-collections (days/workouts).
-- **Deletion Rule**: Days can only be deleted if they contain zero workouts.
+- **Data Integrity Guard**: Training Days can only be deleted if they contain zero workouts.
+- **Archive, Don't Delete**: Primary philosophy for athletes, gear, and programs.
 
 ### 2. Command Center (Dashboard)
 - **Real-time Stat Cards**: Active Athletes, Concepts, Operational Gear, and Vault counts.
