@@ -1,0 +1,8 @@
+{
+  "track_id": "sidebar_commit_id_20260116",
+  "type": "feature",
+  "status": "new",
+  "created_at": "2026-01-16T11:27:00Z",
+  "updated_at": "2026-01-16T11:27:00Z",
+  "description": "We need to show latest git commit id on the sidebar behind the Admin Dashboard V2.0 text"
+}
