@@ -10,6 +10,7 @@ import {
   getDoc, 
   addDoc, 
   deleteDoc, 
+  getDocs,
   orderBy,
   updateDoc
 } from 'firebase/firestore'
@@ -215,12 +216,16 @@ function DaySection({
   }
 
   const deleteDay = async () => {
-    if (workouts.length > 0) {
-      toast.error("Cannot delete a day that contains workouts. Please remove all workouts first.")
-      return
-    }
-
     try {
+      // Fresh query to verify no workouts exist before deletion
+      const workoutsRef = collection(db, 'programs', programId, 'days', day.id, 'workouts')
+      const workoutSnapshot = await getDocs(workoutsRef)
+      
+      if (!workoutSnapshot.empty || workouts.length > 0) {
+        toast.error("Cannot delete a day that contains workouts. Please remove all workouts first.")
+        return
+      }
+
       await deleteDoc(doc(db, 'programs', programId, 'days', day.id))
       toast.success("Day deleted successfully")
     } catch (error) {
