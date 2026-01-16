@@ -206,8 +206,8 @@ export default function ClientsPage() {
     <div className="container mx-auto py-10 px-4 min-h-screen">
       <div className="flex justify-between items-center mb-8">
         <div>
-          <h1 className="text-4xl font-black text-foreground uppercase tracking-tight flex items-center gap-3">
-            <Users className="size-8 text-[#0057FF] dark:text-[#3B82F6]" />
+          <h1 className="text-2xl md:text-4xl font-black text-foreground uppercase tracking-tight flex items-center gap-3">
+            <Users className="size-6 md:size-8 text-[#0057FF] dark:text-[#3B82F6]" />
             Client Roster
           </h1>
           <p className="text-xs md:text-sm font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mt-1">

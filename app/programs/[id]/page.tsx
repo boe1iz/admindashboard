@@ -387,8 +387,8 @@ export default function ProgramDetailPage({ params }: { params: Promise<{ id: st
         </Link>
         <div className="flex flex-col md:flex-row justify-between md:items-end gap-6">
           <div>
-            <h1 className="text-4xl md:text-5xl font-black text-foreground uppercase tracking-tight flex items-center gap-4">
-              <BookOpen className="size-10 text-[#0057FF] dark:text-[#3B82F6]" />
+            <h1 className="text-2xl md:text-5xl font-black text-foreground uppercase tracking-tight flex items-center gap-4">
+              <BookOpen className="size-8 md:size-10 text-[#0057FF] dark:text-[#3B82F6]" />
               {program.name}
             </h1>
             <p className="text-[10px] font-black uppercase tracking-[0.3em] text-primary dark:text-blue-400 mt-2 flex items-center gap-2">

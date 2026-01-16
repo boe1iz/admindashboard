@@ -85,7 +85,7 @@ export default function Dashboard() {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-4xl font-black tracking-tight text-foreground uppercase">
+        <h1 className="text-2xl md:text-4xl font-black tracking-tight text-foreground uppercase">
           Command Center
         </h1>
         <div className="flex items-center gap-2 mt-2">
