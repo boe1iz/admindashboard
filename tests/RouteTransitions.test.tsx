@@ -16,6 +16,12 @@ vi.mock('next/font/google', () => ({
   Geist_Mono: () => ({ variable: 'geist-mono' }),
 }))
 
+// Mock AuthProvider
+vi.mock('@/components/AuthProvider', () => ({
+  AuthProvider: ({ children }: { children: React.ReactNode }) => <>{children}</>,
+  useAuth: vi.fn(() => ({ user: { email: 'coach@on3.com' }, loading: false })),
+}))
+
 describe('Route Transitions', () => {
   it('should be wrapped in AnimatePresence (simulated by checking layout)', () => {
     // We'll check if layout renders the children correctly

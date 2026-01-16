@@ -39,5 +39,20 @@ Object.defineProperty(window, 'matchMedia', {
   })),
 })
 
+// Mock useRouter
+vi.mock('next/navigation', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('next/navigation')>()
+  return {
+    ...actual,
+    useRouter: vi.fn(() => ({
+      push: vi.fn(),
+      replace: vi.fn(),
+      prefetch: vi.fn(),
+      back: vi.fn(),
+    })),
+    usePathname: vi.fn(() => '/'),
+  }
+})
+
 // Mock scrollIntoView
 window.HTMLElement.prototype.scrollIntoView = vi.fn()

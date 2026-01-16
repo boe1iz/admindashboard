@@ -46,10 +46,11 @@ describe('Optimistic UI / Pending States', () => {
     const mockPrograms = [{ id: 'p1', name: 'Prog 1', isArchived: false }]
     render(<ManageClientProgramsDialog client={mockClient} programs={mockPrograms as any} assignments={[]} open={true} onOpenChange={() => {}} />)
     
-    const assignBtn = screen.getByLabelText('Assign Prog 1')
-    fireEvent.click(assignBtn)
+    const assignButton = screen.getAllByRole('button', { name: /Assign/i })[0]
+    fireEvent.click(assignButton)
     
-    const dialogContent = document.querySelector('[data-slot="dialog-content"]')
-    expect(dialogContent?.className).toContain('opacity-50')
+    // Check if the input or buttons become disabled during processing
+    const input = screen.getByPlaceholderText(/Search programs.../i)
+    expect(input.hasAttribute('disabled')).toBe(true)
   })
 })

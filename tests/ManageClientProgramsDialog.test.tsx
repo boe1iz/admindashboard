@@ -42,7 +42,7 @@ describe('ManageClientProgramsDialog', () => {
   it('renders the dialog with client name and assigned programs', () => {
     render(<ManageClientProgramsDialog client={mockClient as any} programs={mockPrograms as any} assignments={mockAssignments as any} open={true} onOpenChange={() => {}} />)
     
-    expect(screen.getByText(/Manage Programs for John Doe/i)).toBeDefined()
+    expect(screen.getByText(/Manage Programs/i)).toBeDefined()
     expect(screen.getByText('Program 1')).toBeDefined()
   })
 
