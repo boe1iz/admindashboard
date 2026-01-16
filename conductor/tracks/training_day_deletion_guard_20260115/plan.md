@@ -9,9 +9,9 @@ This plan outlines the implementation of a strict operational guard to prevent t
 - [x] Task: Conductor - User Manual Verification 'Operational Logic Guard' (Protocol in workflow.md) [534e8e8]
 
 ## Phase 2: User Interface Guard & Feedback
-- [ ] Task: Dynamic Deletion Control in UI
-    - [ ] Write failing test ensuring the delete button is disabled and visually distinct when the workout list is not empty
-    - [ ] Update the `DaySection` component to disable the `ConfirmDeleteDialog` trigger based on the local `workouts.length`
+- [x] Task: Dynamic Deletion Control in UI [99ba2ca]
+    - [x] Write failing test ensuring the delete button is disabled and visually distinct when the workout list is not empty
+    - [x] Update the `DaySection` component to disable the `ConfirmDeleteDialog` trigger based on the local `workouts.length`
 - [ ] Task: User Feedback & Tooltip
     - [ ] Add a tooltip or explanatory text to the disabled delete button: "Cannot delete a day that contains workouts. Please remove all workouts first."
     - [ ] Verify that a descriptive toast error appears if a deletion attempt fails the logic check
