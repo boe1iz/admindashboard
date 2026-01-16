@@ -58,6 +58,7 @@ To recreate the ON3 Athletics Admin Dashboard as a high-performance Next.js 14 a
 ## Technical Specifications & UI
 - **Visual Vibe**: "Sophisticated Studio" (Concept Blue: `#0057FF`, Studio Grey: `#F1F5F9`).
 - **UI Components**: shadcn/ui, Lucide-react icons, 40px border-radius cards.
+- **Build Tracking**: Integrated Git SHA display in sidebar for version auditability.
 - **Interaction**: Framer Motion for modal/tab transitions.
 - **Optimistic UI**: Immediate local state updates for reordering/assigning.
 
