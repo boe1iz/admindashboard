@@ -1,10 +1,10 @@
 # Implementation Plan: Client iOS App (MVP)
 
 ## Phase 1: Project Setup & Infrastructure
-- [ ] Task: Initialize Standalone Flutter Project
-    - [ ] Create `on3athletics_client` directory.
-    - [ ] Run `flutter create` with iOS focus.
-    - [ ] Configure `pubspec.yaml` with necessary dependencies (firebase_auth, cloud_firestore, provider/bloc).
+- [x] Task: Initialize Standalone Flutter Project [372aeda]
+    - [x] Create `on3athletics_client` directory.
+    - [x] Run `flutter create` with iOS focus.
+    - [x] Configure `pubspec.yaml` with necessary dependencies (firebase_auth, cloud_firestore, provider/bloc).
 - [ ] Task: Firebase Integration Setup
     - [ ] Add iOS app to existing Firebase project.
     - [ ] Configure `GoogleService-Info.plist`.
