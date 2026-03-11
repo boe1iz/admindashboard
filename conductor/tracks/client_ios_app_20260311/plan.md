@@ -12,9 +12,9 @@
 - [x] Task: Conductor - User Manual Verification 'Project Setup' (Protocol in workflow.md) [6fe48bb]
 
 ## Phase 2: Authentication & User Onboarding
-- [ ] Task: Implement Authentication Service
-    - [ ] Write tests for login/logout logic.
-    - [ ] Implement Firebase Email/Password authentication.
+- [x] Task: Implement Authentication Service [334596d]
+    - [x] Write tests for login/logout logic.
+    - [x] Implement Firebase Email/Password authentication.
 - [ ] Task: Create Login Screen
     - [ ] Design UI following iOS Human Interface Guidelines.
     - [ ] Implement login form and error handling.
