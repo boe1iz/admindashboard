@@ -17,3 +17,8 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 - [x] **Track: Mobile Login Layout Alignment**
 *Link: [./conductor/tracks/mobile_login_alignment_20260116/](./conductor/tracks/mobile_login_alignment_20260116/)*
+
+---
+
+- [ ] **Track: Create a mobile app for clients (iOS) using Flutter.**
+*Link: [./tracks/client_ios_app_20260311/](./tracks/client_ios_app_20260311/)*
