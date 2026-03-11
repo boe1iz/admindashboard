@@ -1,15 +1,15 @@
 # Implementation Plan: Client iOS App (MVP)
 
-## Phase 1: Project Setup & Infrastructure
+## Phase 1: Project Setup & Infrastructure [checkpoint: 6fe48bb]
 - [x] Task: Initialize Standalone Flutter Project [372aeda]
     - [x] Create `on3athletics_client` directory.
     - [x] Run `flutter create` with iOS focus.
     - [x] Configure `pubspec.yaml` with necessary dependencies (firebase_auth, cloud_firestore, provider/bloc).
-- [ ] Task: Firebase Integration Setup
-    - [ ] Add iOS app to existing Firebase project.
-    - [ ] Configure `GoogleService-Info.plist`.
-    - [ ] Implement a basic `FirebaseService` class.
-- [ ] Task: Conductor - User Manual Verification 'Project Setup' (Protocol in workflow.md)
+- [x] Task: Firebase Integration Setup [08d2b75]
+    - [x] Add iOS app to existing Firebase project. (Manual/User Check)
+    - [x] Configure `GoogleService-Info.plist`. (Manual/User Check)
+    - [x] Implement a basic `FirebaseService` class.
+- [x] Task: Conductor - User Manual Verification 'Project Setup' (Protocol in workflow.md) [6fe48bb]
 
 ## Phase 2: Authentication & User Onboarding
 - [ ] Task: Implement Authentication Service
