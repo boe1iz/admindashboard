@@ -22,19 +22,19 @@ const geistMono = Geist_Mono({
 });
 
 function AuthGuard({ children }: { children: React.ReactNode }) {
-  const { user, loading } = useAuth();
+  const { user, isAdmin, loading } = useAuth();
   const pathname = usePathname();
   const router = useRouter();
 
   useEffect(() => {
     if (!loading) {
-      if (!user && pathname !== "/login") {
+      if ((!user || !isAdmin) && pathname !== "/login") {
         router.replace("/login");
-      } else if (user && pathname === "/login") {
+      } else if (user && isAdmin && pathname === "/login") {
         router.replace("/");
       }
     }
-  }, [user, loading, pathname, router]);
+  }, [user, isAdmin, loading, pathname, router]);
 
   if (loading) {
     return (
