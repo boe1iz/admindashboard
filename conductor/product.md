@@ -55,6 +55,11 @@ To recreate the ON3 Athletics Admin Dashboard as a high-performance Next.js 14 a
 - **Integrity Check**: Archived gear remains labeled in old workouts but is hidden from new selections.
 - **Archive, Don't Delete**: Focus on deactivating gear rather than permanent removal.
 
+### 5. Role-Based Access Control (RBAC)
+- **Admin Verification**: Access to the dashboard is restricted to users whose UIDs exist in the `admin_users` Firestore collection.
+- **Client Separation**: Users not in the `admin_users` collection are treated as "Clients" and are automatically signed out of the Admin Dashboard.
+- **Defense in Depth**: Firestore Security Rules strictly enforce that only Admin UIDs can perform write operations on core collections.
+
 ## Technical Specifications & UI
 - **Visual Vibe**: "Sophisticated Studio" (Concept Blue: `#0057FF`, Studio Grey: `#F1F5F9`, with a High-Performance Dark Mode variant).
 - **UI Components**: shadcn/ui, Lucide-react icons, 40px border-radius cards.

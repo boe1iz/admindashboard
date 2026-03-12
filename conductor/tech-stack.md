@@ -9,8 +9,9 @@
 - **Animations**: Framer Motion
 
 ## Backend & Infrastructure
-- **Authentication**: Firebase Auth (Email/Password)
+- **Authentication**: Firebase Auth (Email/Password) with Firestore-based Role Verification
 - **Database**: Cloud Firestore (Real-time `onSnapshot` listeners)
+- **Security**: Granular Firestore Security Rules based on `admin_users` collection
 - **Hosting**: Vercel (Optimized for Next.js)
 
 ## Development & Tooling
