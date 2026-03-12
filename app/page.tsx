@@ -6,7 +6,7 @@ import { collection, onSnapshot, query, orderBy, limit } from 'firebase/firestor
 import { motion, AnimatePresence } from 'framer-motion'
 import { cn } from '@/lib/utils'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Users, BookOpen, Package, Activity, PlusCircle, UserPlus, Archive, ArchiveRestore, UserMinus } from 'lucide-react'
+import { Users, BookOpen, Package, Activity, PlusCircle, Archive, ArchiveRestore, UserMinus, UserPlus } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 import { AnimatedCounter } from '@/components/AnimatedCounter'
@@ -182,10 +182,10 @@ export default function Dashboard() {
             Quick Actions
           </h2>
           <div className="grid grid-cols-1 gap-4">
-            {['Build Concept', 'Onboard Client', 'Manage Gear'].map((label, i) => (
+            {['Build Concept', 'Manage Gear'].map((label, i) => (
               <Button key={label} variant="outline" asChild className="h-20 md:h-24 rounded-[20px] md:rounded-[30px] border-slate-200 dark:border-slate-800 bg-card shadow-sm flex flex-col gap-2 items-start px-6 md:px-8 justify-center hover:bg-slate-50 dark:hover:bg-slate-800 hover:border-[#0057FF]/30 dark:hover:border-blue-500/30 transition-all">
-                <Link href={['/programs', '/clients', '/inventory'][i]}>
-                  {i === 0 ? <PlusCircle className="size-5 text-[#0057FF] dark:text-[#3B82F6]" /> : i === 1 ? <UserPlus className="size-5 text-[#0057FF] dark:text-[#3B82F6]" /> : <Package className="size-5 text-[#0057FF] dark:text-[#3B82F6]" />}
+                <Link href={['/programs', '/inventory'][i]}>
+                  {i === 0 ? <PlusCircle className="size-5 text-[#0057FF] dark:text-[#3B82F6]" /> : <Package className="size-5 text-[#0057FF] dark:text-[#3B82F6]" />}
                   <span className="font-bold text-foreground text-sm md:text-base">{label}</span>
                 </Link>
               </Button>

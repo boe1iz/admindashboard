@@ -55,9 +55,10 @@ To recreate the ON3 Athletics Admin Dashboard as a high-performance Next.js 14 a
 - **Integrity Check**: Archived gear remains labeled in old workouts but is hidden from new selections.
 - **Archive, Don't Delete**: Focus on deactivating gear rather than permanent removal.
 
-### 5. Role-Based Access Control (RBAC)
+### 5. Role-Based Access Control (RBAC) & User Sync
 - **Admin Verification**: Access to the dashboard is restricted to users whose UIDs exist in the `admin_users` Firestore collection.
 - **Client Separation**: Users not in the `admin_users` collection are treated as "Clients" and are automatically signed out of the Admin Dashboard.
+- **Automated Profile Sync**: High-performance client profiles are automatically created in the `clients` Firestore collection upon a user's first successful login (via Auth). This ensures 100% data integrity between Authentication and the Database.
 - **Defense in Depth**: Firestore Security Rules strictly enforce that only Admin UIDs can perform write operations on core collections.
 
 ## Technical Specifications & UI

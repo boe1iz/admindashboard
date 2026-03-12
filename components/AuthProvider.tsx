@@ -3,7 +3,7 @@
 import React, { createContext, useContext, useEffect, useState } from 'react'
 import { auth, db } from '@/lib/firebase'
 import { onAuthStateChanged, User } from 'firebase/auth'
-import { doc, getDoc } from 'firebase/firestore'
+import { doc, getDoc, setDoc, serverTimestamp } from 'firebase/firestore'
 
 interface AuthContextType {
   user: User | null
@@ -23,15 +23,33 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (user) => {
-      if (user) {
-        setUser(user)
+    const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
+      if (firebaseUser) {
+        setUser(firebaseUser)
         try {
-          const adminDoc = await getDoc(doc(db, 'admin_users', user.uid))
-          setIsAdmin(adminDoc.exists())
+          // 1. Check for Admin status
+          const adminDoc = await getDoc(doc(db, 'admin_users', firebaseUser.uid))
+          const isUserAdmin = adminDoc.exists()
+          setIsAdmin(isUserAdmin)
+
+          // 2. Auto-create/Sync profile in 'clients' collection
+          // We use the UID as the ID to ensure 1:1 match with Auth
+          const clientRef = doc(db, 'clients', firebaseUser.uid)
+          const clientDoc = await getDoc(clientRef)
+          
+          if (!clientDoc.exists()) {
+            console.log('Creating initial profile for authenticated user:', firebaseUser.email)
+            await setDoc(clientRef, {
+              name: firebaseUser.displayName || firebaseUser.email?.split('@')[0] || 'New Athlete',
+              email: firebaseUser.email?.toLowerCase() || '',
+              is_active: true,
+              created_at: serverTimestamp(),
+              updated_at: serverTimestamp(),
+              notes: ''
+            })
+          }
         } catch (error) {
-          console.error('Error checking admin status:', error)
-          setIsAdmin(false)
+          console.error('Auth sync error:', error)
         }
       } else {
         setUser(null)

@@ -12,9 +12,8 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { Button } from '@/components/ui/button'
-import { MoreVertical, Archive, ArchiveRestore, Pencil, Users } from 'lucide-react'
+import { MoreVertical, Archive, ArchiveRestore, Pencil, Users, Info } from 'lucide-react'
 import { toast } from 'sonner'
-import { CreateClientDialog } from '@/components/CreateClientDialog'
 import { ManageClientProgramsDialog } from '@/components/ManageClientProgramsDialog'
 import { EditClientDialog } from '@/components/EditClientDialog'
 import { motion } from 'framer-motion'
@@ -25,6 +24,7 @@ interface Client {
   name: string
   email: string
   is_active: boolean
+  notes?: string
 }
 
 interface Program {
@@ -119,7 +119,15 @@ export function ClientCard({ client, programs, assignments }: { client: Client, 
               <CardDescription className="text-[10px] md:text-xs font-bold text-slate-400 dark:text-slate-500 truncate">{client.email}</CardDescription>
             </div>
           </CardHeader>
-          <CardContent className="px-4 pb-4 md:px-6 md:pb-6 hidden md:block">
+          <CardContent className="px-4 pb-4 md:px-6 md:pb-6 space-y-4 hidden md:block">
+            {client.notes && (
+              <div className="flex items-start gap-2 p-3 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-800">
+                <Info className="size-3 text-primary mt-0.5 shrink-0" />
+                <p className="text-[10px] leading-relaxed text-slate-500 dark:text-slate-400 line-clamp-2">
+                  {client.notes}
+                </p>
+              </div>
+            )}
             <div className="flex flex-wrap gap-2">
               {clientAssignments.length > 0 ? (
                 clientAssignments.map(assignment => {
@@ -216,7 +224,6 @@ export default function ClientsPage() {
             Manage your high-performance athlete network.
           </p>
         </div>
-        <CreateClientDialog />
       </div>
       
       <Tabs defaultValue="operational" className="w-full">
@@ -238,7 +245,7 @@ export default function ClientsPage() {
                 <Users className="size-8 md:size-10 text-slate-200 dark:text-slate-700" />
               </div>
               <CardTitle className="text-foreground font-black uppercase tracking-tight mb-2 text-lg md:text-xl">No Active Clients</CardTitle>
-              <CardDescription className="font-medium text-slate-500 dark:text-slate-400 text-sm">Onboard your first client to get started.</CardDescription>
+              <CardDescription className="font-medium text-slate-500 dark:text-slate-400 text-sm">Registered clients from the mobile app will appear here.</CardDescription>
             </Card>
           )}
         </TabsContent>

@@ -10,6 +10,7 @@
 
 ## Backend & Infrastructure
 - **Authentication**: Firebase Auth (Email/Password) with Firestore-based Role Verification
+- **User Management**: Automated "On-Arrival" profile synchronization (Auth UID matched to Firestore `clients` collection)
 - **Database**: Cloud Firestore (Real-time `onSnapshot` listeners)
 - **Security**: Granular Firestore Security Rules based on `admin_users` collection
 - **Hosting**: Vercel (Optimized for Next.js)
