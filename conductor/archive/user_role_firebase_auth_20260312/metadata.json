@@ -1,0 +1,8 @@
+{
+  "track_id": "user_role_firebase_auth_20260312",
+  "type": "feature",
+  "status": "new",
+  "created_at": "2026-03-12T15:30:00Z",
+  "updated_at": "2026-03-12T15:30:00Z",
+  "description": "Currently we can create a new client via admindashboard but it creates a porblem when I will create a IOS application. All the client must be created via Firebase Auth services and registered users info can be edited via admin users or group assignment (admin or client) via admin dashboard. Only admin users can login to admin dashboard. Clients will be login IOS application. After that program assignment will be performed by admindashboard with Firebaase Auth Service UID"
+}

@@ -1,8 +1,9 @@
 'use client'
 
 import { useState } from 'react'
-import { auth } from '@/lib/firebase'
-import { signInWithEmailAndPassword } from 'firebase/auth'
+import { auth, db } from '@/lib/firebase'
+import { signInWithEmailAndPassword, signOut } from 'firebase/auth'
+import { doc, getDoc } from 'firebase/firestore'
 import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -24,12 +25,26 @@ export default function LoginPage() {
     setLoading(true)
     setError(null)
     try {
-      await signInWithEmailAndPassword(auth, email, password)
+      const userCredential = await signInWithEmailAndPassword(auth, email, password)
+      
+      // Check if user is in admin_users collection
+      const adminDoc = await getDoc(doc(db, 'admin_users', userCredential.user.uid))
+      
+      if (!adminDoc.exists()) {
+        await signOut(auth)
+        throw new Error("Access Denied: You do not have administrator privileges.")
+      }
+
       toast.success("Welcome back, Coach")
       router.push('/')
     } catch (err: any) {
       console.error(err)
-      const message = err.message || "Failed to login. Please check your credentials."
+      let message = "Failed to login. Please check your credentials."
+      if (err.message === "Access Denied: You do not have administrator privileges.") {
+        message = err.message
+      } else if (err.code === 'auth/user-not-found' || err.code === 'auth/wrong-password' || err.code === 'auth/invalid-credential') {
+        message = "Invalid email or password."
+      }
       setError(message)
       toast.error(message)
     } finally {
