@@ -13,4 +13,13 @@ if (!admin.apps.length) {
 const adminDb = admin.firestore();
 const adminAuth = admin.auth();
 
+export async function setUserRole(uid: string, role: 'admin' | 'client') {
+  await adminAuth.setCustomUserClaims(uid, { role });
+}
+
+export async function getUserRole(uid: string) {
+  const user = await adminAuth.getUser(uid);
+  return user.customClaims?.role as string | undefined;
+}
+
 export { adminDb, adminAuth };
