@@ -133,7 +133,7 @@ export function CreateProgramDialog() {
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                   placeholder="e.g. Elite Strength Phase 1"
                   required
-                  className="h-12 rounded-2xl border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900 px-4 focus-visible:ring-[#0057FF]"
+                  className="h-12 rounded-2xl border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900 px-4 focus-visible:ring-primary"
                 />
               </div>
               <div className="grid gap-2">
@@ -144,7 +144,7 @@ export function CreateProgramDialog() {
                   onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                   placeholder="Brief overview of the program"
                   required
-                  className="rounded-2xl border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900 px-4 py-3 focus-visible:ring-[#0057FF] min-h-[100px]"
+                  className="rounded-2xl border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900 px-4 py-3 focus-visible:ring-primary min-h-[100px]"
                 />
               </div>
               <div className="grid gap-2">
@@ -156,7 +156,7 @@ export function CreateProgramDialog() {
                   onChange={(e) => setFormData({ ...formData, price: e.target.value })}
                   placeholder="0 for free"
                   required
-                  className="h-12 rounded-2xl border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900 px-4 focus-visible:ring-[#0057FF]"
+                  className="h-12 rounded-2xl border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900 px-4 focus-visible:ring-primary"
                 />
               </div>
             </div>

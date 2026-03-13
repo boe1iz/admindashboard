@@ -23,8 +23,8 @@ describe('Sidebar Component', () => {
   it('renders navigation items with correct active state styling', () => {
     render(<Sidebar />)
     const dashboardLink = screen.getByRole('link', { name: /Dashboard/i })
-    // In my force-reset, I used bg-[#0057FF] for active items
-    expect(dashboardLink.className).toContain('bg-[#0057FF]')
+    // In my force-reset, I used bg-primary for active items
+    expect(dashboardLink.className).toContain('bg-primary')
     expect(dashboardLink.className).toContain('text-white')
   })
 })
