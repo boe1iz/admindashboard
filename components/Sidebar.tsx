@@ -61,7 +61,7 @@ export function Sidebar() {
     <div className="hidden lg:flex h-full w-64 flex-col bg-card border-r border-border z-20 shadow-sm transition-colors duration-300">
       <div className="flex h-20 items-center px-6">
         <Link href="/" className="hover:opacity-80 transition-opacity">
-          <span className="text-2xl font-black tracking-tighter text-[#0057FF] dark:text-[#3B82F6]">
+          <span className="text-2xl font-black tracking-tighter text-primary dark:text-blue-500">
             ON3 ATHLETICS
           </span>
         </Link>
@@ -84,8 +84,8 @@ export function Sidebar() {
                 className={cn(
                   "group flex items-center justify-between rounded-xl px-3 py-2.5 text-sm font-black uppercase tracking-tight transition-all",
                   isActive
-                    ? "bg-[#0057FF] text-white shadow-lg shadow-[#0057FF]/20"
-                    : "text-slate-400 hover:text-[#0057FF] dark:hover:text-blue-400 hover:bg-slate-50 dark:hover:bg-slate-800",
+                    ? "bg-primary text-white shadow-lg shadow-primary/20"
+                    : "text-slate-400 hover:text-primary dark:hover:text-blue-400 hover:bg-slate-50 dark:hover:bg-slate-800",
                 )}
               >
                 <div className="flex items-center gap-3">
@@ -94,7 +94,7 @@ export function Sidebar() {
                       "size-5 transition-transform",
                       isActive
                         ? "text-white"
-                        : "text-slate-400 group-hover:text-[#0057FF] dark:group-hover:text-blue-400",
+                        : "text-slate-400 group-hover:text-primary dark:group-hover:text-blue-400",
                     )}
                   />
                   {item.name}

@@ -109,7 +109,7 @@ export function ClientCard({
         whileHover={{ scale: 1.02, y: -4 }}
       >
         <Card
-          className={`relative group cursor-pointer border-slate-200 dark:border-slate-800 bg-card shadow-md hover:shadow-xl hover:border-primary/30 transition-all rounded-[24px] md:rounded-[40px] overflow-hidden ${isProcessing ? "opacity-50 pointer-events-none scale-[0.98]" : ""} ${!client.is_active ? "opacity-60 grayscale" : ""}`}
+          className={`relative group cursor-pointer border-slate-200 dark:border-slate-800 bg-card shadow-md hover:shadow-xl hover:border-primary/30 transition-all rounded-3xl md:rounded-[40px] overflow-hidden ${isProcessing ? "opacity-50 pointer-events-none scale-[0.98]" : ""} ${!client.is_active ? "opacity-60 grayscale" : ""}`}
           onClick={() => setIsManageDialogOpen(true)}
         >
           <div className="absolute top-2 right-2 md:top-4 md:right-4 z-10">
@@ -300,7 +300,7 @@ export default function ClientsPage() {
       <div className="flex justify-between items-center mb-8">
         <div>
           <h1 className="text-2xl md:text-4xl font-black text-foreground uppercase tracking-tight flex items-center gap-3">
-            <Users className="size-6 md:size-8 text-[#0057FF] dark:text-[#3B82F6]" />
+            <Users className="size-6 md:size-8 text-primary dark:text-blue-500" />
             Client Roster
           </h1>
           <p className="text-xs md:text-sm font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mt-1">
@@ -313,13 +313,13 @@ export default function ClientsPage() {
         <TabsList className="bg-card border border-slate-200 dark:border-slate-800 p-1 rounded-full w-fit shadow-sm mb-8">
           <TabsTrigger
             value="operational"
-            className="rounded-full px-4 md:px-6 data-[state=active]:bg-[#0057FF] data-[state=active]:text-white text-xs md:text-sm font-black uppercase tracking-tight dark:text-slate-400"
+            className="rounded-full px-4 md:px-6 data-[state=active]:bg-primary data-[state=active]:text-white text-xs md:text-sm font-black uppercase tracking-tight dark:text-slate-400"
           >
             Operational ({activeClients.length})
           </TabsTrigger>
           <TabsTrigger
             value="vault"
-            className="rounded-full px-4 md:px-6 data-[state=active]:bg-[#0057FF] data-[state=active]:text-white text-xs md:text-sm font-black uppercase tracking-tight dark:text-slate-400"
+            className="rounded-full px-4 md:px-6 data-[state=active]:bg-primary data-[state=active]:text-white text-xs md:text-sm font-black uppercase tracking-tight dark:text-slate-400"
           >
             Archived Vault ({archivedClients.length})
           </TabsTrigger>
@@ -339,7 +339,7 @@ export default function ClientsPage() {
               ))}
             </div>
           ) : (
-            <Card className="p-8 md:p-12 border-slate-200 dark:border-slate-800 bg-card flex flex-col items-center justify-center text-center rounded-[24px] md:rounded-[40px] shadow-md">
+            <Card className="p-8 md:p-12 border-slate-200 dark:border-slate-800 bg-card flex flex-col items-center justify-center text-center rounded-3xl md:rounded-[40px] shadow-md">
               <div className="size-16 md:size-20 bg-slate-50 dark:bg-slate-800 rounded-full flex items-center justify-center mb-4">
                 <Users className="size-8 md:size-10 text-slate-200 dark:text-slate-700" />
               </div>
@@ -367,7 +367,7 @@ export default function ClientsPage() {
               ))}
             </div>
           ) : (
-            <Card className="p-8 md:p-12 border-slate-200 dark:border-slate-800 bg-card flex flex-col items-center justify-center text-center rounded-[24px] md:rounded-[40px] shadow-md">
+            <Card className="p-8 md:p-12 border-slate-200 dark:border-slate-800 bg-card flex flex-col items-center justify-center text-center rounded-3xl md:rounded-[40px] shadow-md">
               <div className="size-16 md:size-20 bg-slate-50 dark:bg-slate-800 rounded-full flex items-center justify-center mb-4">
                 <Archive className="size-8 md:size-10 text-slate-200 dark:text-slate-700" />
               </div>

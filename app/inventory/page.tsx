@@ -109,7 +109,7 @@ export default function InventoryPage() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h2 className="text-2xl md:text-4xl font-black tracking-tight text-foreground flex items-center gap-3 uppercase">
-            <Package className="size-6 md:size-8 text-primary dark:text-[#3B82F6]" />
+            <Package className="size-6 md:size-8 text-primary dark:text-blue-500" />
             Equipment Inventory
           </h2>
           <p className="text-xs md:text-sm font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mt-1">

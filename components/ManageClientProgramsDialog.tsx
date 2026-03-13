@@ -146,7 +146,7 @@ export function ManageClientProgramsDialog({ client, programs, assignments, open
                  <Search className="absolute left-4 top-1/2 -translate-y-1/2 size-4 text-slate-400" />
                  <Input 
                    placeholder="Search programs..." 
-                   className="h-12 pl-11 rounded-2xl border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900 focus-visible:ring-[#0057FF]"
+                   className="h-12 pl-11 rounded-2xl border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900 focus-visible:ring-primary"
                    value={searchTerm}
                    onChange={(e) => setSearchTerm(e.target.value)}
                    disabled={isProcessing}
@@ -161,7 +161,7 @@ export function ManageClientProgramsDialog({ client, programs, assignments, open
                        <Button 
                          size="sm" 
                          variant="ghost" 
-                         className="h-9 rounded-full gap-1 opacity-0 md:group-hover:opacity-100 transition-opacity text-[#0057FF] dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-500/10 font-black uppercase text-[10px] tracking-widest"
+                         className="h-9 rounded-full gap-1 opacity-0 md:group-hover:opacity-100 transition-opacity text-primary dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-500/10 font-black uppercase text-[10px] tracking-widest"
                          onClick={() => assignProgram(program.id, program.name)}
                          aria-label={`Assign ${program.name}`}
                          disabled={isProcessing}
@@ -173,7 +173,7 @@ export function ManageClientProgramsDialog({ client, programs, assignments, open
                        <Button 
                          size="sm" 
                          variant="ghost" 
-                         className="h-9 rounded-full md:hidden text-[#0057FF] dark:text-blue-400 font-black uppercase text-[10px] tracking-widest"
+                         className="h-9 rounded-full md:hidden text-primary dark:text-blue-400 font-black uppercase text-[10px] tracking-widest"
                          onClick={() => assignProgram(program.id, program.name)}
                          disabled={isProcessing}
                        >

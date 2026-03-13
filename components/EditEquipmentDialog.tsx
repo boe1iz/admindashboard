@@ -64,7 +64,7 @@ export function EditEquipmentDialog({
         <form onSubmit={handleSubmit}>
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2 text-xl font-black uppercase tracking-tight">
-              <Package className="size-5 text-[#0057FF] dark:text-[#3B82F6]" />
+              <Package className="size-5 text-primary dark:text-blue-500" />
               Edit Equipment
             </DialogTitle>
             <DialogDescription className="text-xs font-bold uppercase tracking-widest text-slate-400 dark:text-slate-500">
@@ -78,7 +78,7 @@ export function EditEquipmentDialog({
                 id="edit-name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="bg-background border-slate-200 dark:border-slate-800 rounded-xl focus-visible:ring-[#0057FF]"
+                className="bg-background border-slate-200 dark:border-slate-800 rounded-xl focus-visible:ring-primary"
                 required
                 autoFocus
               />
@@ -96,7 +96,7 @@ export function EditEquipmentDialog({
             <Button 
               type="submit" 
               disabled={loading || !name.trim() || name.trim() === equipment.name}
-              className="bg-[#0057FF] hover:bg-[#0057FF]/90 text-white rounded-full font-black uppercase tracking-widest text-[10px] px-6"
+              className="bg-primary hover:bg-primary/90 text-white rounded-full font-black uppercase tracking-widest text-[10px] px-6"
             >
               {loading ? 'Saving...' : 'Save Changes'}
             </Button>
