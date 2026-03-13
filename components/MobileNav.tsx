@@ -75,6 +75,9 @@ export function MobileNav() {
                   ON3 ATHLETICS
                 </span>
               </SheetTitle>
+              <SheetDescription className="sr-only">
+                Main navigation menu
+              </SheetDescription>
             </SheetHeader>
 
             <nav className="flex-1 space-y-1 px-3 py-4">

@@ -173,11 +173,13 @@ export default function Dashboard() {
             className="flex-1 min-w-[120px] md:min-w-0"
           >
             <Card className="border border-slate-200 dark:border-slate-800 bg-card shadow-md rounded-[20px] md:rounded-[40px] p-1 md:p-2 h-full">
-              <CardHeader className="flex flex-row items-center justify-between pb-1 md:pb-2 space-y-0 px-3 md:px-6">
+              <CardHeader className="flex flex-row items-center justify-between pb-1 md:pb-2 space-y-0 px-3 md:px-6 min-h-[2.5rem] md:min-h-0">
                 <CardTitle className="text-[8px] md:text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 dark:text-slate-500">
                   {stat.name}
                 </CardTitle>
-                <stat.icon className={stat.color + " size-3 md:size-4"} />
+                <stat.icon
+                  className={stat.color + " size-3 md:size-4 shrink-0"}
+                />
               </CardHeader>
               <CardContent className="px-3 md:px-6">
                 <div className="text-2xl md:text-4xl font-black text-foreground">
