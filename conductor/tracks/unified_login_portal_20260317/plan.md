@@ -9,10 +9,10 @@
     - [x] Write tests for new user registration.
     - [x] Implement registration form components.
     - [x] Create Firestore sync logic for newly registered clients.
-- [ ] Task: Account Security (Password Reset/Forgot) [TDD]
-    - [ ] Write tests for password reset dispatch.
-    - [ ] Implement "Forgot Password" UI and Firebase Auth integration.
-    - [ ] Implement "Change Password" in profile settings.
+- [x] Task: Account Security (Password Reset/Forgot) [TDD] [76b9c85]
+    - [x] Write tests for password reset dispatch.
+    - [x] Implement "Forgot Password" UI and Firebase Auth integration.
+    - [x] Implement "Change Password" in profile settings.
 - [ ] Task: Conductor - User Manual Verification 'Phase 1: Multi-Role Auth' (Protocol in workflow.md)
 
 ## Phase 2: Client Portal Shell & Core Training Views
