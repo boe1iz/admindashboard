@@ -35,6 +35,7 @@ import {
   Copy,
   Pencil,
   BookOpen,
+  ArrowLeft,
 } from "lucide-react";
 import Link from "next/link";
 import { EditProgramDialog } from "@/components/EditProgramDialog";
@@ -266,6 +267,15 @@ export default function ProgramsPage() {
 
   return (
     <div className="container mx-auto py-10 px-4 min-h-screen">
+      {!isAdmin && (
+        <Link
+          href="/"
+          className="flex items-center text-slate-400 hover:text-primary mb-6 transition-colors font-black uppercase tracking-widest text-[10px]"
+        >
+          <ArrowLeft className="mr-2 size-4" />
+          Back to Portal
+        </Link>
+      )}
       <div className="flex justify-between items-center mb-8">
         <div>
           <h1 className="text-2xl md:text-4xl font-black text-foreground uppercase tracking-tight flex items-center gap-3">
