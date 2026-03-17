@@ -1,6 +1,16 @@
 import '@testing-library/jest-dom'
 import { vi } from 'vitest'
 
+// Mock next/font/google
+vi.mock('next/font/google', () => ({
+  Geist: () => ({
+    variable: '--font-geist-sans',
+  }),
+  Geist_Mono: () => ({
+    variable: '--font-geist-mono',
+  }),
+}))
+
 // Mock IntersectionObserver
 class IntersectionObserverMock {
   readonly root: Element | null = null

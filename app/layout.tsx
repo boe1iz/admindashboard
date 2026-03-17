@@ -4,12 +4,14 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Sidebar } from "@/components/Sidebar";
 import { MobileNav } from "@/components/MobileNav";
+import { ClientBottomNav } from "@/components/ClientBottomNav";
 import { Toaster } from "@/components/ui/sonner";
 import { motion, AnimatePresence } from "framer-motion";
 import { usePathname, useRouter } from "next/navigation";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { AuthProvider, useAuth } from "@/components/AuthProvider";
 import { useEffect } from "react";
+import { cn } from "@/lib/utils";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -57,7 +59,10 @@ function AuthGuard({ children }: { children: React.ReactNode }) {
     <div className="flex h-screen overflow-hidden flex-col lg:flex-row">
       {!isLoginPage && isAdmin && <MobileNav />}
       {!isLoginPage && isAdmin && <Sidebar />}
-      <main className="flex-1 overflow-hidden relative">
+      <main className={cn(
+        "flex-1 overflow-hidden relative",
+        !isLoginPage && isClient && "pb-20 lg:pb-0"
+      )}>
         <AnimatePresence initial={false} mode="wait">
           <motion.div
             key={pathname}
@@ -73,6 +78,7 @@ function AuthGuard({ children }: { children: React.ReactNode }) {
           </motion.div>
         </AnimatePresence>
       </main>
+      {!isLoginPage && isClient && <ClientBottomNav />}
     </div>
   );
 }
