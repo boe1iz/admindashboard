@@ -4,69 +4,66 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { useAuth } from '@/components/AuthProvider'
 import { auth, db } from '@/lib/firebase'
-import { signInWithEmailAndPassword, signOut } from 'firebase/auth'
+import { signInWithEmailAndPassword, signOut, createUserWithEmailAndPassword, updateProfile } from 'firebase/auth'
 import { doc, getDoc } from 'firebase/firestore'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { BookOpen, Lock, Mail, Eye, EyeOff } from 'lucide-react'
+import { BookOpen, Lock, Mail, Eye, EyeOff, User } from 'lucide-react'
 import { toast } from 'sonner'
 
 export default function LoginPage() {
+  const [isRegister, setIsRegister] = useState(false)
+  const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const router = useRouter()
-  const { user, isAdmin, loading: authLoading, refreshAuth } = useAuth()
+  const { user, isAdmin, isClient, loading: authLoading, refreshAuth } = useAuth()
 
   // Navigate to dashboard as soon as auth fully resolves.
   // This is the reliable trigger point: AuthProvider has confirmed
-  // the user is an admin and flipped loading → false.
+  // the user is an admin or client and flipped loading → false.
   useEffect(() => {
-    if (!authLoading && user && isAdmin) {
+    if (!authLoading && user && (isAdmin || isClient)) {
       router.replace('/')
     }
-  }, [authLoading, user, isAdmin, router])
+  }, [authLoading, user, isAdmin, isClient, router])
 
-  const handleLogin = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
     setError(null)
     try {
-      // Grant must be set BEFORE signInWithEmailAndPassword so that
-      // onAuthStateChanged (which fires immediately on auth) finds it.
-      // Use a session cookie (no expires) so it persists across tabs but clears on browser close.
+      // Grant must be set BEFORE auth actions so that
+      // onAuthStateChanged (which fires immediately) finds it.
       document.cookie = "tab_auth_granted=1; path=/; SameSite=Lax"
 
-      const userCredential = await signInWithEmailAndPassword(auth, email, password)
+      if (isRegister) {
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password)
+        await updateProfile(userCredential.user, { displayName: name })
+        toast.success("Account initialized successfully")
+      } else {
+        await signInWithEmailAndPassword(auth, email, password)
+        toast.success("Welcome back")
+      }
       
-      // Ensure AuthProvider sees the updated sessionStorage immediately
+      // Ensure AuthProvider sees the updated credentials/grant immediately
       await refreshAuth()
       
-      // Check if user is in admin_users collection
-      const adminDoc = await getDoc(doc(db, 'admin_users', userCredential.user.uid))
-      
-      if (!adminDoc.exists()) {
-        sessionStorage.removeItem('tab_auth_granted')
-        await signOut(auth)
-        throw new Error("Access Denied: You do not have administrator privileges.")
-      }
-
-      toast.success("Welcome back, Coach")
-      // Navigation is handled by the useEffect above which fires once
-      // AuthProvider confirms user + isAdmin. Calling router.replace here
-      // races against AuthProvider state commits and causes loops.
     } catch (err: any) {
-      sessionStorage.removeItem('tab_auth_granted')
+      document.cookie = "tab_auth_granted=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT"
       console.error(err)
-      let message = "Failed to login. Please check your credentials."
-      if (err.message === "Access Denied: You do not have administrator privileges.") {
-        message = err.message
-      } else if (err.code === 'auth/user-not-found' || err.code === 'auth/wrong-password' || err.code === 'auth/invalid-credential') {
+      let message = "Authentication failed. Please try again."
+      if (err.code === 'auth/user-not-found' || err.code === 'auth/wrong-password' || err.code === 'auth/invalid-credential') {
         message = "Invalid email or password."
+      } else if (err.code === 'auth/email-already-in-use') {
+        message = "This email is already registered."
+      } else if (err.code === 'auth/weak-password') {
+        message = "Password should be at least 6 characters."
       }
       setError(message)
       toast.error(message)
@@ -91,15 +88,33 @@ export default function LoginPage() {
             ON3 ATHLETICS
           </CardTitle>
           <CardDescription className="text-xs font-bold uppercase tracking-[0.2em] text-slate-400 dark:text-slate-500 mt-2">
-            Coach Command Center
+            {isRegister ? "Join the Elite" : "Coach Command Center"}
           </CardDescription>
         </CardHeader>
         <CardContent className="px-8 pb-10">
-          <form onSubmit={handleLogin} className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-6">
             <div className="space-y-4">
+              {isRegister && (
+                <div className="grid gap-2">
+                  <Label htmlFor="name" className="text-[10px] font-black uppercase tracking-widest text-slate-500 ml-1">
+                    Full Name
+                  </Label>
+                  <div className="relative">
+                    <User className="absolute left-4 top-1/2 -translate-y-1/2 size-4 text-slate-400" />
+                    <Input
+                      id="name"
+                      placeholder="Athlete Name"
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                      required
+                      className="h-14 pl-12 rounded-2xl border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 focus-visible:ring-primary"
+                    />
+                  </div>
+                </div>
+              )}
               <div className="grid gap-2">
                 <Label htmlFor="email" className="text-[10px] font-black uppercase tracking-widest text-slate-500 ml-1">
-                  Administrator Email
+                  {isRegister ? "Email Address" : "Administrator Email"}
                 </Label>
                 <div className="relative">
                   <Mail className="absolute left-4 top-1/2 -translate-y-1/2 size-4 text-slate-400" />
@@ -116,7 +131,7 @@ export default function LoginPage() {
               </div>
               <div className="grid gap-2">
                 <Label htmlFor="password" className="text-[10px] font-black uppercase tracking-widest text-slate-500 ml-1">
-                  Secure Password
+                  {isRegister ? "Create Password" : "Secure Password"}
                 </Label>
                 <div className="relative">
                   <Lock className="absolute left-4 top-1/2 -translate-y-1/2 size-4 text-slate-400" />
@@ -157,9 +172,17 @@ export default function LoginPage() {
                   Authenticating...
                 </div>
               ) : (
-                "Deploy Dashboard"
+                isRegister ? "Initialize Account" : "Deploy Dashboard"
               )}
             </Button>
+
+            <button
+              type="button"
+              onClick={() => setIsRegister(!isRegister)}
+              className="w-full text-center text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-primary transition-colors"
+            >
+              {isRegister ? "Already have an account? Login" : "Don't have an account? Register"}
+            </button>
           </form>
         </CardContent>
       </Card>
