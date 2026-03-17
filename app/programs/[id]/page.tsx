@@ -13,6 +13,7 @@ import {
   getDocs,
   orderBy,
   updateDoc,
+  serverTimestamp,
 } from "firebase/firestore";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -25,6 +26,7 @@ import {
   ChevronDown,
   Pencil,
   BookOpen,
+  CheckCircle2,
 } from "lucide-react";
 import Link from "next/link";
 import { use } from "react";
@@ -74,8 +76,9 @@ export function WorkoutCard({
   onMove: (direction: "up" | "down") => void;
 }) {
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+  const [completing, setCompleting] = useState(false);
   const { equipment } = useEquipment();
-  const { isAdmin } = useAuth();
+  const { user, isAdmin, isClient } = useAuth();
 
   const deleteWorkout = async () => {
     try {
@@ -86,6 +89,28 @@ export function WorkoutCard({
     } catch (error) {
       console.error(error);
       toast.error("Failed to delete workout");
+    }
+  };
+
+  const markComplete = async () => {
+    if (!user) return;
+    setCompleting(true);
+    try {
+      await addDoc(collection(db, "training_history"), {
+        uid: user.uid,
+        user_email: user.email,
+        workout_id: workout.id,
+        workout_title: workout.title,
+        program_id: programId,
+        day_id: dayId,
+        completed_at: serverTimestamp(),
+      });
+      toast.success(`Session: ${workout.title} archived in history`);
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to log completion");
+    } finally {
+      setCompleting(false);
     }
   };
 
@@ -160,35 +185,55 @@ export function WorkoutCard({
             </div>
           </div>
         </div>
-        {isAdmin && (
-          <div className="flex items-center gap-0.5 md:gap-1 md:opacity-0 md:group-hover/workout:opacity-100 transition-opacity shrink-0">
-            <Button
-              variant="ghost"
-              size="icon"
-              className="size-10 md:size-9 rounded-full text-slate-400 hover:text-primary dark:hover:text-blue-400 hover:bg-primary/5 dark:hover:bg-blue-500/10"
-              onClick={() => setIsEditDialogOpen(true)}
-              aria-label="Edit workout"
-            >
-              <Pencil className="size-4 md:size-5" />
-            </Button>
-
-            <ConfirmDeleteDialog
-              title="Delete Workout"
-              description={`Are you sure you want to delete "${workout.title}"? This action cannot be undone.`}
-              onConfirm={deleteWorkout}
-              trigger={
+        <div className="flex items-center gap-0.5 md:gap-1 shrink-0">
+          {isAdmin && (
+            <>
+              <div className="flex items-center gap-0.5 md:gap-1 md:opacity-0 md:group-hover/workout:opacity-100 transition-opacity">
                 <Button
                   variant="ghost"
                   size="icon"
-                  className="size-10 md:size-9 rounded-full text-slate-400 hover:text-destructive hover:bg-destructive/5 dark:hover:bg-red-500/10"
-                  aria-label="Delete workout"
+                  className="size-10 md:size-9 rounded-full text-slate-400 hover:text-primary dark:hover:text-blue-400 hover:bg-primary/5 dark:hover:bg-blue-500/10"
+                  onClick={() => setIsEditDialogOpen(true)}
+                  aria-label="Edit workout"
                 >
-                  <Trash2 className="size-4 md:size-5" />
+                  <Pencil className="size-4 md:size-5" />
                 </Button>
-              }
-            />
-          </div>
-        )}
+
+                <ConfirmDeleteDialog
+                  title="Delete Workout"
+                  description={`Are you sure you want to delete "${workout.title}"? This action cannot be undone.`}
+                  onConfirm={deleteWorkout}
+                  trigger={
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="size-10 md:size-9 rounded-full text-slate-400 hover:text-destructive hover:bg-destructive/5 dark:hover:bg-red-500/10"
+                      aria-label="Delete workout"
+                    >
+                      <Trash2 className="size-4 md:size-5" />
+                    </Button>
+                  }
+                />
+              </div>
+            </>
+          )}
+          {isClient && (
+            <Button
+              variant="ghost"
+              size="icon"
+              disabled={completing}
+              onClick={markComplete}
+              className="size-10 md:size-12 rounded-full text-slate-300 hover:text-green-500 hover:bg-green-500/5 dark:hover:bg-green-500/10 transition-colors"
+              aria-label="Mark as complete"
+            >
+              {completing ? (
+                <div className="size-4 border-2 border-green-500/30 border-t-green-500 rounded-full animate-spin" />
+              ) : (
+                <CheckCircle2 className="size-6" />
+              )}
+            </Button>
+          )}
+        </div>
       </div>
 
       {isAdmin && (
