@@ -46,8 +46,8 @@ describe('SimpleAuthGuard (within RootLayout)', () => {
     })
   });
 
-  it('redirects to /login if user is authenticated but not an admin', async () => {
-    vi.mocked(useAuth).mockReturnValue({ user: { email: 'client@on3.com' } as any, isAdmin: false, loading: false })
+  it('redirects to /login if user is authenticated but not an admin or client', async () => {
+    vi.mocked(useAuth).mockReturnValue({ user: { email: 'unknown@on3.com' } as any, isAdmin: false, isClient: false, loading: false })
     vi.mocked(usePathname).mockReturnValue('/')
 
     render(<RootLayout><div>Content</div></RootLayout>)
@@ -57,8 +57,8 @@ describe('SimpleAuthGuard (within RootLayout)', () => {
     })
   });
 
-  it('allows access if user is an admin', async () => {
-    vi.mocked(useAuth).mockReturnValue({ user: { email: 'admin@on3.com' } as any, isAdmin: true, loading: false })
+  it('allows access if user is an admin and shows Sidebar', async () => {
+    vi.mocked(useAuth).mockReturnValue({ user: { email: 'admin@on3.com' } as any, isAdmin: true, isClient: false, loading: false })
     vi.mocked(usePathname).mockReturnValue('/')
 
     render(<RootLayout><div>Content</div></RootLayout>)
@@ -66,6 +66,18 @@ describe('SimpleAuthGuard (within RootLayout)', () => {
     await waitFor(() => {
       expect(screen.getByText('Content')).toBeDefined()
       expect(screen.getByTestId('sidebar')).toBeDefined()
+    })
+  });
+
+  it('allows access if user is a client but hides Sidebar', async () => {
+    vi.mocked(useAuth).mockReturnValue({ user: { email: 'client@on3.com' } as any, isAdmin: false, isClient: true, loading: false })
+    vi.mocked(usePathname).mockReturnValue('/')
+
+    render(<RootLayout><div>Content</div></RootLayout>)
+
+    await waitFor(() => {
+      expect(screen.getByText('Content')).toBeDefined()
+      expect(screen.queryByTestId('sidebar')).toBeNull()
     })
   });
 });

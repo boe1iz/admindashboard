@@ -26,6 +26,8 @@ import {
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { AnimatedCounter } from "@/components/AnimatedCounter";
+import { useAuth } from "@/components/AuthProvider";
+import ClientPortalHome from "@/components/ClientPortalHome";
 
 function formatRelativeTime(seconds: number) {
   if (!seconds || seconds === 0) return "Just now";
@@ -48,7 +50,7 @@ interface ActivityItem {
   timestamp: number;
 }
 
-export default function Dashboard() {
+function AdminDashboard() {
   const [statsData, setStatsData] = useState({
     programs: { active: 0, archived: 0 },
     clients: { active: 0, archived: 0 },
@@ -298,4 +300,20 @@ export default function Dashboard() {
       </div>
     </div>
   );
+}
+
+export default function RootPage() {
+  const { isAdmin, isClient, loading } = useAuth();
+
+  if (loading) return null;
+
+  if (isAdmin) {
+    return <AdminDashboard />;
+  }
+
+  if (isClient) {
+    return <ClientPortalHome />;
+  }
+
+  return null;
 }

@@ -3,6 +3,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { AuthProvider, useAuth } from '../components/AuthProvider'
 import React from 'react'
 import { onAuthStateChanged } from 'firebase/auth'
+import { doc, getDoc } from 'firebase/firestore'
 
 // Mock firebase/auth
 vi.mock('firebase/auth', () => ({
@@ -10,9 +11,19 @@ vi.mock('firebase/auth', () => ({
   onAuthStateChanged: vi.fn(),
 }))
 
+// Mock firebase/firestore
+vi.mock('firebase/firestore', () => ({
+  getFirestore: vi.fn(),
+  doc: vi.fn(),
+  getDoc: vi.fn(),
+  setDoc: vi.fn(),
+  serverTimestamp: vi.fn(),
+}))
+
 // Mock lib/firebase
 vi.mock('@/lib/firebase', () => ({
   auth: { type: 'auth' },
+  db: { type: 'db' },
 }))
 
 function TestComponent() {
@@ -24,6 +35,9 @@ function TestComponent() {
 describe('AuthProvider', () => {
   beforeEach(() => {
     vi.clearAllMocks()
+    sessionStorage.clear()
+    sessionStorage.setItem('tab_auth_granted', '1')
+    vi.mocked(getDoc).mockResolvedValue({ exists: () => false } as any)
   })
 
   it('shows loading state initially', () => {

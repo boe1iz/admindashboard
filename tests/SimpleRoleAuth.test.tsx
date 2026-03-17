@@ -16,6 +16,8 @@ vi.mock('firebase/firestore', () => ({
   getFirestore: vi.fn(),
   doc: vi.fn(),
   getDoc: vi.fn(),
+  setDoc: vi.fn(),
+  serverTimestamp: vi.fn(),
 }))
 
 // Mock lib/firebase
@@ -37,6 +39,8 @@ function TestComponent() {
 describe('AuthProvider with Firestore Roles', () => {
   beforeEach(() => {
     vi.clearAllMocks()
+    sessionStorage.clear()
+    sessionStorage.setItem('tab_auth_granted', '1')
   })
 
   it('sets isAdmin to true if UID exists in admin_users collection', async () => {

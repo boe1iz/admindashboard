@@ -22,19 +22,20 @@ const geistMono = Geist_Mono({
 });
 
 function AuthGuard({ children }: { children: React.ReactNode }) {
-  const { user, isAdmin, loading } = useAuth();
+  const { user, isAdmin, isClient, loading } = useAuth();
   const pathname = usePathname();
   const router = useRouter();
 
   useEffect(() => {
     if (!loading) {
-      if ((!user || !isAdmin) && pathname !== "/login") {
+      const isAuthorized = user && (isAdmin || isClient);
+      if (!isAuthorized && pathname !== "/login") {
         router.replace("/login");
-      } else if (user && isAdmin && pathname === "/login") {
+      } else if (isAuthorized && pathname === "/login") {
         router.replace("/");
       }
     }
-  }, [user, isAdmin, loading, pathname, router]);
+  }, [user, isAdmin, isClient, loading, pathname, router]);
 
   // For protected pages, show a loading spinner while auth resolves.
   // For the login page, keep it rendered so its own effect can detect
@@ -54,8 +55,8 @@ function AuthGuard({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="flex h-screen overflow-hidden flex-col lg:flex-row">
-      {!isLoginPage && <MobileNav />}
-      {!isLoginPage && <Sidebar />}
+      {!isLoginPage && isAdmin && <MobileNav />}
+      {!isLoginPage && isAdmin && <Sidebar />}
       <main className="flex-1 overflow-hidden relative">
         <AnimatePresence initial={false} mode="wait">
           <motion.div

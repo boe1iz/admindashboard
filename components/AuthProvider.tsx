@@ -23,6 +23,7 @@ function getCookie(name: string) {
 interface AuthContextType {
   user: User | null
   isAdmin: boolean
+  isClient: boolean
   loading: boolean
   refreshAuth: () => Promise<void>
 }
@@ -30,6 +31,7 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType>({
   user: null,
   isAdmin: false,
+  isClient: false,
   loading: true,
   refreshAuth: async () => {},
 })
@@ -37,6 +39,7 @@ const AuthContext = createContext<AuthContextType>({
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null)
   const [isAdmin, setIsAdmin] = useState(false)
+  const [isClient, setIsClient] = useState(false)
   const [loading, setLoading] = useState(true)
   const lastActivityRef = useRef<number>(Date.now())
   const warnedRef = useRef<boolean>(false)
@@ -51,6 +54,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     if (!isAuthorized) {
       setUser(null)
       setIsAdmin(false)
+      setIsClient(false)
       setLoading(false)
       return
     }
@@ -58,24 +62,29 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setLoading(true)
     setUser(firebaseUser)
     try {
+      // 1. Check for Admin status
       const adminDoc = await getDoc(doc(db, 'admin_users', firebaseUser.uid))
       const isUserAdmin = adminDoc.exists()
       setIsAdmin(isUserAdmin)
 
-      if (isUserAdmin) {
-        const clientRef = doc(db, 'clients', firebaseUser.uid)
-        const clientDoc = await getDoc(clientRef)
-        if (!clientDoc.exists()) {
-          await setDoc(clientRef, {
-            name: firebaseUser.displayName || firebaseUser.email?.split('@')[0] || 'New Athlete',
-            email: firebaseUser.email?.toLowerCase() || '',
-            is_active: true,
-            created_at: serverTimestamp(),
-            updated_at: serverTimestamp(),
-            notes: ''
-          })
-        }
+      // 2. Profile Sync (Ensure document exists in 'clients' for EVERYONE)
+      const clientRef = doc(db, 'clients', firebaseUser.uid)
+      const clientDoc = await getDoc(clientRef)
+
+      if (!clientDoc.exists()) {
+        await setDoc(clientRef, {
+          name: firebaseUser.displayName || firebaseUser.email?.split('@')[0] || 'New User',
+          email: firebaseUser.email?.toLowerCase() || '',
+          is_active: true,
+          created_at: serverTimestamp(),
+          updated_at: serverTimestamp(),
+          notes: ''
+        })
       }
+
+      // 3. Set Client status (If not admin, they are a client)
+      setIsClient(!isUserAdmin)
+
     } catch (error) {
       console.error('Auth sync error:', error)
     } finally {
@@ -173,7 +182,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, [])
 
   return (
-    <AuthContext.Provider value={{ user, isAdmin, loading, refreshAuth }}>
+    <AuthContext.Provider value={{ user, isAdmin, isClient, loading, refreshAuth }}>
       {children}
     </AuthContext.Provider>
   )
