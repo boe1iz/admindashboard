@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
@@ -36,7 +36,10 @@ function AuthGuard({ children }: { children: React.ReactNode }) {
     }
   }, [user, isAdmin, loading, pathname, router]);
 
-  if (loading) {
+  // For protected pages, show a loading spinner while auth resolves.
+  // For the login page, keep it rendered so its own effect can detect
+  // auth completion and trigger navigation — do NOT unmount it.
+  if (loading && pathname !== "/login") {
     return (
       <div className="flex h-screen w-full items-center justify-center bg-background">
         <div className="size-8 animate-spin rounded-full border-b-2 border-primary" />
@@ -61,7 +64,9 @@ function AuthGuard({ children }: { children: React.ReactNode }) {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
-            className={isLoginPage ? "" : "absolute inset-0 overflow-y-auto p-container"}
+            className={
+              isLoginPage ? "" : "absolute inset-0 overflow-y-auto p-container"
+            }
           >
             {children}
           </motion.div>

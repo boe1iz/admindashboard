@@ -72,4 +72,4 @@ To recreate the ON3 Athletics Admin Dashboard as a high-performance Next.js 14 a
 ## Non-Functional Requirements
 - **Mobile-First Accessibility**: Full administrative control optimized for touch interfaces and small screens.
 - **Authenticated Access**: Secure coach and administrator access via Firebase Email/Password authentication.
-- **Session Persistence**: Robust session management ensuring seamless transitions across browser sessions.
+- **Session Persistence**: Robust session management ensuring seamless transitions across tabs and browser sessions, with browser-level closure protection and idle/absolute timeouts.

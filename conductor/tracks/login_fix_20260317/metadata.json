@@ -1,0 +1,8 @@
+{
+  "track_id": "login_fix_20260317",
+  "type": "bug",
+  "status": "new",
+  "created_at": "2026-03-17T15:30:00Z",
+  "updated_at": "2026-03-17T15:30:00Z",
+  "description": "We have problem on login page. I entered username and password but i stucked on login page not routed the dashboard. We have implemented also session control. We have to solve the problem"
+}

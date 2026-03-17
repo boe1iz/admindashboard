@@ -1,10 +1,11 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
+import { useAuth } from '@/components/AuthProvider'
 import { auth, db } from '@/lib/firebase'
 import { signInWithEmailAndPassword, signOut } from 'firebase/auth'
 import { doc, getDoc } from 'firebase/firestore'
-import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -19,25 +20,47 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const router = useRouter()
+  const { user, isAdmin, loading: authLoading, refreshAuth } = useAuth()
+
+  // Navigate to dashboard as soon as auth fully resolves.
+  // This is the reliable trigger point: AuthProvider has confirmed
+  // the user is an admin and flipped loading → false.
+  useEffect(() => {
+    if (!authLoading && user && isAdmin) {
+      router.replace('/')
+    }
+  }, [authLoading, user, isAdmin, router])
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
     setError(null)
     try {
+      // Grant must be set BEFORE signInWithEmailAndPassword so that
+      // onAuthStateChanged (which fires immediately on auth) finds it.
+      // Use a session cookie (no expires) so it persists across tabs but clears on browser close.
+      document.cookie = "tab_auth_granted=1; path=/; SameSite=Lax"
+
       const userCredential = await signInWithEmailAndPassword(auth, email, password)
+      
+      // Ensure AuthProvider sees the updated sessionStorage immediately
+      await refreshAuth()
       
       // Check if user is in admin_users collection
       const adminDoc = await getDoc(doc(db, 'admin_users', userCredential.user.uid))
       
       if (!adminDoc.exists()) {
+        sessionStorage.removeItem('tab_auth_granted')
         await signOut(auth)
         throw new Error("Access Denied: You do not have administrator privileges.")
       }
 
       toast.success("Welcome back, Coach")
-      router.push('/')
+      // Navigation is handled by the useEffect above which fires once
+      // AuthProvider confirms user + isAdmin. Calling router.replace here
+      // races against AuthProvider state commits and causes loops.
     } catch (err: any) {
+      sessionStorage.removeItem('tab_auth_granted')
       console.error(err)
       let message = "Failed to login. Please check your credentials."
       if (err.message === "Access Denied: You do not have administrator privileges.") {
@@ -47,7 +70,6 @@ export default function LoginPage() {
       }
       setError(message)
       toast.error(message)
-    } finally {
       setLoading(false)
     }
   }

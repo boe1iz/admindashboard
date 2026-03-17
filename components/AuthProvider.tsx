@@ -11,16 +11,27 @@ const IDLE_WARNING_MS     = 118 * 60 * 1000  // warn 2 minutes before logout
 const ABSOLUTE_SESSION_MS =   8 * 60 * 60 * 1000  // 8 hours
 const CHECK_INTERVAL_MS   =  60 * 1000        // check every 60 seconds
 
+// Helper to get a cookie by name
+function getCookie(name: string) {
+  if (typeof document === 'undefined') return null
+  const value = `; ${document.cookie}`
+  const parts = value.split(`; ${name}=`)
+  if (parts.length === 2) return parts.pop()?.split(';').shift()
+  return null
+}
+
 interface AuthContextType {
   user: User | null
   isAdmin: boolean
   loading: boolean
+  refreshAuth: () => Promise<void>
 }
 
 const AuthContext = createContext<AuthContextType>({
   user: null,
   isAdmin: false,
   loading: true,
+  refreshAuth: async () => {},
 })
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
@@ -31,8 +42,58 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const warnedRef = useRef<boolean>(false)
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
 
+  // Move the session resolver to a reusable function
+  const resolveSession = async (firebaseUser: User) => {
+    // Check if browser-session is authorized via cookie (persists across tabs)
+    // or legacy sessionStorage (per-tab)
+    const isAuthorized = getCookie('tab_auth_granted') === '1' || sessionStorage.getItem('tab_auth_granted') === '1'
+
+    if (!isAuthorized) {
+      setUser(null)
+      setIsAdmin(false)
+      setLoading(false)
+      return
+    }
+
+    setLoading(true)
+    setUser(firebaseUser)
+    try {
+      const adminDoc = await getDoc(doc(db, 'admin_users', firebaseUser.uid))
+      const isUserAdmin = adminDoc.exists()
+      setIsAdmin(isUserAdmin)
+
+      if (isUserAdmin) {
+        const clientRef = doc(db, 'clients', firebaseUser.uid)
+        const clientDoc = await getDoc(clientRef)
+        if (!clientDoc.exists()) {
+          await setDoc(clientRef, {
+            name: firebaseUser.displayName || firebaseUser.email?.split('@')[0] || 'New Athlete',
+            email: firebaseUser.email?.toLowerCase() || '',
+            is_active: true,
+            created_at: serverTimestamp(),
+            updated_at: serverTimestamp(),
+            notes: ''
+          })
+        }
+      }
+    } catch (error) {
+      console.error('Auth sync error:', error)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const refreshAuth = async () => {
+    if (auth.currentUser) {
+      await resolveSession(auth.currentUser)
+    } else {
+      setLoading(false)
+    }
+  }
+
   useEffect(() => {
     let sessionCleanup: (() => void) | null = null
+    // ... (rest of startSessionGuard logic remains the same, I will use replace carefully)
 
     const startSessionGuard = () => {
       // Preserve existing session_start across page refreshes within the same tab
@@ -83,41 +144,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         clearInterval(interval)
         intervalRef.current = null
         sessionStorage.removeItem('session_start')
+        sessionStorage.removeItem('tab_auth_granted')
+        // Clear session cookie on cleanup/logout
+        document.cookie = "tab_auth_granted=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT"
       }
     }
 
     const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
       if (firebaseUser) {
-        setUser(firebaseUser)
-        try {
-          // 1. Check for Admin status
-          const adminDoc = await getDoc(doc(db, 'admin_users', firebaseUser.uid))
-          const isUserAdmin = adminDoc.exists()
-          setIsAdmin(isUserAdmin)
-
-          // 2. Auto-create/Sync profile in 'clients' collection
-          const clientRef = doc(db, 'clients', firebaseUser.uid)
-          const clientDoc = await getDoc(clientRef)
-
-          if (!clientDoc.exists()) {
-            console.log('Creating initial profile for authenticated user:', firebaseUser.email)
-            await setDoc(clientRef, {
-              name: firebaseUser.displayName || firebaseUser.email?.split('@')[0] || 'New Athlete',
-              email: firebaseUser.email?.toLowerCase() || '',
-              is_active: true,
-              created_at: serverTimestamp(),
-              updated_at: serverTimestamp(),
-              notes: ''
-            })
-          }
-
-          // 3. Start session guard (idle + absolute timeout)
-          if (!intervalRef.current) {
-            sessionCleanup = startSessionGuard()
-          }
-        } catch (error) {
-          console.error('Auth sync error:', error)
-        }
+        await resolveSession(firebaseUser)
       } else {
         setUser(null)
         setIsAdmin(false)
@@ -125,8 +160,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           sessionCleanup()
           sessionCleanup = null
         }
+        setLoading(false)
       }
-      setLoading(false)
     })
 
     return () => {
@@ -138,7 +173,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, [])
 
   return (
-    <AuthContext.Provider value={{ user, isAdmin, loading }}>
+    <AuthContext.Provider value={{ user, isAdmin, loading, refreshAuth }}>
       {children}
     </AuthContext.Provider>
   )
