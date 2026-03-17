@@ -21,6 +21,7 @@ To recreate the ON3 Athletics Admin Dashboard as a high-performance Next.js 14 a
 ## Target Users
 - **Administrators**: Primary owners with full system access.
 - **Assistant Coaches**: Collaborators with equal operational rights, including the ability to edit, archive, and delete content.
+- **Athletes (Clients)**: End-users who access assigned training programs, log completions, and provide feedback via the Client Portal.
 
 ## Business Goals
 - **Full Functional Parity**: Replicate 100% of the logic from the original system, specifically the "Archive, Don't Delete" philosophy.
@@ -45,9 +46,9 @@ To recreate the ON3 Athletics Admin Dashboard as a high-performance Next.js 14 a
 - **Recent Activity**: Feed of the last 5 relevant actions (Onboarding, Assignments, Status Changes).
 
 ### 3. Athlete Roster & Assignment
-- Lifecycle Management: Card-based grid roster with Operational/Archived tabs.
-- Program Tags: Inline assignment viewing with quick "unassign" capabilities.
-- Assignment Guard: Logic preventing a program from being assigned to the same athlete twice.
+- **Lifecycle Management**: Card-based grid roster with Operational/Archived tabs.
+- **Program Tags**: Inline assignment viewing with quick "unassign" capabilities.
+- **Assignment Guard**: Logic preventing a program from being assigned to the same athlete twice.
 
 ### 4. Equipment Inventory
 - **Multi-Select Tagging**: Ability to link multiple gear items to a single workout.
@@ -55,11 +56,19 @@ To recreate the ON3 Athletics Admin Dashboard as a high-performance Next.js 14 a
 - **Integrity Check**: Archived gear remains labeled in old workouts but is hidden from new selections.
 - **Archive, Don't Delete**: Focus on deactivating gear rather than permanent removal.
 
-### 5. Role-Based Access Control (RBAC) & User Sync
-- **Admin Verification**: Access to the dashboard is restricted to users whose UIDs exist in the `admin_users` Firestore collection.
-- **Client Separation**: Users not in the `admin_users` collection are treated as "Clients" and are automatically signed out of the Admin Dashboard.
-- **Automated Profile Sync**: High-performance client profiles are automatically created in the `clients` Firestore collection upon a user's first successful login (via Auth). This ensures 100% data integrity between Authentication and the Database.
-- **Defense in Depth**: Firestore Security Rules strictly enforce that only Admin UIDs can perform write operations on core collections.
+### 5. Client Portal & Athlete Engagement
+- **Personalized Home**: Mobile-first landing page with quick access to assigned programs, active workouts, and history.
+- **Training Access**: Read-only access to assigned high-performance training sequences, including video playback.
+- **Progress Tracking**: "Mark as Complete" functionality that logs workout sessions to a persistent training history.
+- **Coach Feedback Loop**: Integrated feedback system allowing athletes to share session insights directly with their coaches.
+- **Account Management**: Self-service profile synchronization and secure password management.
+
+### 6. Role-Based Access Control (RBAC) & Unified Auth
+- **Unified Entry**: Single login/registration interface for all user roles.
+- **Auto-Role Detection**: Automatic identification of user role (Admin vs Client) upon authentication, triggering immediate redirection to the appropriate interface.
+- **Route Protection**: Strictly enforced route-based authorization preventing unauthorized access to administrative pages.
+- **Public Registration**: Seamless onboarding flow for new athletes with automated Firestore profile synchronization.
+- **Defense in Depth**: Firestore Security Rules specifically tailored to allow secure self-management for athletes while maintaining full oversight for admins.
 
 ## Technical Specifications & UI
 - **Visual Vibe**: "Sophisticated Studio" (Concept Blue: `#0057FF`, Studio Grey: `#F1F5F9`, with a High-Performance Dark Mode variant).
