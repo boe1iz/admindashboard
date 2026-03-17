@@ -29,10 +29,17 @@ service cloud.firestore {
       }
     }
 
-    // Clients collection: Admins can manage, users can read their own
+    // Clients collection: Admins can manage, users can manage their own
     match /clients/{clientId} {
       allow read: if request.auth != null && (isAdmin() || request.auth.uid == clientId);
-      allow write: if isAdmin();
+      // Allow creation by self (for registration sync)
+      allow create: if request.auth != null && request.auth.uid == clientId;
+      // Allow update by self (but not is_active status) or admin
+      allow update: if request.auth != null && (
+        isAdmin() || 
+        (request.auth.uid == clientId && request.resource.data.is_active == resource.data.is_active)
+      );
+      allow delete: if isAdmin();
     }
 
     // Equipment collection: Admins can manage
@@ -41,9 +48,9 @@ service cloud.firestore {
       allow write: if isAdmin();
     }
 
-    // Assignments collection
+    // Assignments collection: Users can read their own
     match /assignments/{assignmentId} {
-      allow read: if request.auth != null && (isAdmin() || resource.data.clientId == request.auth.uid);
+      allow read: if request.auth != null && (isAdmin() || assignmentId == request.auth.uid || resource.data.clientId == request.auth.uid);
       allow write: if isAdmin();
     }
 
