@@ -31,9 +31,23 @@ function AuthGuard({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     if (!loading) {
       const isAuthorized = user && (isAdmin || isClient);
+      
       if (!isAuthorized && pathname !== "/login") {
         router.replace("/login");
-      } else if (isAuthorized && pathname === "/login") {
+        return;
+      }
+
+      if (isAuthorized && pathname === "/login") {
+        router.replace("/");
+        return;
+      }
+
+      // Route-based authorization: Protect admin routes from clients
+      const adminOnlyRoutes = ["/clients", "/inventory", "/feedback", "/debug"];
+      const isTryingAdminRoute = adminOnlyRoutes.some(route => pathname?.startsWith(route));
+
+      if (isClient && !isAdmin && isTryingAdminRoute) {
+        console.log("[AuthGuard] Client attempted unauthorized access to:", pathname);
         router.replace("/");
       }
     }

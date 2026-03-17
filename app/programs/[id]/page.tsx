@@ -14,6 +14,7 @@ import {
   orderBy,
   updateDoc,
   serverTimestamp,
+  where,
 } from "firebase/firestore";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -34,6 +35,7 @@ import { CreateWorkoutDialog } from "@/components/CreateWorkoutDialog";
 import { VideoModal } from "@/components/VideoModal";
 import { EditWorkoutDialog } from "@/components/EditWorkoutDialog";
 import { ConfirmDeleteDialog } from "@/components/ConfirmDeleteDialog";
+import { WorkoutFeedbackDialog } from "@/components/WorkoutFeedbackDialog";
 import { toast } from "sonner";
 import { motion, AnimatePresence } from "framer-motion";
 import { useEquipment } from "@/hooks/useEquipment";
@@ -77,8 +79,25 @@ export function WorkoutCard({
 }) {
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [completing, setCompleting] = useState(false);
+  const [isCompleted, setIsCompleted] = useState(false);
   const { equipment } = useEquipment();
   const { user, isAdmin, isClient } = useAuth();
+
+  useEffect(() => {
+    if (!user || !isClient) return;
+
+    const q = query(
+      collection(db, "training_history"),
+      where("uid", "==", user.uid),
+      where("workout_id", "==", workout.id)
+    );
+
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      setIsCompleted(!snapshot.empty);
+    });
+
+    return () => unsubscribe();
+  }, [user, isClient, workout.id]);
 
   const deleteWorkout = async () => {
     try {
@@ -93,7 +112,7 @@ export function WorkoutCard({
   };
 
   const markComplete = async () => {
-    if (!user) return;
+    if (!user || isCompleted) return;
     setCompleting(true);
     try {
       await addDoc(collection(db, "training_history"), {
@@ -123,7 +142,8 @@ export function WorkoutCard({
     <>
       <div className={cn(
         "flex items-center justify-between p-3 md:p-4 rounded-xl md:rounded-2xl border border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/50 group/workout hover:border-primary/30 hover:bg-card hover:shadow-md transition-all",
-        !isAdmin && "cursor-default"
+        !isAdmin && "cursor-default",
+        isCompleted && "border-green-500/30 bg-green-500/5 dark:bg-green-500/5"
       )}>
         <div className="flex items-center gap-2 md:gap-4 min-w-0">
           {isAdmin && (
@@ -158,9 +178,16 @@ export function WorkoutCard({
             </div>
           )}
           <div className="min-w-0">
-            <h4 className="font-black text-foreground uppercase tracking-tight text-xs md:text-sm truncate">
-              {workout.title}
-            </h4>
+            <div className="flex items-center gap-2">
+              <h4 className="font-black text-foreground uppercase tracking-tight text-xs md:text-sm truncate">
+                {workout.title}
+              </h4>
+              {isCompleted && (
+                <span className="text-[8px] font-black uppercase tracking-widest text-green-500 bg-green-500/10 px-1.5 py-0.5 rounded-sm">
+                  Completed
+                </span>
+              )}
+            </div>
             <div className="flex flex-wrap items-center gap-1 md:gap-2 mt-0.5 md:mt-1">
               <p className="text-[10px] md:text-xs font-medium text-slate-400 dark:text-slate-500 line-clamp-1">
                 {workout.instructions}
@@ -218,20 +245,32 @@ export function WorkoutCard({
             </>
           )}
           {isClient && (
-            <Button
-              variant="ghost"
-              size="icon"
-              disabled={completing}
-              onClick={markComplete}
-              className="size-10 md:size-12 rounded-full text-slate-300 hover:text-green-500 hover:bg-green-500/5 dark:hover:bg-green-500/10 transition-colors"
-              aria-label="Mark as complete"
-            >
-              {completing ? (
-                <div className="size-4 border-2 border-green-500/30 border-t-green-500 rounded-full animate-spin" />
-              ) : (
-                <CheckCircle2 className="size-6" />
-              )}
-            </Button>
+            <div className="flex items-center gap-1">
+              <WorkoutFeedbackDialog 
+                workoutId={workout.id} 
+                workoutTitle={workout.title} 
+                programId={programId} 
+              />
+              <Button
+                variant="ghost"
+                size="icon"
+                disabled={completing || isCompleted}
+                onClick={markComplete}
+                className={cn(
+                  "size-10 md:size-12 rounded-full transition-colors",
+                  isCompleted 
+                    ? "text-green-500 bg-green-500/10" 
+                    : "text-slate-300 hover:text-green-500 hover:bg-green-500/5 dark:hover:bg-green-500/10"
+                )}
+                aria-label={isCompleted ? "Completed" : "Mark as complete"}
+              >
+                {completing ? (
+                  <div className="size-4 border-2 border-green-500/30 border-t-green-500 rounded-full animate-spin" />
+                ) : (
+                  <CheckCircle2 className="size-6" />
+                )}
+              </Button>
+            </div>
           )}
         </div>
       </div>
@@ -549,7 +588,7 @@ export default function ProgramDetailPage({
           className="flex items-center text-slate-400 hover:text-primary mb-6 transition-colors font-black uppercase tracking-widest text-[10px]"
         >
           <ArrowLeft className="mr-2 size-4" />
-          Back to Concepts
+          Back to Portal
         </Link>
         <div className="flex flex-col md:flex-row justify-between md:items-end gap-6">
           <div>
