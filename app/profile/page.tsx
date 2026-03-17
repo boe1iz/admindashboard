@@ -11,8 +11,10 @@ import { useRouter } from "next/navigation";
 import { auth, db } from "@/lib/firebase";
 import { updateProfile } from "firebase/auth";
 import { doc, updateDoc, serverTimestamp } from "firebase/firestore";
+import { signOut } from "firebase/auth";
 import { toast } from "sonner";
 import { ChangePasswordDialog } from "@/components/ChangePasswordDialog";
+import { LogOut } from "lucide-react";
 
 export default function ProfilePage() {
   const { user, isAdmin, loading: authLoading } = useAuth();
@@ -25,6 +27,15 @@ export default function ProfilePage() {
       setName(user.displayName);
     }
   }, [user]);
+
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+      toast.success("Session terminated safely");
+    } catch (error) {
+      toast.error("Failed to terminate session");
+    }
+  };
 
   const handleUpdateProfile = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -149,6 +160,26 @@ export default function ProfilePage() {
               We recommend using a strong, unique password to protect your training data and performance history.
             </p>
             <ChangePasswordDialog />
+          </CardContent>
+        </Card>
+        <Card className="border-red-200 dark:border-red-900 shadow-xl rounded-[30px] overflow-hidden bg-red-50/10 dark:bg-red-950/10 border-dashed">
+          <CardHeader className="pb-4">
+            <CardTitle className="text-sm font-black uppercase tracking-widest flex items-center gap-2 text-red-500">
+              <LogOut className="size-4" />
+              Danger Zone
+            </CardTitle>
+            <CardDescription className="text-[10px] font-bold uppercase tracking-tight text-red-400/80">
+              Session termination and security.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Button 
+              variant="outline"
+              onClick={handleLogout}
+              className="w-full h-12 rounded-2xl border-red-200 dark:border-red-900 text-red-500 hover:bg-red-50 dark:hover:bg-red-950/30 font-black uppercase tracking-widest text-xs"
+            >
+              Logout Session
+            </Button>
           </CardContent>
         </Card>
       </div>

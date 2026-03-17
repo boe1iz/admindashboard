@@ -2,12 +2,18 @@
 
 import { useAuth } from "@/components/AuthProvider";
 import { motion } from "framer-motion";
-import { BookOpen, Activity, History, User } from "lucide-react";
+import { LogOut, BookOpen, Activity, History, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { auth } from "@/lib/firebase";
+import { signOut } from "firebase/auth";
 import Link from "next/link";
 
 export default function ClientPortalHome() {
   const { user } = useAuth();
+
+  const handleLogout = async () => {
+    await signOut(auth);
+  };
 
   return (
     <div className="max-w-4xl mx-auto space-y-8 py-8 px-4">
@@ -18,6 +24,14 @@ export default function ClientPortalHome() {
             Welcome back, {user?.displayName || user?.email?.split('@')[0]}
           </p>
         </div>
+        <Button 
+          variant="outline" 
+          onClick={handleLogout}
+          className="rounded-xl border-slate-200 dark:border-slate-800"
+        >
+          <LogOut className="size-4 mr-2" />
+          Logout
+        </Button>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pb-8">
