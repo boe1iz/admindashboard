@@ -97,7 +97,7 @@ export default function LoginPage() {
         <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-primary rounded-full blur-[120px]" />
       </div>
 
-      <Card className="w-full max-w-[450px] border-slate-200 dark:border-slate-800 shadow-2xl rounded-[40px] bg-card/80 backdrop-blur-xl z-10 relative">
+      <Card className="w-full max-w-[450px] border-slate-200 dark:border-slate-800 shadow-2xl rounded-[40px] bg-card/80 backdrop-blur-xl z-10 relative overflow-hidden">
         <CardHeader className="pt-10 pb-6 text-center">
           <div className="mx-auto size-16 rounded-3xl bg-primary/10 flex items-center justify-center mb-6">
             <BookOpen className="size-8 text-primary" />

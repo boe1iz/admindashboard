@@ -4,12 +4,13 @@ import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
-import { Home, BookOpen, User } from "lucide-react";
+import { Home, BookOpen, User, History } from "lucide-react";
 import { motion } from "framer-motion";
 
 const clientNavItems = [
   { name: "Home", href: "/", icon: Home },
   { name: "Programs", href: "/programs", icon: BookOpen },
+  { name: "History", href: "/history", icon: History },
   { name: "Profile", href: "/profile", icon: User },
 ];
 
