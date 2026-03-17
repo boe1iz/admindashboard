@@ -5,10 +5,10 @@
     - [x] Write tests for multi-collection role detection.
     - [x] Update `AuthProvider` to check both `admin_users` and `clients` collections.
     - [x] Update `AuthGuard` to handle dynamic root routing based on role.
-- [ ] Task: Public Registration Flow [TDD]
-    - [ ] Write tests for new user registration.
-    - [ ] Implement registration form components.
-    - [ ] Create Firestore sync logic for newly registered clients.
+- [x] Task: Public Registration Flow [TDD] [a47d4c9]
+    - [x] Write tests for new user registration.
+    - [x] Implement registration form components.
+    - [x] Create Firestore sync logic for newly registered clients.
 - [ ] Task: Account Security (Password Reset/Forgot) [TDD]
     - [ ] Write tests for password reset dispatch.
     - [ ] Implement "Forgot Password" UI and Firebase Auth integration.
