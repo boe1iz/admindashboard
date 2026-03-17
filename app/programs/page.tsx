@@ -40,6 +40,8 @@ import Link from "next/link";
 import { EditProgramDialog } from "@/components/EditProgramDialog";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
+import { useAuth } from "@/components/AuthProvider";
+import { cn } from "@/lib/utils";
 
 interface Program {
   id: string;
@@ -52,6 +54,7 @@ interface Program {
 function ProgramCard({ program }: { program: Program }) {
   const [duplicating, setDuplicating] = useState(false);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+  const { isAdmin } = useAuth();
 
   const toggleArchive = async () => {
     try {
@@ -137,63 +140,65 @@ function ProgramCard({ program }: { program: Program }) {
         <Card
           className={`relative group cursor-pointer border-slate-200 dark:border-slate-800 bg-card shadow-md hover:shadow-xl hover:border-primary/30 transition-all rounded-3xl md:rounded-[40px] overflow-hidden ${duplicating ? "opacity-50 pointer-events-none scale-[0.98]" : ""} ${program.isArchived ? "opacity-60 grayscale" : ""}`}
         >
-          <div className="absolute top-2 right-2 md:top-4 md:right-4 z-10">
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild onClick={(e) => e.stopPropagation()}>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="size-8 md:size-10 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800"
+          {isAdmin && (
+            <div className="absolute top-2 right-2 md:top-4 md:right-4 z-10">
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild onClick={(e) => e.stopPropagation()}>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="size-8 md:size-10 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800"
+                  >
+                    <MoreVertical className="size-4 dark:text-slate-400" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent
+                  align="end"
+                  className="rounded-2xl border-slate-200 dark:border-slate-800 bg-card shadow-xl"
                 >
-                  <MoreVertical className="size-4 dark:text-slate-400" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent
-                align="end"
-                className="rounded-2xl border-slate-200 dark:border-slate-800 bg-card shadow-xl"
-              >
-                <DropdownMenuItem
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setIsEditDialogOpen(true);
-                  }}
-                  className="rounded-xl m-1 dark:hover:bg-slate-800"
-                >
-                  <Pencil className="mr-2 size-4" />
-                  Edit Details
-                </DropdownMenuItem>
-                <DropdownMenuItem
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    duplicateProgram();
-                  }}
-                  className="rounded-xl m-1 dark:hover:bg-slate-800"
-                >
-                  <Copy className="mr-2 size-4" />
-                  Duplicate
-                </DropdownMenuItem>
-                <DropdownMenuItem
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    toggleArchive();
-                  }}
-                  className="rounded-xl m-1 dark:hover:bg-slate-800"
-                >
-                  {program.isArchived ? (
-                    <>
-                      <ArchiveRestore className="mr-2 size-4 text-primary" />
-                      <span className="text-primary font-bold">Restore</span>
-                    </>
-                  ) : (
-                    <>
-                      <Archive className="mr-2 size-4" />
-                      Archive
-                    </>
-                  )}
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </div>
+                  <DropdownMenuItem
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setIsEditDialogOpen(true);
+                    }}
+                    className="rounded-xl m-1 dark:hover:bg-slate-800"
+                  >
+                    <Pencil className="mr-2 size-4" />
+                    Edit Details
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      duplicateProgram();
+                    }}
+                    className="rounded-xl m-1 dark:hover:bg-slate-800"
+                  >
+                    <Copy className="mr-2 size-4" />
+                    Duplicate
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      toggleArchive();
+                    }}
+                    className="rounded-xl m-1 dark:hover:bg-slate-800"
+                  >
+                    {program.isArchived ? (
+                      <>
+                        <ArchiveRestore className="mr-2 size-4 text-primary" />
+                        <span className="text-primary font-bold">Restore</span>
+                      </>
+                    ) : (
+                      <>
+                        <Archive className="mr-2 size-4" />
+                        Archive
+                      </>
+                    )}
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
+          )}
           <Link href={`/programs/${program.id}`}>
             <CardHeader className="p-4 md:p-6 flex flex-row md:flex-col items-center md:items-start gap-4 md:gap-0">
               <div className="size-10 md:size-12 rounded-xl md:rounded-2xl bg-primary/10 flex items-center justify-center md:mb-4 shrink-0">
@@ -212,11 +217,13 @@ function ProgramCard({ program }: { program: Program }) {
         </Card>
       </motion.div>
 
-      <EditProgramDialog
-        program={program}
-        open={isEditDialogOpen}
-        onOpenChange={setIsEditDialogOpen}
-      />
+      {isAdmin && (
+        <EditProgramDialog
+          program={program}
+          open={isEditDialogOpen}
+          onOpenChange={setIsEditDialogOpen}
+        />
+      )}
     </>
   );
 }
@@ -224,6 +231,7 @@ function ProgramCard({ program }: { program: Program }) {
 export default function ProgramsPage() {
   const [programs, setPrograms] = useState<Program[]>([]);
   const [loading, setLoading] = useState(true);
+  const { isAdmin } = useAuth();
 
   useEffect(() => {
     const q = query(collection(db, "programs"));
@@ -265,14 +273,20 @@ export default function ProgramsPage() {
             Programs
           </h1>
           <p className="text-xs md:text-sm font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mt-1">
-            Build and manage high-performance training sequences.
+            {isAdmin 
+              ? "Build and manage high-performance training sequences."
+              : "Access your assigned high-performance training concepts."
+            }
           </p>
         </div>
-        <CreateProgramDialog />
+        {isAdmin && <CreateProgramDialog />}
       </div>
 
       <Tabs defaultValue="operational" className="w-full">
-        <TabsList className="bg-card border border-slate-200 dark:border-slate-800 p-1 rounded-full w-fit shadow-sm mb-8">
+        <TabsList className={cn(
+          "bg-card border border-slate-200 dark:border-slate-800 p-1 rounded-full w-fit shadow-sm mb-8",
+          !isAdmin && "hidden"
+        )}>
           <TabsTrigger
             value="operational"
             className="rounded-full px-4 md:px-6 data-[state=active]:bg-primary data-[state=active]:text-white text-xs md:text-sm font-black uppercase tracking-tight dark:text-slate-400"
@@ -303,7 +317,7 @@ export default function ProgramsPage() {
                 No Programs Found
               </CardTitle>
               <CardDescription className="font-medium text-slate-500 dark:text-slate-400 text-sm">
-                Create your first concept to begin building.
+                {isAdmin ? "Create your first concept to begin building." : "No assigned programs available at this time."}
               </CardDescription>
             </Card>
           )}

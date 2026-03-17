@@ -36,6 +36,7 @@ import { toast } from "sonner";
 import { motion, AnimatePresence } from "framer-motion";
 import { useEquipment } from "@/hooks/useEquipment";
 import { cn } from "@/lib/utils";
+import { useAuth } from "@/components/AuthProvider";
 
 interface Workout {
   id: string;
@@ -74,6 +75,7 @@ export function WorkoutCard({
 }) {
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const { equipment } = useEquipment();
+  const { isAdmin } = useAuth();
 
   const deleteWorkout = async () => {
     try {
@@ -94,30 +96,35 @@ export function WorkoutCard({
 
   return (
     <>
-      <div className="flex items-center justify-between p-3 md:p-4 rounded-xl md:rounded-2xl border border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/50 group/workout hover:border-primary/30 hover:bg-card hover:shadow-md transition-all">
+      <div className={cn(
+        "flex items-center justify-between p-3 md:p-4 rounded-xl md:rounded-2xl border border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/50 group/workout hover:border-primary/30 hover:bg-card hover:shadow-md transition-all",
+        !isAdmin && "cursor-default"
+      )}>
         <div className="flex items-center gap-2 md:gap-4 min-w-0">
-          <div className="flex flex-col gap-0.5 md:opacity-0 md:group-hover/workout:opacity-100 transition-opacity">
-            <Button
-              variant="ghost"
-              size="icon"
-              className="size-8 md:size-6 p-0 disabled:opacity-30 hover:text-primary dark:hover:text-blue-400"
-              onClick={() => onMove("up")}
-              disabled={isFirst}
-              aria-label="Move up"
-            >
-              <ChevronUp className="size-5 md:size-4" />
-            </Button>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="size-8 md:size-6 p-0 disabled:opacity-30 hover:text-primary dark:hover:text-blue-400"
-              onClick={() => onMove("down")}
-              disabled={isLast}
-              aria-label="Move down"
-            >
-              <ChevronDown className="size-5 md:size-4" />
-            </Button>
-          </div>
+          {isAdmin && (
+            <div className="flex flex-col gap-0.5 md:opacity-0 md:group-hover/workout:opacity-100 transition-opacity">
+              <Button
+                variant="ghost"
+                size="icon"
+                className="size-8 md:size-6 p-0 disabled:opacity-30 hover:text-primary dark:hover:text-blue-400"
+                onClick={() => onMove("up")}
+                disabled={isFirst}
+                aria-label="Move up"
+              >
+                <ChevronUp className="size-5 md:size-4" />
+              </Button>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="size-8 md:size-6 p-0 disabled:opacity-30 hover:text-primary dark:hover:text-blue-400"
+                onClick={() => onMove("down")}
+                disabled={isLast}
+                aria-label="Move down"
+              >
+                <ChevronDown className="size-5 md:size-4" />
+              </Button>
+            </div>
+          )}
           {workout.video_url ? (
             <VideoModal videoUrl={workout.video_url} title={workout.title} />
           ) : (
@@ -153,42 +160,46 @@ export function WorkoutCard({
             </div>
           </div>
         </div>
-        <div className="flex items-center gap-0.5 md:gap-1 md:opacity-0 md:group-hover/workout:opacity-100 transition-opacity shrink-0">
-          <Button
-            variant="ghost"
-            size="icon"
-            className="size-10 md:size-9 rounded-full text-slate-400 hover:text-primary dark:hover:text-blue-400 hover:bg-primary/5 dark:hover:bg-blue-500/10"
-            onClick={() => setIsEditDialogOpen(true)}
-            aria-label="Edit workout"
-          >
-            <Pencil className="size-4 md:size-5" />
-          </Button>
+        {isAdmin && (
+          <div className="flex items-center gap-0.5 md:gap-1 md:opacity-0 md:group-hover/workout:opacity-100 transition-opacity shrink-0">
+            <Button
+              variant="ghost"
+              size="icon"
+              className="size-10 md:size-9 rounded-full text-slate-400 hover:text-primary dark:hover:text-blue-400 hover:bg-primary/5 dark:hover:bg-blue-500/10"
+              onClick={() => setIsEditDialogOpen(true)}
+              aria-label="Edit workout"
+            >
+              <Pencil className="size-4 md:size-5" />
+            </Button>
 
-          <ConfirmDeleteDialog
-            title="Delete Workout"
-            description={`Are you sure you want to delete "${workout.title}"? This action cannot be undone.`}
-            onConfirm={deleteWorkout}
-            trigger={
-              <Button
-                variant="ghost"
-                size="icon"
-                className="size-10 md:size-9 rounded-full text-slate-400 hover:text-destructive hover:bg-destructive/5 dark:hover:bg-red-500/10"
-                aria-label="Delete workout"
-              >
-                <Trash2 className="size-4 md:size-5" />
-              </Button>
-            }
-          />
-        </div>
+            <ConfirmDeleteDialog
+              title="Delete Workout"
+              description={`Are you sure you want to delete "${workout.title}"? This action cannot be undone.`}
+              onConfirm={deleteWorkout}
+              trigger={
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="size-10 md:size-9 rounded-full text-slate-400 hover:text-destructive hover:bg-destructive/5 dark:hover:bg-red-500/10"
+                  aria-label="Delete workout"
+                >
+                  <Trash2 className="size-4 md:size-5" />
+                </Button>
+              }
+            />
+          </div>
+        )}
       </div>
 
-      <EditWorkoutDialog
-        programId={programId}
-        dayId={dayId}
-        workout={workout}
-        open={isEditDialogOpen}
-        onOpenChange={setIsEditDialogOpen}
-      />
+      {isAdmin && (
+        <EditWorkoutDialog
+          programId={programId}
+          dayId={dayId}
+          workout={workout}
+          open={isEditDialogOpen}
+          onOpenChange={setIsEditDialogOpen}
+        />
+      )}
     </>
   );
 }
@@ -204,6 +215,7 @@ function DaySection({
 }) {
   const [workouts, setWorkouts] = useState<Workout[]>([]);
   const [isExpanded, setIsExpanded] = useState(false);
+  const { isAdmin } = useAuth();
 
   // Listen to global triggers
   useEffect(() => {
@@ -327,39 +339,41 @@ function DaySection({
               )}
             </div>
           </div>
-          <div className="flex items-center gap-1 md:gap-2">
-            <CreateWorkoutDialog
-              programId={programId}
-              dayId={day.id}
-              nextOrderIndex={workouts.length}
-            />
-
-            <div
-              title={
-                workouts.length > 0
-                  ? "Cannot delete a day that contains workouts. Please remove all workouts first."
-                  : undefined
-              }
-              className="md:opacity-0 md:group-hover:opacity-100 transition-opacity"
-            >
-              <ConfirmDeleteDialog
-                title="Delete Training Day"
-                description={`Are you sure you want to delete "${day.title}"?`}
-                onConfirm={deleteDay}
-                trigger={
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    disabled={workouts.length > 0}
-                    className="size-10 md:size-9 rounded-full text-slate-400 dark:text-slate-500 hover:text-destructive dark:hover:text-red-500 hover:bg-destructive/5 dark:hover:bg-red-500/10"
-                  >
-                    <Trash2 className="size-4 md:size-5" />
-                    <span className="sr-only">Delete {day.title}</span>
-                  </Button>
-                }
+          {isAdmin && (
+            <div className="flex items-center gap-1 md:gap-2">
+              <CreateWorkoutDialog
+                programId={programId}
+                dayId={day.id}
+                nextOrderIndex={workouts.length}
               />
+
+              <div
+                title={
+                  workouts.length > 0
+                    ? "Cannot delete a day that contains workouts. Please remove all workouts first."
+                    : undefined
+                }
+                className="md:opacity-0 md:group-hover:opacity-100 transition-opacity"
+              >
+                <ConfirmDeleteDialog
+                  title="Delete Training Day"
+                  description={`Are you sure you want to delete "${day.title}"?`}
+                  onConfirm={deleteDay}
+                  trigger={
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      disabled={workouts.length > 0}
+                      className="size-10 md:size-9 rounded-full text-slate-400 dark:text-slate-500 hover:text-destructive dark:hover:text-red-500 hover:bg-destructive/5 dark:hover:bg-red-500/10"
+                    >
+                      <Trash2 className="size-4 md:size-5" />
+                      <span className="sr-only">Delete {day.title}</span>
+                    </Button>
+                  }
+                />
+              </div>
             </div>
-          </div>
+          )}
         </CardHeader>
         <AnimatePresence initial={false}>
           {isExpanded && (
@@ -415,6 +429,7 @@ export default function ProgramDetailPage({
   const [globalTrigger, setGlobalTrigger] = useState<
     "expand" | "collapse" | null
   >(null);
+  const { isAdmin } = useAuth();
 
   useEffect(() => {
     const fetchProgram = async () => {
@@ -499,7 +514,7 @@ export default function ProgramDetailPage({
             </h1>
             <p className="text-[10px] font-black uppercase tracking-[0.3em] text-primary dark:text-blue-400 mt-2 flex items-center gap-2">
               <span className="size-1.5 rounded-full bg-primary dark:bg-blue-400 animate-pulse" />
-              Operational Sequence
+              {isAdmin ? "Operational Sequence" : "Assigned Training Track"}
             </p>
           </div>
           <div className="flex flex-wrap items-center gap-4">
@@ -521,13 +536,15 @@ export default function ProgramDetailPage({
                 Collapse All
               </Button>
             </div>
-            <Button
-              onClick={addDay}
-              className="gap-2 rounded-full bg-primary hover:bg-primary/90 shadow-lg shadow-primary/20 px-6 md:px-8 h-10 md:h-12 font-black uppercase tracking-widest text-[10px] md:text-xs"
-            >
-              <Plus className="size-4 md:size-5" />
-              Add Day
-            </Button>
+            {isAdmin && (
+              <Button
+                onClick={addDay}
+                className="gap-2 rounded-full bg-primary hover:bg-primary/90 shadow-lg shadow-primary/20 px-6 md:px-8 h-10 md:h-12 font-black uppercase tracking-widest text-[10px] md:text-xs"
+              >
+                <Plus className="size-4 md:size-5" />
+                Add Day
+              </Button>
+            )}
           </div>
         </div>
       </div>
