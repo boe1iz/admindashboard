@@ -9,6 +9,7 @@ import {
   Users,
   Package,
   ChevronRight,
+  MessageSquare,
 } from "lucide-react";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
@@ -25,6 +26,7 @@ const navItems = [
   { name: "Programs", href: "/programs", icon: BookOpen },
   { name: "Clients", href: "/clients", icon: Users },
   { name: "Inventory", href: "/inventory", icon: Package },
+  { name: "Insights", href: "/feedback", icon: MessageSquare },
 ];
 
 export function Sidebar() {

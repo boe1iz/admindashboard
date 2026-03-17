@@ -66,5 +66,12 @@ service cloud.firestore {
       allow create: if request.auth != null && request.resource.data.uid == request.auth.uid;
       allow update, delete: if isAdmin();
     }
+
+    // Feedback collection
+    match /feedback/{feedbackId} {
+      allow read: if request.auth != null && (isAdmin() || resource.data.uid == request.auth.uid);
+      allow create: if request.auth != null && request.resource.data.uid == request.auth.uid;
+      allow update, delete: if isAdmin();
+    }
   }
 }

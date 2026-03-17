@@ -13,6 +13,7 @@ import {
   Menu,
   User as UserIcon,
   LogOut,
+  MessageSquare,
 } from "lucide-react";
 import { motion } from "framer-motion";
 import {
@@ -35,6 +36,7 @@ const navItems = [
   { name: "Programs", href: "/programs", icon: BookOpen },
   { name: "Clients", href: "/clients", icon: Users },
   { name: "Inventory", href: "/inventory", icon: Package },
+  { name: "Insights", href: "/feedback", icon: MessageSquare },
 ];
 
 export function MobileNav() {
