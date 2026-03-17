@@ -14,7 +14,7 @@ import {
 import { useAuth } from "@/components/AuthProvider";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { History, Calendar, Trophy, Trash2, ArrowLeft, Activity } from "lucide-react";
+import { History, Calendar, Trophy, Trash2, ArrowLeft, Activity, User } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { motion, AnimatePresence } from "framer-motion";
