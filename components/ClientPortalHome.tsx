@@ -6,6 +6,7 @@ import { LogOut, BookOpen, Activity, History, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { auth } from "@/lib/firebase";
 import { signOut } from "firebase/auth";
+import Link from "next/link";
 
 export default function ClientPortalHome() {
   const { user } = useAuth();
@@ -70,17 +71,19 @@ export default function ClientPortalHome() {
           <div className="absolute -right-4 -bottom-4 size-32 bg-slate-500/5 rounded-full blur-2xl group-hover:bg-slate-500/10 transition-colors" />
         </motion.div>
 
-        <motion.div 
-          whileHover={{ scale: 1.02 }}
-          className="p-8 rounded-[30px] bg-zinc-500/10 border border-zinc-500/20 relative overflow-hidden group cursor-pointer"
-        >
-          <div className="relative z-10">
-            <User className="size-10 text-zinc-500 mb-4" />
-            <h2 className="text-xl font-black uppercase tracking-tight">Profile</h2>
-            <p className="text-sm font-bold text-slate-500 uppercase mt-2">Manage your account settings</p>
-          </div>
-          <div className="absolute -right-4 -bottom-4 size-32 bg-zinc-500/5 rounded-full blur-2xl group-hover:bg-zinc-500/10 transition-colors" />
-        </motion.div>
+        <Link href="/profile">
+          <motion.div 
+            whileHover={{ scale: 1.02 }}
+            className="p-8 rounded-[30px] bg-zinc-500/10 border border-zinc-500/20 relative overflow-hidden group cursor-pointer"
+          >
+            <div className="relative z-10">
+              <User className="size-10 text-zinc-500 mb-4" />
+              <h2 className="text-xl font-black uppercase tracking-tight">Profile</h2>
+              <p className="text-sm font-bold text-slate-500 uppercase mt-2">Manage your account settings</p>
+            </div>
+            <div className="absolute -right-4 -bottom-4 size-32 bg-zinc-500/5 rounded-full blur-2xl group-hover:bg-zinc-500/10 transition-colors" />
+          </motion.div>
+        </Link>
       </div>
     </div>
   );

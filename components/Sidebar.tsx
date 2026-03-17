@@ -123,6 +123,17 @@ export function Sidebar() {
               </div>
             </div>
             <div className="space-y-1">
+              <Button
+                variant="ghost"
+                size="sm"
+                asChild
+                className="w-full justify-start h-9 rounded-xl text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-blue-400 hover:bg-primary/5 dark:hover:bg-blue-500/10 font-black uppercase tracking-widest text-[9px]"
+              >
+                <Link href="/profile">
+                  <User className="size-3.5 mr-2" />
+                  Account Settings
+                </Link>
+              </Button>
               <ChangePasswordDialog />
               <Button
                 variant="ghost"

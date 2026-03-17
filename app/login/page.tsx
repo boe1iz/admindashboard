@@ -4,17 +4,18 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { useAuth } from '@/components/AuthProvider'
 import { auth, db } from '@/lib/firebase'
-import { signInWithEmailAndPassword, signOut, createUserWithEmailAndPassword, updateProfile } from 'firebase/auth'
+import { signInWithEmailAndPassword, signOut, createUserWithEmailAndPassword, updateProfile, sendPasswordResetEmail } from 'firebase/auth'
 import { doc, getDoc } from 'firebase/firestore'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { BookOpen, Lock, Mail, Eye, EyeOff, User } from 'lucide-react'
+import { BookOpen, Lock, Mail, Eye, EyeOff, User, ArrowLeft } from 'lucide-react'
 import { toast } from 'sonner'
 
 export default function LoginPage() {
   const [isRegister, setIsRegister] = useState(false)
+  const [isForgot, setIsForgot] = useState(false)
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -25,8 +26,6 @@ export default function LoginPage() {
   const { user, isAdmin, isClient, loading: authLoading, refreshAuth } = useAuth()
 
   // Navigate to dashboard as soon as auth fully resolves.
-  // This is the reliable trigger point: AuthProvider has confirmed
-  // the user is an admin or client and flipped loading → false.
   useEffect(() => {
     if (!authLoading && user && (isAdmin || isClient)) {
       router.replace('/')
@@ -38,8 +37,14 @@ export default function LoginPage() {
     setLoading(true)
     setError(null)
     try {
-      // Grant must be set BEFORE auth actions so that
-      // onAuthStateChanged (which fires immediately) finds it.
+      if (isForgot) {
+        await sendPasswordResetEmail(auth, email)
+        toast.success("Reset link dispatched to your inbox")
+        setIsForgot(false)
+        setLoading(false)
+        return
+      }
+
       document.cookie = "tab_auth_granted=1; path=/; SameSite=Lax"
 
       if (isRegister) {
@@ -51,7 +56,6 @@ export default function LoginPage() {
         toast.success("Welcome back")
       }
       
-      // Ensure AuthProvider sees the updated credentials/grant immediately
       await refreshAuth()
       
     } catch (err: any) {
@@ -68,6 +72,20 @@ export default function LoginPage() {
       setError(message)
       toast.error(message)
       setLoading(false)
+    }
+  }
+
+  const toggleMode = (mode: 'login' | 'register' | 'forgot') => {
+    setError(null)
+    if (mode === 'login') {
+      setIsRegister(false)
+      setIsForgot(false)
+    } else if (mode === 'register') {
+      setIsRegister(true)
+      setIsForgot(false)
+    } else {
+      setIsForgot(true)
+      setIsRegister(false)
     }
   }
 
@@ -88,12 +106,18 @@ export default function LoginPage() {
             ON3 ATHLETICS
           </CardTitle>
           <CardDescription className="text-xs font-bold uppercase tracking-[0.2em] text-slate-400 dark:text-slate-500 mt-2">
-            {isRegister ? "Join the Elite" : "Coach Command Center"}
+            {isForgot ? "Reset Access" : isRegister ? "Join the Elite" : "Coach Command Center"}
           </CardDescription>
         </CardHeader>
         <CardContent className="px-8 pb-10">
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="space-y-4">
+              {isForgot && (
+                <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest text-center px-4 leading-relaxed">
+                  Enter your email address and we'll send you a link to reset your secure credentials.
+                </p>
+              )}
+              
               {isRegister && (
                 <div className="grid gap-2">
                   <Label htmlFor="name" className="text-[10px] font-black uppercase tracking-widest text-slate-500 ml-1">
@@ -114,7 +138,7 @@ export default function LoginPage() {
               )}
               <div className="grid gap-2">
                 <Label htmlFor="email" className="text-[10px] font-black uppercase tracking-widest text-slate-500 ml-1">
-                  {isRegister ? "Email Address" : "Administrator Email"}
+                  {isRegister || isForgot ? "Email Address" : "Administrator Email"}
                 </Label>
                 <div className="relative">
                   <Mail className="absolute left-4 top-1/2 -translate-y-1/2 size-4 text-slate-400" />
@@ -129,30 +153,43 @@ export default function LoginPage() {
                   />
                 </div>
               </div>
-              <div className="grid gap-2">
-                <Label htmlFor="password" className="text-[10px] font-black uppercase tracking-widest text-slate-500 ml-1">
-                  {isRegister ? "Create Password" : "Secure Password"}
-                </Label>
-                <div className="relative">
-                  <Lock className="absolute left-4 top-1/2 -translate-y-1/2 size-4 text-slate-400" />
-                  <Input
-                    id="password"
-                    type={showPassword ? "text" : "password"}
-                    placeholder="••••••••"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                    className="h-14 pl-12 pr-12 rounded-2xl border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 focus-visible:ring-primary"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors"
-                  >
-                    {showPassword ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
-                  </button>
+              {!isForgot && (
+                <div className="grid gap-2">
+                  <div className="flex items-center justify-between ml-1">
+                    <Label htmlFor="password" className="text-[10px] font-black uppercase tracking-widest text-slate-500">
+                      {isRegister ? "Create Password" : "Secure Password"}
+                    </Label>
+                    {!isRegister && (
+                      <button
+                        type="button"
+                        onClick={() => toggleMode('forgot')}
+                        className="text-[10px] font-black uppercase tracking-widest text-primary hover:text-primary/80 transition-colors"
+                      >
+                        Forgot Password?
+                      </button>
+                    )}
+                  </div>
+                  <div className="relative">
+                    <Lock className="absolute left-4 top-1/2 -translate-y-1/2 size-4 text-slate-400" />
+                    <Input
+                      id="password"
+                      type={showPassword ? "text" : "password"}
+                      placeholder="••••••••"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      required
+                      className="h-14 pl-12 pr-12 rounded-2xl border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 focus-visible:ring-primary"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors"
+                    >
+                      {showPassword ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
+                    </button>
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
 
             {error && (
@@ -169,20 +206,33 @@ export default function LoginPage() {
               {loading ? (
                 <div className="flex items-center gap-2">
                   <div className="size-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                  Authenticating...
+                  {isForgot ? "Dispatching..." : "Authenticating..."}
                 </div>
               ) : (
-                isRegister ? "Initialize Account" : "Deploy Dashboard"
+                isForgot ? "Send Reset Link" : isRegister ? "Initialize Account" : "Deploy Dashboard"
               )}
             </Button>
 
-            <button
-              type="button"
-              onClick={() => setIsRegister(!isRegister)}
-              className="w-full text-center text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-primary transition-colors"
-            >
-              {isRegister ? "Already have an account? Login" : "Don't have an account? Register"}
-            </button>
+            <div className="flex flex-col gap-4">
+              <button
+                type="button"
+                onClick={() => toggleMode(isRegister ? 'login' : 'register')}
+                className="w-full text-center text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-primary transition-colors"
+              >
+                {isRegister ? "Already have an account? Login" : "Don't have an account? Register"}
+              </button>
+              
+              {isForgot && (
+                <button
+                  type="button"
+                  onClick={() => toggleMode('login')}
+                  className="flex items-center justify-center gap-2 w-full text-center text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-foreground transition-colors"
+                >
+                  <ArrowLeft className="size-3" />
+                  Back to Login
+                </button>
+              )}
+            </div>
           </form>
         </CardContent>
       </Card>

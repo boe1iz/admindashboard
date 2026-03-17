@@ -167,6 +167,18 @@ export function MobileNav() {
                   </div>
 
                   <div className="grid grid-cols-1 gap-2">
+                    <Button
+                      variant="ghost"
+                      size="lg"
+                      asChild
+                      onClick={() => setSettingsOpen(false)}
+                      className="w-full justify-start h-12 rounded-xl text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-blue-400 hover:bg-primary/5 dark:hover:bg-blue-500/10 font-black uppercase tracking-widest text-[10px]"
+                    >
+                      <Link href="/profile">
+                        <UserIcon className="size-4 mr-3" />
+                        Account Settings
+                      </Link>
+                    </Button>
                     <ChangePasswordDialog />
                     <Button
                       variant="ghost"
