@@ -10,14 +10,14 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 1: Diagnostics' (Protocol in workflow.md)
 
 ## Phase 2: Implementation of Fix
-- [ ] Task: Correct Visibility Logic
-    - [ ] Apply the necessary CSS or logic fixes to ensure the program list renders on all viewports.
-    - [ ] Ensure Firestore subscriptions are stable across viewport changes.
-    - [ ] Run tests to confirm the fix (Green Phase).
-- [ ] Task: Refactor and Polish
-    - [ ] Remove any identified redundant code or styling that caused the issue.
-    - [ ] Ensure the "No Programs Found" state remains functional for truly unassigned users.
-- [ ] Task: Conductor - User Manual Verification 'Phase 2: Fix Verification' (Protocol in workflow.md)
+- [x] Task: Correct Visibility Logic
+    - [x] Apply the necessary CSS or logic fixes to ensure the program list renders on all viewports.
+    - [x] Ensure Firestore subscriptions are stable across viewport changes.
+    - [x] Run tests to confirm the fix (Green Phase).
+- [x] Task: Refactor and Polish
+    - [x] Remove any identified redundant code or styling that caused the issue.
+    - [x] Ensure the "No Programs Found" state remains functional for truly unassigned users.
+- [x] Task: Conductor - User Manual Verification 'Phase 2: Fix Verification' (Protocol in workflow.md)
 
 ## Phase 3: Final Verification
 - [ ] Task: Layout and Performance Audit

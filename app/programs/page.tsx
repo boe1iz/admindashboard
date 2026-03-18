@@ -232,8 +232,10 @@ function ProgramCard({ program }: { program: Program }) {
 
 interface Assignment {
   id: string;
-  client_id: string;
-  program_id: string;
+  client_id?: string;
+  clientId?: string;
+  program_id?: string;
+  programId?: string;
 }
 
 export default function ProgramsPage() {
@@ -295,7 +297,9 @@ export default function ProgramsPage() {
 
   const displayedPrograms = isClient
     ? programs.filter((p) =>
-        assignments.some((a) => a.program_id === p.id)
+        assignments.some((a) => 
+          (a.program_id === p.id) || (a.programId === p.id)
+        )
       )
     : programs;
 

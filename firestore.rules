@@ -50,7 +50,11 @@ service cloud.firestore {
 
     // Assignments collection: Users can read their own
     match /assignments/{assignmentId} {
-      allow read: if request.auth != null && (isAdmin() || assignmentId == request.auth.uid || resource.data.clientId == request.auth.uid);
+      allow read: if request.auth != null && (
+        isAdmin() || 
+        resource.data.client_id == request.auth.uid || 
+        resource.data.clientId == request.auth.uid
+      );
       allow write: if isAdmin();
     }
 
