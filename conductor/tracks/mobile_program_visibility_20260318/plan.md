@@ -1,6 +1,6 @@
 # Implementation Plan: Mobile Visibility Fix for Assigned Programs
 
-## Phase 1: Diagnostics and Reproduction
+## Phase 1: Diagnostics and Reproduction [checkpoint: 57aecae]
 - [x] Task: Research and Reproduce the Issue
     - [x] Create a failing test case in `tests/MobileVisibility.test.tsx` that simulates a mobile viewport and asserts program visibility for an assigned client.
     - [x] Run the test and confirm it fails (Red Phase).
