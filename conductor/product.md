@@ -58,7 +58,7 @@ To recreate the ON3 Athletics Admin Dashboard as a high-performance Next.js 14 a
 
 ### 5. Client Portal & Athlete Engagement
 - **Personalized Home**: Mobile-first landing page with quick access to assigned programs, active workouts, and history.
-- **Training Access**: Read-only access to assigned high-performance training sequences, including video playback.
+- **Training Access**: Read-only access to assigned high-performance training sequences. Clients ONLY see programs specifically assigned to them by a coach; unassigned programs are invisible.
 - **Progress Tracking**: "Mark as Complete" functionality that logs workout sessions to a persistent training history.
 - **Coach Feedback Loop**: Integrated feedback system allowing athletes to share session insights directly with their coaches.
 - **Account Management**: Self-service profile synchronization and secure password management.
