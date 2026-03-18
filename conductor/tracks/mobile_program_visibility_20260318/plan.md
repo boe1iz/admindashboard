@@ -20,6 +20,6 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 2: Fix Verification' (Protocol in workflow.md)
 
 ## Phase 3: Final Verification
-- [ ] Task: Layout and Performance Audit
-    - [ ] Verify that the fix does not introduce layout shifts or performance regressions on mobile.
-- [ ] Task: Conductor - User Manual Verification 'Phase 3: Final Audit' (Protocol in workflow.md)
+- [x] Task: Layout and Performance Audit
+    - [x] Verify that the fix does not introduce layout shifts or performance regressions on mobile.
+- [x] Task: Conductor - User Manual Verification 'Phase 3: Final Audit' (Protocol in workflow.md)
