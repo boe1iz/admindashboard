@@ -5,6 +5,7 @@ import { db } from "@/lib/firebase";
 import {
   collection,
   query,
+  where,
   onSnapshot,
   doc,
   updateDoc,
@@ -229,34 +230,77 @@ function ProgramCard({ program }: { program: Program }) {
   );
 }
 
+interface Assignment {
+  id: string;
+  client_id: string;
+  program_id: string;
+}
+
 export default function ProgramsPage() {
   const [programs, setPrograms] = useState<Program[]>([]);
+  const [assignments, setAssignments] = useState<Assignment[]>([]);
   const [loading, setLoading] = useState(true);
-  const { isAdmin } = useAuth();
+  const { user, isAdmin, isClient } = useAuth();
 
   useEffect(() => {
-    const q = query(collection(db, "programs"));
-    const unsubscribe = onSnapshot(
-      q,
+    let unsubscribePrograms: () => void;
+    let unsubscribeAssignments: () => void;
+
+    // Fetch Programs
+    const qPrograms = query(collection(db, "programs"));
+    unsubscribePrograms = onSnapshot(
+      qPrograms,
       (snapshot) => {
         const programsData = snapshot.docs.map((doc) => ({
           id: doc.id,
           ...doc.data(),
         })) as Program[];
         setPrograms(programsData);
-        setLoading(false);
+        if (!isClient) setLoading(false);
       },
       (error) => {
-        console.error("Firestore onSnapshot error:", error);
+        console.error("Programs onSnapshot error:", error);
         setLoading(false);
       },
     );
 
-    return () => unsubscribe();
-  }, []);
+    // Fetch Assignments if Client
+    if (isClient && user) {
+      const qAssignments = query(
+        collection(db, "assignments"),
+        where("client_id", "==", user.uid)
+      );
+      unsubscribeAssignments = onSnapshot(
+        qAssignments,
+        (snapshot) => {
+          const assignmentsData = snapshot.docs.map((doc) => ({
+            id: doc.id,
+            ...doc.data(),
+          })) as Assignment[];
+          setAssignments(assignmentsData);
+          setLoading(false);
+        },
+        (error) => {
+          console.error("Assignments onSnapshot error:", error);
+          setLoading(false);
+        }
+      );
+    }
 
-  const activePrograms = programs.filter((p) => !p.isArchived);
-  const archivedPrograms = programs.filter((p) => p.isArchived);
+    return () => {
+      if (unsubscribePrograms) unsubscribePrograms();
+      if (unsubscribeAssignments) unsubscribeAssignments();
+    };
+  }, [isAdmin, isClient, user]);
+
+  const displayedPrograms = isClient
+    ? programs.filter((p) =>
+        assignments.some((a) => a.program_id === p.id)
+      )
+    : programs;
+
+  const activePrograms = displayedPrograms.filter((p) => !p.isArchived);
+  const archivedPrograms = displayedPrograms.filter((p) => p.isArchived);
 
   if (loading)
     return (

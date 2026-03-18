@@ -3,13 +3,8 @@
 import React, { createContext, useContext, useEffect, useRef, useState } from 'react'
 import { auth, db } from '@/lib/firebase'
 import { onAuthStateChanged, signOut, User } from 'firebase/auth'
-import { doc, getDoc, setDoc, addDoc, collection, serverTimestamp } from 'firebase/firestore'
+import { doc, getDoc, setDoc, serverTimestamp } from 'firebase/firestore'
 import { toast } from 'sonner'
-import { logActivity } from '@/lib/activity'
-
-const DEFAULT_PROGRAMS = [
-  { id: 'starter-program', name: 'Elite Performance Starter' }
-]
 
 const IDLE_TIMEOUT_MS     = 120 * 60 * 1000  // 120 minutes
 const IDLE_WARNING_MS     = 118 * 60 * 1000  // warn 2 minutes before logout
@@ -77,39 +72,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       const clientDoc = await getDoc(clientRef)
 
       if (!clientDoc.exists()) {
-        const clientName = firebaseUser.displayName || firebaseUser.email?.split('@')[0] || 'New User'
-        const clientEmail = firebaseUser.email?.toLowerCase() || ''
-
         await setDoc(clientRef, {
-          name: clientName,
-          email: clientEmail,
+          name: firebaseUser.displayName || firebaseUser.email?.split('@')[0] || 'New User',
+          email: firebaseUser.email?.toLowerCase() || '',
           is_active: true,
           created_at: serverTimestamp(),
           updated_at: serverTimestamp(),
           notes: ''
         })
-
-        // 2.1 Default Program Assignment
-        for (const prog of DEFAULT_PROGRAMS) {
-          try {
-            await addDoc(collection(db, 'assignments'), {
-              client_id: firebaseUser.uid,
-              client_name: clientName,
-              program_id: prog.id,
-              program_name: prog.name,
-              assigned_at: serverTimestamp(),
-              current_day_number: 1
-            })
-
-            await logActivity({
-              type: 'assignment',
-              client_name: clientName,
-              program_name: prog.name
-            })
-          } catch (assignError) {
-            console.error('Failed to assign default program:', prog.id, assignError)
-          }
-        }
       }
 
       // 3. Set Client status (If not admin, they are a client)

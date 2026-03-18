@@ -46,14 +46,14 @@ vi.mock('@/lib/activity', () => ({
   logActivity: vi.fn(),
 }))
 
-describe('Default Program Assignment Integration', () => {
+describe('Strict Assignment Verification', () => {
   beforeEach(() => {
     vi.clearAllMocks()
     sessionStorage.clear()
     sessionStorage.setItem('tab_auth_granted', '1')
   })
 
-  it('should create client profile AND assign default programs for a new user', async () => {
+  it('should create client profile but NOT assign any programs for a new user', async () => {
     const mockUser = { 
       uid: 'athlete-1', 
       email: 'pro@athlete.com',
@@ -87,55 +87,8 @@ describe('Default Program Assignment Integration', () => {
       )
     })
 
-    // 2. Verify Default Program Assignment
-    await waitFor(() => {
-      expect(vi.mocked(addDoc)).toHaveBeenCalledWith(
-        expect.objectContaining({ coll: 'assignments' }),
-        expect.objectContaining({
-          client_id: 'athlete-1',
-          program_id: 'starter-program',
-          program_name: 'Elite Performance Starter',
-          current_day_number: 1
-        })
-      )
-    })
-
-    // 3. Verify Activity Logging
-    const { logActivity } = await import('@/lib/activity')
-    expect(logActivity).toHaveBeenCalledWith({
-      type: 'assignment',
-      client_name: 'Pro Athlete',
-      program_name: 'Elite Performance Starter'
-    })
-  })
-
-  it('should NOT assign programs if client profile already exists', async () => {
-    const mockUser = { uid: 'existing-athlete-1', email: 'old@athlete.com' }
-
-    vi.mocked(onAuthStateChanged).mockImplementation((auth, cb) => {
-      cb(mockUser as any)
-      return () => {}
-    })
-
-    vi.mocked(getDoc).mockImplementation(async (docRef: any) => {
-      // Simulate existing client doc
-      if (docRef.coll === 'clients') return { exists: () => true } as any
-      return { exists: () => false } as any
-    })
-
-    render(
-      <AuthProvider>
-        <div>Test Child</div>
-      </AuthProvider>
-    )
-
-    await waitFor(() => {
-      // Should check if it exists
-      expect(vi.mocked(getDoc)).toHaveBeenCalled()
-    })
-
-    // Should NOT create or assign
-    expect(vi.mocked(setDoc)).not.toHaveBeenCalled()
+    // 2. Verify NO Default Program Assignment
+    // We explicitly expect addDoc NOT to be called for assignments
     expect(vi.mocked(addDoc)).not.toHaveBeenCalled()
   })
 })
