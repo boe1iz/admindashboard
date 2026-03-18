@@ -1,13 +1,13 @@
 # Implementation Plan: Mobile Visibility Fix for Assigned Programs
 
 ## Phase 1: Diagnostics and Reproduction
-- [ ] Task: Research and Reproduce the Issue
-    - [ ] Create a failing test case in `tests/MobileVisibility.test.tsx` that simulates a mobile viewport and asserts program visibility for an assigned client.
-    - [ ] Run the test and confirm it fails (Red Phase).
-- [ ] Task: CSS and Logic Inspection
-    - [ ] Audit `app/programs/page.tsx` for responsive classes (e.g., `hidden`, `md:block`) that may be applied to the program container or list.
-    - [ ] Verify if `isClient` or viewport-specific logic is interfering with data fetching or rendering.
-- [ ] Task: Conductor - User Manual Verification 'Phase 1: Diagnostics' (Protocol in workflow.md)
+- [x] Task: Research and Reproduce the Issue
+    - [x] Create a failing test case in `tests/MobileVisibility.test.tsx` that simulates a mobile viewport and asserts program visibility for an assigned client.
+    - [x] Run the test and confirm it fails (Red Phase).
+- [x] Task: CSS and Logic Inspection
+    - [x] Audit `app/programs/page.tsx` for responsive classes (e.g., `hidden`, `md:block`) that may be applied to the program container or list.
+    - [x] Verify if `isClient` or viewport-specific logic is interfering with data fetching or rendering.
+- [x] Task: Conductor - User Manual Verification 'Phase 1: Diagnostics' (Protocol in workflow.md)
 
 ## Phase 2: Implementation of Fix
 - [ ] Task: Correct Visibility Logic
