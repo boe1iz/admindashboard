@@ -9,7 +9,7 @@
     - [x] Verify if `isClient` or viewport-specific logic is interfering with data fetching or rendering.
 - [x] Task: Conductor - User Manual Verification 'Phase 1: Diagnostics' (Protocol in workflow.md)
 
-## Phase 2: Implementation of Fix
+## Phase 2: Implementation of Fix [checkpoint: 7b73b6c]
 - [x] Task: Correct Visibility Logic
     - [x] Apply the necessary CSS or logic fixes to ensure the program list renders on all viewports.
     - [x] Ensure Firestore subscriptions are stable across viewport changes.
