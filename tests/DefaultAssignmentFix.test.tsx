@@ -20,6 +20,9 @@ vi.mock('firebase/firestore', () => ({
   setDoc: vi.fn(),
   addDoc: vi.fn(),
   collection: vi.fn((db, coll) => ({ db, coll })),
+  query: vi.fn(),
+  where: vi.fn(),
+  getDocs: vi.fn(),
   serverTimestamp: vi.fn(() => 'mock-timestamp'),
 }))
 
@@ -38,27 +41,30 @@ vi.mock('sonner', () => ({
   },
 }))
 
-describe('Default Program Assignment', () => {
+// Mock activity logging
+vi.mock('@/lib/activity', () => ({
+  logActivity: vi.fn(),
+}))
+
+describe('Default Program Assignment Integration', () => {
   beforeEach(() => {
     vi.clearAllMocks()
     sessionStorage.clear()
     sessionStorage.setItem('tab_auth_granted', '1')
   })
 
-  it('should assign default programs when a new client is created', async () => {
+  it('should create client profile AND assign default programs for a new user', async () => {
     const mockUser = { 
-      uid: 'new-user-123', 
-      email: 'new@user.com',
-      displayName: 'New Athlete'
+      uid: 'athlete-1', 
+      email: 'pro@athlete.com',
+      displayName: 'Pro Athlete'
     }
 
-    // Mock onAuthStateChanged to trigger resolveSession
     vi.mocked(onAuthStateChanged).mockImplementation((auth, cb) => {
       cb(mockUser as any)
       return () => {}
     })
 
-    // Mock getDoc to simulate new user (no admin doc, no client doc)
     vi.mocked(getDoc).mockImplementation(async (docRef: any) => {
       return { exists: () => false } as any
     })
@@ -69,19 +75,68 @@ describe('Default Program Assignment', () => {
       </AuthProvider>
     )
 
-    // Wait for resolveSession to complete
+    // 1. Verify Client Profile Creation
     await waitFor(() => {
-      expect(vi.mocked(setDoc)).toHaveBeenCalled()
+      expect(vi.mocked(setDoc)).toHaveBeenCalledWith(
+        expect.objectContaining({ id: 'athlete-1', coll: 'clients' }),
+        expect.objectContaining({
+          name: 'Pro Athlete',
+          email: 'pro@athlete.com',
+          is_active: true
+        })
+      )
     })
 
-    // This is the expected behavior that is currently "broken" (missing)
-    // We expect addDoc to be called to assign a default program
-    expect(vi.mocked(addDoc)).toHaveBeenCalledWith(
-      expect.objectContaining({ coll: 'assignments' }),
-      expect.objectContaining({
-        client_id: 'new-user-123',
-        program_id: expect.any(String),
-      })
+    // 2. Verify Default Program Assignment
+    await waitFor(() => {
+      expect(vi.mocked(addDoc)).toHaveBeenCalledWith(
+        expect.objectContaining({ coll: 'assignments' }),
+        expect.objectContaining({
+          client_id: 'athlete-1',
+          program_id: 'starter-program',
+          program_name: 'Elite Performance Starter',
+          current_day_number: 1
+        })
+      )
+    })
+
+    // 3. Verify Activity Logging
+    const { logActivity } = await import('@/lib/activity')
+    expect(logActivity).toHaveBeenCalledWith({
+      type: 'assignment',
+      client_name: 'Pro Athlete',
+      program_name: 'Elite Performance Starter'
+    })
+  })
+
+  it('should NOT assign programs if client profile already exists', async () => {
+    const mockUser = { uid: 'existing-athlete-1', email: 'old@athlete.com' }
+
+    vi.mocked(onAuthStateChanged).mockImplementation((auth, cb) => {
+      cb(mockUser as any)
+      return () => {}
+    })
+
+    vi.mocked(getDoc).mockImplementation(async (docRef: any) => {
+      // Simulate existing client doc
+      if (docRef.coll === 'clients') return { exists: () => true } as any
+      return { exists: () => false } as any
+    })
+
+    render(
+      <AuthProvider>
+        <div>Test Child</div>
+      </AuthProvider>
     )
+
+    await waitFor(() => {
+      // Should check if it exists
+      expect(vi.mocked(getDoc)).toHaveBeenCalled()
+    })
+
+    // Should NOT create or assign
+    expect(vi.mocked(setDoc)).not.toHaveBeenCalled()
+    expect(vi.mocked(addDoc)).not.toHaveBeenCalled()
   })
 })
+
